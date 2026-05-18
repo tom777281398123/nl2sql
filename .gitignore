@@ -1,0 +1,33 @@
+# 项目相关目录
+resources/doc/
+output/
+logs/
+docker/data/
+
+# IDE 配置文件（关键！解决你 .idea 报错）
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+
+# Python 缓存文件（关键！解决 __pycache__ 报错）
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+.pytest_cache/
+
+# 环境文件
+.env
+.venv/
+venv/
+env/
+
+# 其他临时文件
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
