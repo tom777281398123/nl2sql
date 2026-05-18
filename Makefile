@@ -71,5 +71,5 @@ build-volumes:
 	mkdir -p $(PROJECT_DIR)/docker/data/mysql
 	mkdir -p $(PROJECT_DIR)/docker/data/elasticsearch
 	mkdir -p $(PROJECT_DIR)/docker/data/qdrant
-	mkdir -p $(PROJECT_DIR)/docker/data/embedding/bge-large-zh-v1.5
+	mkdir -p $(PROJECT_DIR)/docker/data/embedding
 	@echo "✓ Volume directories created"
