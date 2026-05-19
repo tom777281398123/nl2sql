@@ -13,6 +13,7 @@ query_router = APIRouter()
 async def query(
     query: QuerySchema, query_service: QueryService = Depends(get_query_service)
 ):
+    print("/api/query--->日志打印一下吧")
     return StreamingResponse(
         query_service.query(query.query), media_type="text/event-stream"
     )
