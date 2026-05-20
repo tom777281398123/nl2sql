@@ -2,12 +2,11 @@ from langgraph.runtime import Runtime
 
 from app.agent.context import DataAgentContext
 from app.agent.state import DataAgentState, TableInfoState, MetricInfoState, ColumnInfoState
-from app.conf.logger import logger, node_log
+from app.conf.logger import logger
 from app.entities.column_info import ColumnInfo
 from app.entities.table_info import TableInfo
 
 
-@node_log
 async def merge_retrieved_info(state: DataAgentState, runtime: Runtime[DataAgentContext]):
     writer = runtime.stream_writer
     writer({"type": "progress", "step": "合并召回信息", "status": "running"})

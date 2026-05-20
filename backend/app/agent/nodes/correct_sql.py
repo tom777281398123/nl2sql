@@ -6,11 +6,10 @@ from langgraph.runtime import Runtime
 from app.agent.context import DataAgentContext
 from app.agent.llm import llm
 from app.agent.state import DataAgentState
-from app.conf.logger import logger, node_log
+from app.conf.logger import logger
 from app.prompt.prompt_loader import load_prompt
 
 
-@node_log
 async def correct_sql(state: DataAgentState, runtime: Runtime[DataAgentContext]):
     writer = runtime.stream_writer
     writer({"type": "progress", "step": "校正SQL", "status": "running"})
