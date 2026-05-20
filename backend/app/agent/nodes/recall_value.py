@@ -1,5 +1,3 @@
-import asyncio
-
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import PromptTemplate
 from langgraph.runtime import Runtime
@@ -7,11 +5,12 @@ from langgraph.runtime import Runtime
 from app.agent.context import DataAgentContext
 from app.agent.llm import llm
 from app.agent.state import DataAgentState
-from app.conf.logger import logger
+from app.conf.logger import logger, node_log
 from app.entities.value_info import ValueInfo
 from app.prompt.prompt_loader import load_prompt
 
 
+@node_log
 async def recall_value(state: DataAgentState, runtime: Runtime[DataAgentContext]):
     writer = runtime.stream_writer
     writer({"type": "progress", "step": "召回字段取值", "status": "running"})

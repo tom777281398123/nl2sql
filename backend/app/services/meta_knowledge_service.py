@@ -3,9 +3,10 @@ from pathlib import Path
 
 from langchain_huggingface import HuggingFaceEndpointEmbeddings
 from omegaconf import OmegaConf
+from sqlalchemy import text
 
-from app.conf.meta_config import MetaConfig
 from app.conf.logger import logger
+from app.conf.meta_config import MetaConfig
 from app.entities.column_info import ColumnInfo
 from app.entities.column_metric import ColumnMetric
 from app.entities.metric_info import MetricInfo
@@ -16,7 +17,6 @@ from app.repositories.mysql.dw.dw_mysql_repository import DWMySQLRepository
 from app.repositories.mysql.meta.meta_mysql_repository import MetaMySQLRepository
 from app.repositories.qdrant.column_qdrant_repository import ColumnQdrantRepository
 from app.repositories.qdrant.metric_qdrant_repository import MetricQdrantRepository
-from sqlalchemy import text
 
 
 class MetaKnowledgeService:

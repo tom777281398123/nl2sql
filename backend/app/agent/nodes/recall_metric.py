@@ -5,11 +5,12 @@ from langgraph.runtime import Runtime
 from app.agent.context import DataAgentContext
 from app.agent.llm import llm
 from app.agent.state import DataAgentState
-from app.conf.logger import logger
+from app.conf.logger import logger, node_log
 from app.entities.metric_info import MetricInfo
 from app.prompt.prompt_loader import load_prompt
 
 
+@node_log
 async def recall_metric(state: DataAgentState, runtime: Runtime[DataAgentContext]):
     writer = runtime.stream_writer
     writer({"type": "progress", "step": "召回指标", "status": "running"})

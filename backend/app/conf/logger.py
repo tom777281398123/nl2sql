@@ -10,10 +10,10 @@
 6. 开箱即用：项目所有模块直接导入logger即可使用
 7. 位置终极精准：穿透loguru内部+工具类自身，完美显示业务模块实际调用位置
 """
-import sys
 import inspect
-from pathlib import Path
 import os
+import sys
+
 from dotenv import load_dotenv
 from loguru import logger
 

@@ -3,8 +3,6 @@ from pathlib import Path
 
 from omegaconf import OmegaConf
 
-from app.conf.config_loader import load_config
-
 
 # 日志配置
 @dataclass

@@ -55,7 +55,6 @@ embedding_client_manager = EmbeddingClientManager(app_config.embedding)
 用于测试 EmbeddingClientManager 是否正常工作
 """
 import sys
-import asyncio
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
