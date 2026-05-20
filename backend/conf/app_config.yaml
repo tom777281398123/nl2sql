@@ -12,16 +12,16 @@ logging:
 db_meta:
   host: localhost
   port: 3306
-  user: atguigu
-  password: Atguigu.123
-  database: meta
+  user: root
+  password: 178121
+  database: opencoze
 
 db_dw:
   host: localhost
   port: 3306
-  user: atguigu
-  password: Atguigu.123
-  database: dw
+  user: root
+  password: 178121
+  database: opencoze
 
 qdrant:
   host: localhost
