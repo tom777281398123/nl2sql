@@ -111,5 +111,6 @@ if __name__ == "__main__":
         logger.info("清空操作完成")
 
     config_path=PROJECT_ROOT/Path(args.conf)
-    print("打印一下配置路径为:"+str(config_path))
+    logger.info(f"开始构建操作,配置文件路径为:{args.conf}")
     asyncio.run(build(config_path))
+    logger.info(f"构建操作完成,配置文件路径为:{args.conf}")
