@@ -3,7 +3,7 @@ from langgraph.runtime import Runtime
 
 from app.agent.context import DataAgentContext
 from app.agent.state import DataAgentState
-from app.core.log import logger
+from app.conf.logger import logger
 
 
 async def extract_keywords(state: DataAgentState, runtime: Runtime[DataAgentContext]):

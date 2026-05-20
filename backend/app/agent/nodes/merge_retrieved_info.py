@@ -2,7 +2,7 @@ from langgraph.runtime import Runtime
 
 from app.agent.context import DataAgentContext
 from app.agent.state import DataAgentState, TableInfoState, MetricInfoState, ColumnInfoState
-from app.core.log import logger
+from app.conf.logger import logger
 from app.entities.column_info import ColumnInfo
 from app.entities.table_info import TableInfo
 

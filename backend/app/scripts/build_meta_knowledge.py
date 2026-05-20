@@ -11,7 +11,7 @@ from app.clients.mysql_client_manager import (
 )
 from app.clients.qdrant_client_manager import qdrant_client_manager
 from app.constants.project_constant import PROJECT_ROOT
-from app.core.log import logger
+from app.conf.logger import logger
 from app.repositories.qdrant.column_qdrant_repository import ColumnQdrantRepository
 from app.repositories.mysql.dw.dw_mysql_repository import DWMySQLRepository
 from app.repositories.mysql.meta.meta_mysql_repository import MetaMySQLRepository
