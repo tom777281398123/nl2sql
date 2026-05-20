@@ -16,6 +16,7 @@ from app.repositories.mysql.dw.dw_mysql_repository import DWMySQLRepository
 from app.repositories.mysql.meta.meta_mysql_repository import MetaMySQLRepository
 from app.repositories.qdrant.column_qdrant_repository import ColumnQdrantRepository
 from app.repositories.qdrant.metric_qdrant_repository import MetricQdrantRepository
+from sqlalchemy import text
 
 
 class MetaKnowledgeService:
@@ -271,3 +272,81 @@ class MetaKnowledgeService:
             logger.info("未配置指标信息，跳过指标信息处理")
 
         logger.info("元数据知识库构建完成")
+
+    async def clean(self):
+        """清空所有元知识库数据"""
+        logger.info("开始清空元知识库数据")
+        
+        # 1. 清空 MySQL 元数据表
+        logger.info("开始清空 MySQL 元数据表")
+        try:
+            async with self.meta_mysql_repository.session.begin():
+                # 注意删除顺序：先删除子表，再删除父表（外键约束）
+                await self.meta_mysql_repository.session.execute(
+                    text("DELETE FROM column_metric")
+                )
+                logger.info("已清空 column_metric 表")
+                
+                await self.meta_mysql_repository.session.execute(
+                    text("DELETE FROM metric_info")
+                )
+                logger.info("已清空 metric_info 表")
+                
+                await self.meta_mysql_repository.session.execute(
+                    text("DELETE FROM column_info")
+                )
+                logger.info("已清空 column_info 表")
+                
+                await self.meta_mysql_repository.session.execute(
+                    text("DELETE FROM table_info")
+                )
+                logger.info("已清空 table_info 表")
+            
+            logger.info("MySQL 元数据表清空完成")
+        except Exception as e:
+            logger.error("清空 MySQL 元数据表失败: {}", str(e))
+            raise
+
+        # 2. 清空 Qdrant 向量索引
+        logger.info("开始清空 Qdrant 向量索引")
+        try:
+            # 清空字段向量集合
+            if await self.column_qdrant_repository.client.collection_exists(
+                self.column_qdrant_repository.collection_name
+            ):
+                await self.column_qdrant_repository.client.delete_collection(
+                    self.column_qdrant_repository.collection_name
+                )
+                logger.info("已清空字段向量集合: {}", self.column_qdrant_repository.collection_name)
+            
+            # 清空指标向量集合
+            if await self.metric_qdrant_repository.client.collection_exists(
+                self.metric_qdrant_repository.collection_name
+            ):
+                await self.metric_qdrant_repository.client.delete_collection(
+                    self.metric_qdrant_repository.collection_name
+                )
+                logger.info("已清空指标向量集合: {}", self.metric_qdrant_repository.collection_name)
+            
+            logger.info("Qdrant 向量索引清空完成")
+        except Exception as e:
+            logger.error("清空 Qdrant 向量索引失败: {}", str(e))
+            raise
+
+        # 3. 清空 Elasticsearch 全文索引
+        logger.info("开始清空 Elasticsearch 全文索引")
+        try:
+            if await self.value_es_repository.client.indices.exists(
+                index=self.value_es_repository.index_name
+            ):
+                await self.value_es_repository.client.indices.delete(
+                    index=self.value_es_repository.index_name
+                )
+                logger.info("已清空 Elasticsearch 索引: {}", self.value_es_repository.index_name)
+            
+            logger.info("Elasticsearch 全文索引清空完成")
+        except Exception as e:
+            logger.error("清空 Elasticsearch 全文索引失败: {}", str(e))
+            raise
+
+        logger.info("元知识库数据清空完成")

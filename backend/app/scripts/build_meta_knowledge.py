@@ -11,6 +11,7 @@ from app.clients.mysql_client_manager import (
 )
 from app.clients.qdrant_client_manager import qdrant_client_manager
 from app.constants.project_constant import PROJECT_ROOT
+from app.core.log import logger
 from app.repositories.qdrant.column_qdrant_repository import ColumnQdrantRepository
 from app.repositories.mysql.dw.dw_mysql_repository import DWMySQLRepository
 from app.repositories.mysql.meta.meta_mysql_repository import MetaMySQLRepository
@@ -18,6 +19,8 @@ from app.repositories.es.value_es_repository import ValueESRepository
 from app.repositories.qdrant.metric_qdrant_repository import MetricQdrantRepository
 from app.services.meta_knowledge_service import MetaKnowledgeService
 from dotenv import load_dotenv
+
+from app.utils.data_utils import str_to_bool
 
 load_dotenv()
 
@@ -63,6 +66,33 @@ async def build(config_path: Path):
     await qdrant_client_manager.close()  # 关闭Qdrant客户端
     await es_client_manager.close()  # 关闭Elasticsearch客户端
 
+async def clean():
+    """清空元知识库数据"""
+    meta_mysql_client_manager.init()
+    qdrant_client_manager.init()
+    es_client_manager.init()
+
+    async with meta_mysql_client_manager.session_factory() as meta_session:
+        meta_mysql_repository = MetaMySQLRepository(meta_session)
+        column_qdrant_repository = ColumnQdrantRepository(qdrant_client_manager.client)
+        value_es_repository = ValueESRepository(es_client_manager.client)
+        metric_qdrant_repository = MetricQdrantRepository(qdrant_client_manager.client)
+
+        mete_knowledge_service = MetaKnowledgeService(
+            meta_mysql_repository=meta_mysql_repository,
+            dw_mysql_repository=None,  # clean 不需要 dw_repository
+            column_qdrant_repository=column_qdrant_repository,
+            embedding_client=None,  # clean 不需要 embedding_client
+            value_es_repository=value_es_repository,
+            metric_qdrant_repository=metric_qdrant_repository,
+        )
+        await mete_knowledge_service.clean()
+
+    await meta_mysql_client_manager.close()
+    await qdrant_client_manager.close()
+    await es_client_manager.close()
+
+
 
 if __name__ == "__main__":
     parser = ArgumentParser()
@@ -70,8 +100,16 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--conf",
                         default=os.getenv("META_KNOWLEDGE_CONFIG"),
                         help="配置文件路径")
+    parser.add_argument("--clean", default=os.getenv("SYS_ISCLEAN_CONFIG"),
+                        help="清空元知识库数据")
 
     args = parser.parse_args()
+    if str_to_bool(args.clean):
+        # 执行清空操作：删除 MySQL、Qdrant、Elasticsearch 中的所有元知识库数据
+        logger.info("开始执行清空操作")
+        asyncio.run(clean())
+        logger.info("清空操作完成")
+
     config_path=PROJECT_ROOT/Path(args.conf)
     print("打印一下配置路径为:"+str(config_path))
     asyncio.run(build(config_path))
