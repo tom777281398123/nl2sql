@@ -223,32 +223,51 @@ class MetaKnowledgeService:
 
     async def build(self, config_path: Path):
         # 1.加载配置文件
+        logger.info("开始加载配置文件: {}", config_path)
         context = OmegaConf.load(config_path)
         schema = OmegaConf.structured(MetaConfig)
         meta_config: MetaConfig = OmegaConf.to_object(OmegaConf.merge(schema, context))
-        logger.info("加载配置文件")
+        logger.info("配置文件加载完成")
+        
         # 2.处理表信息
         if meta_config.tables:
+            logger.info("开始处理表信息，共 {} 个表", len(meta_config.tables))
+            
             # 2.1 保存表信息到meta数据库
+            logger.info("开始保存表信息到meta数据库")
             column_infos = await self._save_tables_to_meta_db(meta_config)
-            logger.info("保存表信息到meta数据库")
+            logger.info("表信息保存完成，共处理 {} 个字段", len(column_infos))
 
             # 2.2 为字段信息建立向量索引
+            logger.info("开始为字段信息建立向量索引")
             await self._save_column_info_to_qdrant(column_infos)
-            logger.info("为字段信息建立向量索引")
+            logger.info("字段向量索引建立完成")
 
             # 2.3 为字段取值建立全文索引
+            logger.info("开始为字段取值建立全文索引")
             await self._save_value_info_to_es(meta_config, column_infos)
-            logger.info("为字段取值建立全文索引")
+            logger.info("字段取值全文索引建立完成")
+            
+            logger.info("表信息处理完成")
+        else:
+            logger.info("未配置表信息，跳过表信息处理")
 
         # 3.处理指标信息
         if meta_config.metrics:
+            logger.info("开始处理指标信息，共 {} 个指标", len(meta_config.metrics))
+            
             # 3.1 保存指标信息到meta数据库
+            logger.info("开始保存指标信息到meta数据库")
             metric_infos = await self._save_metrics_to_meta_db(meta_config)
-            logger.info("保存指标信息到meta数据库")
+            logger.info("指标信息保存完成，共处理 {} 个指标", len(metric_infos))
 
             # 3.2 为指标信息建立向量索引
+            logger.info("开始为指标信息建立向量索引")
             await self._save_metric_info_to_qdrant(metric_infos)
-            logger.info("为指标信息建立向量索引")
+            logger.info("指标向量索引建立完成")
+            
+            logger.info("指标信息处理完成")
+        else:
+            logger.info("未配置指标信息，跳过指标信息处理")
 
         logger.info("元数据知识库构建完成")

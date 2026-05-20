@@ -1,4 +1,5 @@
 import asyncio
+import os
 from argparse import ArgumentParser
 from pathlib import Path
 
@@ -9,12 +10,16 @@ from app.clients.mysql_client_manager import (
     dw_mysql_client_manager,
 )
 from app.clients.qdrant_client_manager import qdrant_client_manager
+from app.constants.project_constant import PROJECT_ROOT
 from app.repositories.qdrant.column_qdrant_repository import ColumnQdrantRepository
 from app.repositories.mysql.dw.dw_mysql_repository import DWMySQLRepository
 from app.repositories.mysql.meta.meta_mysql_repository import MetaMySQLRepository
 from app.repositories.es.value_es_repository import ValueESRepository
 from app.repositories.qdrant.metric_qdrant_repository import MetricQdrantRepository
 from app.services.meta_knowledge_service import MetaKnowledgeService
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 async def build(config_path: Path):
@@ -62,10 +67,11 @@ async def build(config_path: Path):
 if __name__ == "__main__":
     parser = ArgumentParser()
 
-    parser.add_argument("-c", "--conf")  # option that takes a value
+    parser.add_argument("-c", "--conf",
+                        default=os.getenv("META_KNOWLEDGE_CONFIG"),
+                        help="配置文件路径")
 
     args = parser.parse_args()
-
-    config_path = Path(args.conf)
-
+    config_path=PROJECT_ROOT/Path(args.conf)
+    print("打印一下配置路径为:"+str(config_path))
     asyncio.run(build(config_path))

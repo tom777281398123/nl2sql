@@ -21,10 +21,8 @@ __pycache__/
 .pytest_cache/
 
 # 环境文件
-.env
 .venv/
 venv/
-env/
 node_modules/
 
 # 其他临时文件
