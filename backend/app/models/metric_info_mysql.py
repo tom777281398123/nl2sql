@@ -2,7 +2,7 @@ from sqlalchemy import String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import JSON
 
-from app.models.base import Base
+from backend.app.models.base import Base
 
 
 class MetricInfoMySQL(Base):

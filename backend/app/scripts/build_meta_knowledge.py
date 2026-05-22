@@ -5,22 +5,22 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from app.clients.embedding_client_manager import embedding_client_manager
-from app.clients.es_client_manager import es_client_manager
-from app.clients.mysql_client_manager import (
+from backend.app.clients.embedding_client_manager import embedding_client_manager
+from backend.app.clients.es_client_manager import es_client_manager
+from backend.app.clients.mysql_client_manager import (
     meta_mysql_client_manager,
     dw_mysql_client_manager,
 )
-from app.clients.qdrant_client_manager import qdrant_client_manager
-from app.conf.logger import logger
-from app.constants.project_constant import PROJECT_ROOT
-from app.repositories.es.value_es_repository import ValueESRepository
-from app.repositories.mysql.dw.dw_mysql_repository import DWMySQLRepository
-from app.repositories.mysql.meta.meta_mysql_repository import MetaMySQLRepository
-from app.repositories.qdrant.column_qdrant_repository import ColumnQdrantRepository
-from app.repositories.qdrant.metric_qdrant_repository import MetricQdrantRepository
-from app.services.meta_knowledge_service import MetaKnowledgeService
-from app.utils.data_utils import str_to_bool
+from backend.app.clients.qdrant_client_manager import qdrant_client_manager
+from backend.app.conf.logger import logger
+from backend.app.constants.project_constant import PROJECT_ROOT
+from backend.app.repositories.es.value_es_repository import ValueESRepository
+from backend.app.repositories.mysql.dw.dw_mysql_repository import DWMySQLRepository
+from backend.app.repositories.mysql.meta.meta_mysql_repository import MetaMySQLRepository
+from backend.app.repositories.qdrant.column_qdrant_repository import ColumnQdrantRepository
+from backend.app.repositories.qdrant.metric_qdrant_repository import MetricQdrantRepository
+from backend.app.services.meta_knowledge_service import MetaKnowledgeService
+from backend.app.utils.data_utils import str_to_bool
 
 load_dotenv()
 

@@ -2,16 +2,16 @@ from fastapi import Depends
 from langchain_huggingface import HuggingFaceEndpointEmbeddings
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.clients.embedding_client_manager import embedding_client_manager
-from app.clients.es_client_manager import es_client_manager
-from app.clients.mysql_client_manager import meta_mysql_client_manager, dw_mysql_client_manager
-from app.clients.qdrant_client_manager import qdrant_client_manager
-from app.repositories.es.value_es_repository import ValueESRepository
-from app.repositories.mysql.dw.dw_mysql_repository import DWMySQLRepository
-from app.repositories.mysql.meta.meta_mysql_repository import MetaMySQLRepository
-from app.repositories.qdrant.column_qdrant_repository import ColumnQdrantRepository
-from app.repositories.qdrant.metric_qdrant_repository import MetricQdrantRepository
-from app.services.query_service import QueryService
+from backend.app.clients.embedding_client_manager import embedding_client_manager
+from backend.app.clients.es_client_manager import es_client_manager
+from backend.app.clients.mysql_client_manager import meta_mysql_client_manager, dw_mysql_client_manager
+from backend.app.clients.qdrant_client_manager import qdrant_client_manager
+from backend.app.repositories.es.value_es_repository import ValueESRepository
+from backend.app.repositories.mysql.dw.dw_mysql_repository import DWMySQLRepository
+from backend.app.repositories.mysql.meta.meta_mysql_repository import MetaMySQLRepository
+from backend.app.repositories.qdrant.column_qdrant_repository import ColumnQdrantRepository
+from backend.app.repositories.qdrant.metric_qdrant_repository import MetricQdrantRepository
+from backend.app.services.query_service import QueryService
 
 
 async def get_meta_session():

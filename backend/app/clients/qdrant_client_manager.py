@@ -4,7 +4,7 @@ from typing import Optional
 
 from qdrant_client import AsyncQdrantClient, models
 
-from app.conf.app_config import QdrantConfig, app_config
+from backend.app.conf.app_config import QdrantConfig, app_config
 
 
 class QdrantClientManager:

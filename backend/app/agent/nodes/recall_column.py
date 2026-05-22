@@ -2,12 +2,12 @@ from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import PromptTemplate
 from langgraph.runtime import Runtime
 
-from app.agent.context import DataAgentContext
-from app.agent.llm import llm
-from app.agent.state import DataAgentState
-from app.conf.logger import logger
-from app.entities.column_info import ColumnInfo
-from app.prompt.prompt_loader import load_prompt
+from backend.app.agent.context import DataAgentContext
+from backend.app.agent.llm import llm
+from backend.app.agent.state import DataAgentState
+from backend.app.conf.logger import logger
+from backend.app.entities.column_info import ColumnInfo
+from backend.app.prompt.prompt_loader import load_prompt
 
 
 async def recall_column(state: DataAgentState, runtime: Runtime[DataAgentContext]):

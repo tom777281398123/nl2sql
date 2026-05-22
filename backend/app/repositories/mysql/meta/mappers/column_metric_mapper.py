@@ -1,7 +1,7 @@
 from dataclasses import asdict
 
-from app.entities.column_metric import ColumnMetric
-from app.models.column_metric_mysql import ColumnMetricMySQL
+from backend.app.entities.column_metric import ColumnMetric
+from backend.app.models.column_metric_mysql import ColumnMetricMySQL
 
 
 class ColumnMetricMapper:

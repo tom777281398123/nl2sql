@@ -3,9 +3,9 @@ import uuid
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routers.query_router import query_router
-from app.core.context import request_id_ctx_var
-from app.core.lifespan import lifespan
+from backend.app.api.routers.query_router import query_router
+from backend.app.core.context import request_id_ctx_var
+from backend.app.core.lifespan import lifespan
 
 # 创建FastAPI应用，并注册生命周期函数
 app = FastAPI(lifespan=lifespan)

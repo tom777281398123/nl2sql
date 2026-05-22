@@ -1,7 +1,7 @@
 from dataclasses import asdict
 
-from app.entities.table_info import TableInfo
-from app.models.table_info_mysql import TableInfoMySQL
+from backend.app.entities.table_info import TableInfo
+from backend.app.models.table_info_mysql import TableInfoMySQL
 
 
 class TableInfoMapper:

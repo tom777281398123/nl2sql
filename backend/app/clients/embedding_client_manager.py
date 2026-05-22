@@ -2,7 +2,7 @@ from typing import Optional
 
 from langchain_huggingface import HuggingFaceEndpointEmbeddings
 
-from app.conf.app_config import EmbeddingConfig, app_config
+from backend.app.conf.app_config import EmbeddingConfig, app_config
 
 
 class EmbeddingClientManager:
@@ -59,7 +59,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from app.clients.embedding_client_manager import embedding_client_manager
+from backend.app.clients.embedding_client_manager import embedding_client_manager
 
 
 def verify_embedding_service():

@@ -2,10 +2,10 @@ from fastapi import APIRouter
 from fastapi.params import Depends
 from starlette.responses import StreamingResponse
 
-from app.api.dependencies import get_query_service
-from app.api.schemas.query_schema import QuerySchema
-from app.conf.logger import logger
-from app.services.query_service import QueryService
+from backend.app.api.dependencies import get_query_service
+from backend.app.api.schemas.query_schema import QuerySchema
+from backend.app.conf.logger import logger
+from backend.app.services.query_service import QueryService
 
 query_router = APIRouter()
 

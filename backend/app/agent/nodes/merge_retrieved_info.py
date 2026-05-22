@@ -1,10 +1,10 @@
 from langgraph.runtime import Runtime
 
-from app.agent.context import DataAgentContext
-from app.agent.state import DataAgentState, TableInfoState, MetricInfoState, ColumnInfoState
-from app.conf.logger import logger
-from app.entities.column_info import ColumnInfo
-from app.entities.table_info import TableInfo
+from backend.app.agent.context import DataAgentContext
+from backend.app.agent.state import DataAgentState, TableInfoState, MetricInfoState, ColumnInfoState
+from backend.app.conf.logger import logger
+from backend.app.entities.column_info import ColumnInfo
+from backend.app.entities.table_info import TableInfo
 
 
 async def merge_retrieved_info(state: DataAgentState, runtime: Runtime[DataAgentContext]):

@@ -1,8 +1,8 @@
 from typing import TypedDict
 
-from app.entities.column_info import ColumnInfo
-from app.entities.metric_info import MetricInfo
-from app.entities.value_info import ValueInfo
+from backend.app.entities.column_info import ColumnInfo
+from backend.app.entities.metric_info import MetricInfo
+from backend.app.entities.value_info import ValueInfo
 
 
 class ColumnInfoState(TypedDict):

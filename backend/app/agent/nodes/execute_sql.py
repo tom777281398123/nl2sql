@@ -1,8 +1,8 @@
 from langgraph.runtime import Runtime
 
-from app.agent.context import DataAgentContext
-from app.agent.state import DataAgentState
-from app.conf.logger import logger
+from backend.app.agent.context import DataAgentContext
+from backend.app.agent.state import DataAgentState
+from backend.app.conf.logger import logger
 
 
 async def execute_sql(state: DataAgentState, runtime: Runtime[DataAgentContext]):

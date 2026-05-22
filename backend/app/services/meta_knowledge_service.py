@@ -5,18 +5,18 @@ from langchain_huggingface import HuggingFaceEndpointEmbeddings
 from omegaconf import OmegaConf
 from sqlalchemy import text
 
-from app.conf.logger import logger
-from app.conf.meta_config import MetaConfig
-from app.entities.column_info import ColumnInfo
-from app.entities.column_metric import ColumnMetric
-from app.entities.metric_info import MetricInfo
-from app.entities.table_info import TableInfo
-from app.entities.value_info import ValueInfo
-from app.repositories.es.value_es_repository import ValueESRepository
-from app.repositories.mysql.dw.dw_mysql_repository import DWMySQLRepository
-from app.repositories.mysql.meta.meta_mysql_repository import MetaMySQLRepository
-from app.repositories.qdrant.column_qdrant_repository import ColumnQdrantRepository
-from app.repositories.qdrant.metric_qdrant_repository import MetricQdrantRepository
+from backend.app.conf.logger import logger
+from backend.app.conf.meta_config import MetaConfig
+from backend.app.entities.column_info import ColumnInfo
+from backend.app.entities.column_metric import ColumnMetric
+from backend.app.entities.metric_info import MetricInfo
+from backend.app.entities.table_info import TableInfo
+from backend.app.entities.value_info import ValueInfo
+from backend.app.repositories.es.value_es_repository import ValueESRepository
+from backend.app.repositories.mysql.dw.dw_mysql_repository import DWMySQLRepository
+from backend.app.repositories.mysql.meta.meta_mysql_repository import MetaMySQLRepository
+from backend.app.repositories.qdrant.column_qdrant_repository import ColumnQdrantRepository
+from backend.app.repositories.qdrant.metric_qdrant_repository import MetricQdrantRepository
 
 
 class MetaKnowledgeService:
