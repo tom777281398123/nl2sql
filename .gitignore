@@ -3,6 +3,7 @@ resources/doc/
 output/
 logs/
 docker/data/
+docker/bak/
 
 # IDE 配置文件（关键！解决你 .idea 报错）
 .idea/

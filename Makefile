@@ -60,11 +60,14 @@ logs:
 ps:
 	$(DOCKER_COMPOSE) ps
 
+# 保留embed的 数据
 clean:
 	@echo "Removing all containers, networks, and data..."
 	$(DOCKER_COMPOSE) down -v
-	rm -rf $(PROJECT_DIR)/docker/data/*
-	@echo "✓ Cleaned up"
+	rm -rf $(PROJECT_DIR)/docker/data/mysql
+	rm -rf $(PROJECT_DIR)/docker/data/elasticsearch
+	rm -rf $(PROJECT_DIR)/docker/data/qdrant
+	@echo "✓ Cleaned up (embedding data preserved)"
 
 build-volumes:
 	@echo "Creating volume directories..."

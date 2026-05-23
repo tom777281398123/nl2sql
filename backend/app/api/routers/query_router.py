@@ -12,9 +12,9 @@ query_router = APIRouter()
 
 @query_router.post("/api/query")
 async def query(
-    query: QuerySchema, query_service: QueryService = Depends(get_query_service)
+    schema: QuerySchema, query_service: QueryService = Depends(get_query_service)
 ):
-    logger.info(f"收到查询请求，入参: {query}")
+    logger.info(f"收到查询请求，入参: {schema}")
     return StreamingResponse(
-        query_service.query(query.query), media_type="text/event-stream"
+        query_service.query(schema.query), media_type="text/event-stream"
     )
