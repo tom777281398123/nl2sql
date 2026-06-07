@@ -4,6 +4,10 @@ output/
 logs/
 docker/data/
 docker/bak/
+# 本地 embedding 模型(~1.2G,不入库)
+docker/models/
+# run.sh 运行时 PID 目录
+.run/
 
 # IDE 配置文件（关键！解决你 .idea 报错）
 .idea/
@@ -30,5 +34,7 @@ node_modules/
 *.log
 *.tmp
 .DS_Store
+# macOS AppleDouble 垃圾文件
+._*
 Thumbs.db
 *.lock

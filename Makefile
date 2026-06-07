@@ -28,7 +28,6 @@ middleware: build-volumes
 	@echo "=========================================="
 	@echo "  MySQL:          localhost:3306"
 	@echo "  Elasticsearch:  localhost:9200"
-	@echo "  Kibana:         localhost:5601"
 	@echo "  Qdrant HTTP:    localhost:6333"
 	@echo "  Qdrant gRPC:    localhost:6334"
 	@echo "  Embedding:      localhost:8081"

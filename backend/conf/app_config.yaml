@@ -12,14 +12,14 @@ logging:
 db_meta:
   host: localhost
   port: 3306
-  user: root
+  user: storekeeper
   password: 178121
   database: meta
 
 db_dw:
   host: localhost
   port: 3306
-  user: root
+  user: storekeeper
   password: 178121
   database: dw
 
