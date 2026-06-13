@@ -38,7 +38,6 @@ async def merge_retrieved_info(state: DataAgentState, runtime: Runtime[DataAgent
         for retrieved_value in retrieved_values:
             column_id = retrieved_value.column_id
             column_value = retrieved_value.value
-            #
             if column_id not in retrieved_columns_map:
                 column_info = await meta_mysql_repository.get_column_info_by_id(column_id)
                 retrieved_columns_map[column_id] = column_info
@@ -67,7 +66,7 @@ async def merge_retrieved_info(state: DataAgentState, runtime: Runtime[DataAgent
 
         # 将table_id->columns映射 转换为 list[TableInfoState]
         for table_id, columns in table_to_columns_map.items():
-            table: TableInfo = await  meta_mysql_repository.get_table_info_by_id(table_id)
+            table: TableInfo = await meta_mysql_repository.get_table_info_by_id(table_id)
             columns = [
                 ColumnInfoState(name=column.name, type=column.type, role=column.role, examples=column.examples,
                                 description=column.description, alias=column.alias)

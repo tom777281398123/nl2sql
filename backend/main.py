@@ -25,9 +25,9 @@ app.add_middleware(
 app.include_router(query_router)
 
 
-# 添加中间件，在每个请求中生成唯一的request_id
+# 添加中间件，为每个请求生成唯一的 request_id（便于日志追踪）
 @app.middleware("http")
-async def add_process_time_header(request: Request, call_next):
+async def assign_request_id(request: Request, call_next):
     # 调用路径函数之前
     request_id_ctx_var.set(uuid.uuid4())
     # 调用路径函数

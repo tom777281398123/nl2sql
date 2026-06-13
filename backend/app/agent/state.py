@@ -55,4 +55,4 @@ class DataAgentState(TypedDict):
 
     sql: str  # 生成的SQL
 
-    error: str  # 验证SQL时的错误信息
+    error: str | None  # 验证SQL时的错误信息；None 表示校验通过

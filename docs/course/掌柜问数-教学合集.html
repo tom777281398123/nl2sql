@@ -1,0 +1,2192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>掌柜问数 · 教学合集（9 讲）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBFAF6; --paper-2:#F4F1E9; --paper-3:#EEEAE0;
+  --ink:#1C1B18; --ink-2:#3A3833; --muted:#736E63; --faint:#9C968A;
+  --line:#E3DED3; --line-2:#D6CFC1;
+  --accent:#0E6B5C; --accent-2:#0a564a; --accent-soft:#E1EDE9;
+  --amber:#B4632A;
+  --code-bg:#211F1C; --code-fg:#E8E3D6;
+  --serif:"Noto Serif SC",Georgia,"Songti SC",serif;
+  --sans:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:16.5px;line-height:1.85;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+#progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);z-index:60;transition:width .12s linear}
+
+/* ---------- layout ---------- */
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;
+  background:var(--paper-2);border-right:1px solid var(--line);padding:30px 22px 40px}
+.brand{display:flex;flex-direction:column;gap:2px;margin-bottom:26px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.brand .bmark{font-family:var(--serif);font-weight:900;font-size:22px;letter-spacing:.5px;color:var(--ink)}
+.brand .bsub{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint)}
+
+.nav{display:flex;flex-direction:column;position:relative}
+.nav::before{content:"";position:absolute;left:18px;top:14px;bottom:14px;width:1px;background:var(--line-2)}
+.nav-item,.home-link{display:flex;gap:14px;align-items:flex-start;padding:9px 12px 9px 6px;
+  border-radius:9px;text-decoration:none;color:var(--ink-2);position:relative;transition:background .15s,color .15s}
+.home-link{margin-bottom:6px;font-family:var(--mono);font-size:12.5px;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+.nav-item .n{flex:0 0 26px;height:26px;display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:600;
+  color:var(--muted);background:var(--paper);border:1px solid var(--line-2);border-radius:50%;z-index:1;transition:.15s}
+.nav-item .t{display:flex;flex-direction:column;line-height:1.3;padding-top:1px}
+.nav-item .tt{font-size:14px;font-weight:600}
+.nav-item .ts{font-size:11.5px;color:var(--faint);font-family:var(--mono);margin-top:2px}
+.nav-item:hover{background:var(--paper-3)}
+.nav-item.active{background:var(--ink)}
+.nav-item.active .tt,.nav-item.active .ts{color:var(--paper)}
+.nav-item.active .ts{color:#b8c9c4}
+.nav-item.active .n{background:var(--accent);border-color:var(--accent);color:#fff}
+.side-foot{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint);font-family:var(--mono);line-height:1.7}
+
+/* ---------- content ---------- */
+.content{padding:0}
+.scroller{max-width:860px;margin:0 auto;padding:74px 56px 120px}
+.lecture{display:none;animation:fade .35s ease}
+.lecture.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.lec-head{margin-bottom:38px;padding-bottom:26px;border-bottom:2px solid var(--ink)}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.lec-head h1{font-family:var(--serif);font-weight:900;font-size:clamp(30px,4.4vw,46px);line-height:1.12;margin:0;letter-spacing:.5px}
+.lec-head h1 .thin{font-weight:500;color:var(--muted)}
+.lec-sub{margin:16px 0 0;color:var(--muted);font-size:17px;line-height:1.7;max-width:62ch;text-wrap:pretty}
+
+/* prose */
+.prose{font-size:16.5px}
+.prose h2{font-family:var(--serif);font-weight:700;font-size:25px;margin:54px 0 18px;padding-bottom:9px;border-bottom:1px solid var(--line);letter-spacing:.3px}
+.prose h3{font-family:var(--serif);font-weight:700;font-size:19.5px;margin:34px 0 12px;color:var(--accent-2)}
+.prose h4{font-weight:700;font-size:16.5px;margin:24px 0 10px;color:var(--ink)}
+.prose p{margin:14px 0;text-wrap:pretty}
+.prose strong{font-weight:700;color:var(--ink)}
+.prose em{font-style:normal;background:linear-gradient(transparent 62%,var(--accent-soft) 0);padding:0 1px}
+.prose a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--line-2);transition:border-color .15s}
+.prose a:hover{border-color:var(--accent)}
+.prose ul,.prose ol{margin:14px 0;padding-left:1.4em}
+.prose li{margin:7px 0;text-wrap:pretty}
+.prose li::marker{color:var(--accent)}
+.prose hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+
+.prose blockquote{margin:22px 0;padding:14px 20px;background:var(--paper-2);
+  border-left:3px solid var(--accent);border-radius:0 8px 8px 0;color:var(--ink-2)}
+.prose blockquote p{margin:6px 0}
+.prose blockquote strong{color:var(--accent-2)}
+
+/* inline code */
+.prose code{font-family:var(--mono);font-size:.86em;background:var(--paper-3);
+  color:var(--amber);padding:.12em .4em;border-radius:5px;border:1px solid var(--line)}
+
+/* code block */
+pre.code{position:relative;background:var(--code-bg);color:var(--code-fg);font-family:var(--mono);
+  font-size:13.5px;line-height:1.65;padding:20px 20px 18px;border-radius:11px;overflow-x:auto;margin:22px 0;
+  box-shadow:0 1px 0 rgba(0,0,0,.04),0 18px 36px -28px rgba(33,31,28,.5)}
+pre.code code{background:none;border:none;color:inherit;padding:0;font-size:inherit}
+pre.code::before{content:attr(data-lang);position:absolute;top:0;right:0;font-size:10.5px;letter-spacing:1.5px;
+  text-transform:uppercase;color:#8d8678;background:rgba(255,255,255,.05);padding:4px 11px;border-radius:0 11px 0 11px}
+/* pygments tokens (warm, low-neon) */
+pre.code .k,pre.code .kn,pre.code .kd,pre.code .kc,pre.code .kr,pre.code .ow{color:#D69A6A}
+pre.code .s,pre.code .s1,pre.code .s2,pre.code .se,pre.code .sb,pre.code .sd{color:#9CB98A}
+pre.code .c,pre.code .c1,pre.code .cm,pre.code .cs{color:#7E776A;font-style:italic}
+pre.code .mi,pre.code .mf,pre.code .il,pre.code .mh{color:#D69A6A}
+pre.code .nb,pre.code .bp,pre.code .nc,pre.code .nn{color:#74B7A8}
+pre.code .nf,pre.code .fm{color:#E8E3D6}
+pre.code .nd{color:#C9A0D6}
+pre.code .nt{color:#74B7A8}
+pre.code .na{color:#cdbf9c}
+pre.code .o,pre.code .p{color:#B6AE9D}
+pre.code .nv,pre.code .vi{color:#E8E3D6}
+
+/* diagram blueprint card */
+pre.diagram{font-family:var(--mono);font-size:13px;line-height:1.5;color:var(--accent-2);
+  background:var(--paper-2);background-image:radial-gradient(var(--line-2) .8px,transparent .8px);background-size:16px 16px;
+  border:1px solid var(--line-2);border-radius:11px;padding:22px;overflow-x:auto;margin:24px 0;white-space:pre}
+
+/* tables */
+.table-wrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:11px}
+.prose table{border-collapse:collapse;width:100%;font-size:14.5px}
+.prose thead th{background:var(--paper-2);text-align:left;font-weight:700;color:var(--ink);
+  padding:11px 15px;border-bottom:2px solid var(--ink-2);white-space:nowrap}
+.prose td{padding:10px 15px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-2)}
+.prose tbody tr:last-child td{border-bottom:none}
+.prose tbody tr:hover{background:var(--paper-2)}
+.prose td code{font-size:.82em}
+
+/* pager */
+.pager{display:flex;justify-content:space-between;margin-top:60px;padding-top:26px;border-top:1px solid var(--line)}
+.pg{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.5px;cursor:pointer;
+  background:var(--paper-2);border:1px solid var(--line-2);color:var(--ink);padding:11px 20px;border-radius:9px;transition:.15s}
+.pg:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.pg.next{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pg.next:hover{background:var(--accent-2)}
+
+/* home map */
+.map{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:18px 0}
+.map-card{display:flex;flex-direction:column;gap:3px;text-decoration:none;padding:16px 16px 18px;
+  background:var(--paper-2);border:1px solid var(--line);border-radius:11px;transition:.15s}
+.map-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 14px 30px -22px rgba(14,107,92,.6)}
+.mc-n{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent)}
+.mc-t{font-family:var(--serif);font-weight:700;font-size:16px;color:var(--ink)}
+.mc-s{font-size:12px;color:var(--faint);font-family:var(--mono)}
+
+/* floating ad */
+.ad-float{position:fixed;right:26px;bottom:26px;z-index:70}
+.ad-float .ad-link{display:flex;align-items:center;gap:13px;text-decoration:none;
+  background:linear-gradient(135deg,#F0894A 0%,#E26B33 100%);color:#fff;
+  padding:14px 22px 14px 16px;border-radius:16px;box-shadow:0 14px 34px -12px rgba(226,107,51,.6);
+  transition:transform .15s,box-shadow .15s}
+.ad-float .ad-link:hover{transform:translateY(-2px);box-shadow:0 20px 40px -12px rgba(226,107,51,.7)}
+.ad-float .ad-ico{flex:0 0 38px;height:38px;display:grid;place-items:center;border-radius:11px;
+  background:rgba(255,255,255,.22);font-family:var(--mono);font-weight:600;font-size:16px}
+.ad-float .ad-txt{display:flex;flex-direction:column;line-height:1.25}
+.ad-float .ad-t{font-weight:700;font-size:17px;letter-spacing:.5px}
+.ad-float .ad-s{font-size:12.5px;opacity:.95}
+.ad-float .ad-close{position:absolute;top:-9px;right:-9px;width:24px;height:24px;border:none;cursor:pointer;
+  border-radius:50%;background:#4a4641;color:#fff;font-size:13px;line-height:1;display:grid;place-items:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.ad-float.hidden{display:none}
+@media(max-width:920px){.ad-float{right:14px;bottom:14px}.ad-float .ad-t{font-size:15px}}
+
+/* mobile */
+.topbar{display:none}
+@media(max-width:920px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{position:fixed;z-index:50;width:300px;left:-320px;transition:left .25s;box-shadow:0 0 40px rgba(0,0,0,.18)}
+  .sidebar.open{left:0}
+  .topbar{display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:40;background:rgba(251,250,246,.9);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 18px}
+  .hamb{font-family:var(--mono);font-size:20px;background:none;border:1px solid var(--line-2);border-radius:8px;
+    width:38px;height:38px;cursor:pointer;color:var(--ink)}
+  .topbar .tb-title{font-family:var(--serif);font-weight:700;font-size:16px}
+  .scroller{padding:34px 22px 90px}
+  .backdrop{display:none;position:fixed;inset:0;background:rgba(28,27,24,.4);z-index:45}
+  .backdrop.show{display:block}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="topbar">
+  <button class="hamb" id="hamb" aria-label="目录">≡</button>
+  <span class="tb-title">掌柜问数 · 教学合集</span>
+</div>
+<div class="backdrop" id="backdrop"></div>
+<div class="ad-float" id="adFloat">
+  <button class="ad-close" id="adClose" aria-label="关闭">✕</button>
+  <a class="ad-link" href="https://gorustai.com/" target="_blank" rel="noopener noreferrer">
+    <span class="ad-ico">&lt;/&gt;</span>
+    <span class="ad-txt"><span class="ad-t">Codex 购买</span><span class="ad-s">点击注册即享5刀 →</span></span>
+  </a>
+</div>
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="bmark">掌柜问数</span>
+      <span class="bsub">NL2SQL · 教学合集</span>
+    </div>
+    <a class="home-link nav-item" href="#home" data-index="0" style="padding-left:6px">⌂ 课程首页</a>
+    <nav class="nav">
+        <a class="nav-item" href="#lecture-1" data-index="1">
+          <span class="n">01</span>
+          <span class="t"><span class="tt">项目概述与系统架构</span><span class="ts">问题 · 架构 · 数据流 · 心智模型</span></span>
+        </a>
+        <a class="nav-item" href="#lecture-2" data-index="2">
+          <span class="n">02</span>
+          <span class="t"><span class="tt">开发环境与中间件编排</span><span class="ts">Docker Compose · TEI 离线模型 · 起停脚本</span></span>
+        </a>
+        <a class="nav-item" href="#lecture-3" data-index="3">
+          <span class="n">03</span>
+          <span class="t"><span class="tt">工程基础设施</span><span class="ts">配置 · 日志 · 异步客户端 · 分层与依赖注入</span></span>
+        </a>
+        <a class="nav-item" href="#lecture-4" data-index="4">
+          <span class="n">04</span>
+          <span class="t"><span class="tt">元数据知识库（上）</span><span class="ts">实体 / ORM / Mapper · meta 库 · 配置语义</span></span>
+        </a>
+        <a class="nav-item" href="#lecture-5" data-index="5">
+          <span class="n">05</span>
+          <span class="t"><span class="tt">元数据知识库（下）</span><span class="ts">Embedding+Qdrant · ES+IK · build 全流程</span></span>
+        </a>
+        <a class="nav-item" href="#lecture-6" data-index="6">
+          <span class="n">06</span>
+          <span class="t"><span class="tt">问数智能体（上）</span><span class="ts">LangGraph State/Context · 并行召回 · LLM 过滤</span></span>
+        </a>
+        <a class="nav-item" href="#lecture-7" data-index="7">
+          <span class="n">07</span>
+          <span class="t"><span class="tt">问数智能体（下）</span><span class="ts">生成 · 校验 · 纠错条件边 · 执行</span></span>
+        </a>
+        <a class="nav-item" href="#lecture-8" data-index="8">
+          <span class="n">08</span>
+          <span class="t"><span class="tt">API 服务化与流式接口</span><span class="ts">FastAPI · lifespan · Depends · SSE</span></span>
+        </a>
+        <a class="nav-item" href="#lecture-9" data-index="9">
+          <span class="n">09</span>
+          <span class="t"><span class="tt">前后端联调与课程设计</span><span class="ts">联调 · 答辩 · 扩展选题</span></span>
+        </a></nav>
+    <div class="side-foot">storekeeper-nl2sql<br>检索增强 · 生成 · 校验纠错<br>9 讲 · 理论+上机</div>
+  </aside>
+  <main class="content">
+    <div class="scroller">
+      <article class="lecture home" id="home" data-index="0">
+        <header class="lec-head">
+          <div class="kicker">STOREKEEPER · NL2SQL · 实训课</div>
+          <h1>掌柜问数 <span class="thin">教学合集</span></h1>
+          <p class="lec-sub">一句中文，跑出一条正确的 SQL —— 把「检索增强 + 大模型生成 + 校验纠错」拆成 9 讲讲透。</p>
+        </header>
+        <div class="prose">
+          <p>本合集面向<strong>大数据专业高年级学生</strong>，配套项目 <code>storekeeper-nl2sql</code>。九讲沿着一条真实请求的旅程展开：从建立心智模型，到搭好中间件与工程地基，再到元数据知识库的双路索引，最后落到 LangGraph 智能体的召回—过滤—生成—校验—纠错—执行闭环，以及 FastAPI 流式服务与前后端联调。</p>
+          <blockquote><p>本课程最重要的一句话：掌柜问数的准确性，不是靠「更大的模型」，而是靠「给模型喂对、喂准、喂少」的工程设计。</p></blockquote>
+          <h2>九讲地图</h2>
+          <div class="map"><a class="map-card" href="#lecture-1" data-index="1"><span class="mc-n">01</span><span class="mc-t">项目概述与系统架构</span><span class="mc-s">问题 · 架构 · 数据流 · 心智模型</span></a><a class="map-card" href="#lecture-2" data-index="2"><span class="mc-n">02</span><span class="mc-t">开发环境与中间件编排</span><span class="mc-s">Docker Compose · TEI 离线模型 · 起停脚本</span></a><a class="map-card" href="#lecture-3" data-index="3"><span class="mc-n">03</span><span class="mc-t">工程基础设施</span><span class="mc-s">配置 · 日志 · 异步客户端 · 分层与依赖注入</span></a><a class="map-card" href="#lecture-4" data-index="4"><span class="mc-n">04</span><span class="mc-t">元数据知识库（上）</span><span class="mc-s">实体 / ORM / Mapper · meta 库 · 配置语义</span></a><a class="map-card" href="#lecture-5" data-index="5"><span class="mc-n">05</span><span class="mc-t">元数据知识库（下）</span><span class="mc-s">Embedding+Qdrant · ES+IK · build 全流程</span></a><a class="map-card" href="#lecture-6" data-index="6"><span class="mc-n">06</span><span class="mc-t">问数智能体（上）</span><span class="mc-s">LangGraph State/Context · 并行召回 · LLM 过滤</span></a><a class="map-card" href="#lecture-7" data-index="7"><span class="mc-n">07</span><span class="mc-t">问数智能体（下）</span><span class="mc-s">生成 · 校验 · 纠错条件边 · 执行</span></a><a class="map-card" href="#lecture-8" data-index="8"><span class="mc-n">08</span><span class="mc-t">API 服务化与流式接口</span><span class="mc-s">FastAPI · lifespan · Depends · SSE</span></a><a class="map-card" href="#lecture-9" data-index="9"><span class="mc-n">09</span><span class="mc-t">前后端联调与课程设计</span><span class="mc-s">联调 · 答辩 · 扩展选题</span></a></div>
+          <h2>怎么用</h2>
+          <p>左侧目录切换讲次；每讲遵循 <em>原理精讲 → 代码精读 → 环境与上机 → 常见坑 → 扩展练习</em> 的结构。代码片段均节选自项目真实文件，并标注路径，建议对照源码逐行阅读。</p>
+        </div>
+        <nav class="pager"><span></span><button class="pg next" data-go="1">开始第 1 讲 →</button></nav>
+      </article>
+      <article class="lecture" id="lecture-1" data-index="1">
+        <header class="lec-head">
+          <div class="kicker">第 01 讲 · LECTURE 01</div>
+          <h1>项目概述与系统架构</h1>
+          <p class="lec-sub">问题 · 架构 · 数据流 · 心智模型</p>
+        </header>
+        <div class="prose">
+<blockquote>
+<p>对应笔记：第 1 章「项目概述」、第 2 章「项目架构」
+学时：4（理论 2 + 上机 2）</p>
+</blockquote>
+<hr/>
+<h2>一、教学目标</h2>
+<p>学完本讲，学生应能够：</p>
+<ol>
+<li><strong>说清问题</strong>：用一句话讲明白「掌柜问数」要解决什么——让不懂 SQL 的业务人员用自然语言查数仓。</li>
+<li><strong>区分概念</strong>：分清「业务库（OLTP）」与「数据仓库（OLAP）」的定位差异，并能解释星型模型。</li>
+<li><strong>复述架构</strong>：画出系统的三大支柱（元数据知识库 / 问数智能体 / 服务化）与端到端数据流。</li>
+<li><strong>理解关键设计动机</strong>：能回答「为什么不直接把表结构丢给大模型让它写 SQL」这个核心问题。</li>
+</ol>
+<blockquote>
+<p>本讲是“建立心智模型”的一讲，不写代码，但决定了后面 8 讲能不能学懂。</p>
+</blockquote>
+<hr/>
+<h2>二、教学重点</h2>
+<ul>
+<li>NL2SQL 系统的整体架构与数据流。</li>
+<li>“检索增强（RAG）+ 大模型生成 + 校验纠错”如何共同保障<strong>准确性与可控性</strong>。</li>
+<li>星型模型在本项目中的具体落地（<code>dim_*</code> 维度表 + <code>fact_order</code> 事实表）。</li>
+</ul>
+<h2>三、教学难点</h2>
+<ul>
+<li>把“多路召回 → 合并 → 过滤 → 生成 → 校验 → 执行”这条链路在脑中跑通。</li>
+<li>理解“元数据知识库”这一层为什么是整个系统的“地基”，而不是可有可无的优化。</li>
+</ul>
+<hr/>
+<h2>四、原理精讲</h2>
+<h3>4.1 问题的本质：业务人员与数据之间的“翻译鸿沟”</h3>
+<p>企业的数据躺在数据仓库里，但会写 SQL 的人很少。传统路径是「业务提需求 → 数据团队写 SQL → 出报表」，链路长、响应慢。掌柜问数要做的，是把这条链路压缩成一句话：<strong>“问一句，出报表”</strong>。</p>
+<p>技术上，这就是 <strong>NL2SQL（自然语言转 SQL）</strong> 任务：输入一句中文，输出一条能在数仓上跑出正确结果的 SQL。</p>
+<h3>4.2 为什么不能“直接问大模型”</h3>
+<p>最朴素的想法：把所有建表语句拼进 prompt，让大模型直接写 SQL。这在玩具项目里能跑，但在真实数仓里会崩，原因有三：</p>
+<ol>
+<li><strong>表太多放不下</strong>：真实数仓动辄上千张表、上万个字段，全部塞进 prompt 会爆上下文，也烧钱。</li>
+<li><strong>大模型会“幻觉”</strong>：它可能编造不存在的表名、字段名，或误解业务口径（比如“销售额”到底算不算退款）。</li>
+<li><strong>生成结果不可控</strong>：可能生成 <code>DELETE</code>、可能语法不符合目标数据库方言、可能一次返回多条语句。</li>
+</ol>
+<p>掌柜问数用三招破解，这正是后面要逐讲实现的内容：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>解法</th>
+<th>对应讲</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>表太多放不下</td>
+<td><strong>多路召回 + 过滤</strong>：只把和问题相关的表/字段/指标喂给大模型</td>
+<td>第 5、6 讲</td>
+</tr>
+<tr>
+<td>大模型幻觉</td>
+<td><strong>元数据知识库</strong>：用真实 schema、别名、取值、指标定义约束它</td>
+<td>第 4、5 讲</td>
+</tr>
+<tr>
+<td>结果不可控</td>
+<td><strong>校验 → 纠错</strong>闭环 + prompt 约束（只读、单条、指定方言）</td>
+<td>第 7 讲</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p><strong>这是本课程最重要的一句话</strong>：掌柜问数的准确性，不是靠“更大的模型”，而是靠“给模型喂对、喂准、喂少”的工程设计。</p>
+</blockquote>
+<h3>4.3 数据仓库与星型模型（大数据专业的“主场”）</h3>
+<p>大数据专业的同学对这部分有天然优势，这里只做对齐：</p>
+<ul>
+<li><strong>业务库（OLTP）管“干活”</strong>：支撑日常交易，强调写入、事务、实时。</li>
+<li><strong>数据仓库（OLAP）管“复盘”</strong>：面向分析、集成、非易失、随时间变化，支撑报表与决策。</li>
+</ul>
+<p>本项目的数仓采用经典 <strong>星型模型</strong>（见 <code>backend/conf/meta_config.yaml</code> 与 <code>scripts/mysql/init/02-dw-schema.sql</code>）：</p>
+<pre class="diagram">                 dim_date(时间维度)
+                       │
+ dim_region ───┐       │       ┌─── dim_customer
+ (地区维度)     │       │       │     (客户维度)
+               ▼       ▼       ▼
+            ┌──────────────────────┐
+            │   fact_order(订单事实)  │   ← 中心事实表，存度量：order_amount, order_quantity
+            └──────────────────────┘
+                       ▲
+                       │
+                 dim_product(商品维度)
+</pre>
+<ul>
+<li><strong>维度表 <code>dim_*</code></strong>：描述“谁、什么、何时、何地”（客户、商品、时间、地区）。</li>
+<li><strong>事实表 <code>fact_order</code></strong>：记录“发生了什么、多少”，通过外键关联各维度，存放可度量的数值（金额、数量）。</li>
+</ul>
+<h3>4.4 系统架构：三大支柱</h3>
+<pre class="diagram">┌─────────────────────────────────────────────────────────────┐
+│                         前端 (Vue, :5173)                      │
+└───────────────────────────────┬─────────────────────────────┘
+                                 │ SSE 流式
+┌───────────────────────────────▼─────────────────────────────┐
+│                   API 服务层 (FastAPI, :8000)                  │  ← 支柱三：服务化（第8讲）
+│                  POST /api/query → StreamingResponse          │
+└───────────────────────────────┬─────────────────────────────┘
+                                 │
+┌───────────────────────────────▼─────────────────────────────┐
+│                  问数智能体 (LangGraph, 12 节点)                 │  ← 支柱二：智能体（第6、7讲）
+│   抽取关键字→多路召回→合并→过滤→补充上下文→生成→校验→纠错→执行       │
+└───────────────────────────────┬─────────────────────────────┘
+                                 │ 检索
+┌───────────────────────────────▼─────────────────────────────┐
+│                       元数据知识库                              │  ← 支柱一：知识库（第4、5讲）
+│   MySQL(meta:结构化元数据) + Qdrant(向量索引) + ES(取值全文索引)   │
+└──────────────────────────────────────────────────────────────┘
+                                 │ 最终 SQL 在此执行
+                          MySQL(dw: 真实数仓数据)
+</pre>
+<h3>4.5 端到端数据流（一定要背下来）</h3>
+<p>以问题“<strong>统计一下各个地区销售排行前三的产品</strong>”为例：</p>
+<ol>
+<li><strong>抽取关键字</strong>：jieba 分词 → <code>[地区, 销售, 产品, ...]</code>。</li>
+<li><strong>多路召回（并行）</strong>：
+   - 字段召回：向量检索 Qdrant → 找到 <code>region_name</code>、<code>product_name</code>、<code>order_amount</code> 等字段。
+   - 取值召回：全文检索 ES → 找到“华东/华南”等地区取值。
+   - 指标召回：向量检索 Qdrant → 找到 <code>GMV</code>（成交总额）指标定义。</li>
+<li><strong>合并召回信息</strong>：把字段、取值、指标拼成结构化的“表信息 + 指标信息”，并补齐主外键。</li>
+<li><strong>过滤</strong>：用大模型从候选里裁掉无关表/字段（减少干扰）。</li>
+<li><strong>补充上下文</strong>：注入当前日期、数据库方言/版本。</li>
+<li><strong>生成 SQL</strong>：大模型基于上述信息产出一条 SQL。</li>
+<li><strong>校验</strong>：用 <code>EXPLAIN</code> 验证 SQL 是否合法；不合法 → <strong>纠错</strong>（把错误信息喂回大模型重写）。</li>
+<li><strong>执行</strong>：在 <code>dw</code> 库上跑 SQL，返回结果。</li>
+<li>全程通过 SSE 把每一步进度和最终结果<strong>流式</strong>推给前端。</li>
+</ol>
+<blockquote>
+<p>这条链路你已经在本机跑通过了（第 9 讲会再做一次完整联调）。本讲要做的，是在脑中把它“跑”一遍。</p>
+</blockquote>
+<hr/>
+<h2>五、环境与上机</h2>
+<blockquote>
+<p>前置：项目已能启动（见 <code>CLAUDE.md</code>、根目录 <code>run.sh</code>）。本讲上机不写代码，重在“看清骨架”。</p>
+</blockquote>
+<h3>上机任务 1：跑通一次，建立感性认识</h3>
+<pre class="code" data-lang="bash"><code>./run.sh start        <span class="c1"># 一键启动</span>
+./run.sh status       <span class="c1"># 确认 5 个端口健康</span>
+</code></pre>
+<p>浏览器打开 http://127.0.0.1:5173 ，输入「统计一下各个地区销售排行前三的产品」，<strong>观察进度条逐步点亮</strong>，对照 4.5 的 9 步数据流。</p>
+<h3>上机任务 2：读懂星型模型</h3>
+<p>打开 <code>backend/conf/meta_config.yaml</code>，找出：
+- 哪些是维度表（<code>role: dim</code>）、哪个是事实表（<code>role: fact</code>）？
+- <code>fact_order</code> 通过哪些外键（<code>role: foreign_key</code>）连到各维度？
+- 哪两个字段是度量（<code>role: measure</code>）？</p>
+<h3>上机任务 3：用 curl 看“流”</h3>
+<pre class="code" data-lang="bash"><code>curl -s -N -X POST http://localhost:8000/api/query <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  -d <span class="s1">'{"query":"统计一下各个地区销售排行前三的产品"}'</span>
+</code></pre>
+<p>观察输出是一行行的 <code>data: {...}</code>，体会“流式（streaming）”和“一次性返回”的区别。</p>
+<hr/>
+<h2>六、常见误区</h2>
+<ul>
+<li>❌ “知识库就是个缓存/优化”——错。它是约束大模型、防幻觉的<strong>核心</strong>，没有它系统不可用。</li>
+<li>❌ “大模型越大越准”——本项目准确性主要来自工程设计，不是模型规模。</li>
+<li>❌ 把 <code>dw</code>（真实数据）和 <code>meta</code>（描述数据的数据）搞混。务必记住：<strong>meta 描述 schema，dw 存真实业务数据</strong>。</li>
+</ul>
+<hr/>
+<h2>七、扩展练习</h2>
+<h3>基础级（巩固理解）</h3>
+<ol>
+<li>用自己的话画一张架构图，标出三大支柱和数据流方向，并配一句话说明每个节点“为什么需要”。</li>
+<li>列举 3 个掌柜问数能回答、3 个它目前<strong>回答不了</strong>的问题，并分析原因（提示：知识库里没有的表/指标）。</li>
+</ol>
+<h3>进阶级（联系实际）</h3>
+<ol start="3">
+<li>调研一个真实 NL2SQL 产品（如阿里 Chat2DB、各云厂商的“数据问答”），对比它与掌柜问数在架构上的异同，写 300 字小结。</li>
+<li>思考：如果数仓有 2000 张表，本项目的“多路召回”还够用吗？会在哪一步出现瓶颈？</li>
+</ol>
+<h3>挑战级（指向课程设计）</h3>
+<ol start="5">
+<li><strong>选定你的课程设计方向</strong>（可视化 / 多轮对话 / SQL 安全 / 召回评测 / 知识库扩域），写一份半页纸的“立项设想”：要解决什么、大概改哪一层、预期效果。这份设想会在后续每讲不断充实，最终成为第 9 讲的大作业。</li>
+</ol>
+<hr/>
+<h2>八、思考题</h2>
+<ol>
+<li>为什么要把“校验”和“执行”分成两个独立节点，而不是直接执行、出错再说？</li>
+<li>“过滤”节点用大模型来裁剪表和字段，这一步如果出错（裁掉了必需的表）会发生什么？系统能自我恢复吗？</li>
+<li>元数据知识库为同一个字段同时建了「向量索引」和「全文索引」（取值），这两类检索各自擅长什么样的查询？为什么需要两种都要？</li>
+</ol>
+<blockquote>
+<p>把第 3 题记在心里——第 5、6 讲会用对照实验回答它。</p>
+</blockquote>
+        </div>
+        <nav class="pager">
+          <span></span>
+          <button class="pg next" data-go="2">下一讲 →</button>
+        </nav>
+      </article>
+      <article class="lecture" id="lecture-2" data-index="2">
+        <header class="lec-head">
+          <div class="kicker">第 02 讲 · LECTURE 02</div>
+          <h1>开发环境与中间件编排</h1>
+          <p class="lec-sub">Docker Compose · TEI 离线模型 · 起停脚本</p>
+        </header>
+        <div class="prose">
+<blockquote>
+<p>对应笔记：第 3 章「项目开发环境」、<code>docs/00~02</code>、根目录 <code>run.sh</code>
+学时：4（理论 2 + 上机 2）</p>
+</blockquote>
+<hr/>
+<h2>一、教学目标</h2>
+<ol>
+<li>能用 Docker Compose <strong>一键拉起</strong>四个中间件：MySQL、Elasticsearch、Qdrant、Embedding（TEI）。</li>
+<li>理解每个中间件在本项目中扮演的角色，以及它们的端口、健康检查、数据卷。</li>
+<li>掌握 <strong>TEI 离线加载本地模型</strong> 的方法（本项目的关键工程实践）。</li>
+<li>学会用 <code>run.sh</code> 起停整套系统，并用验证脚本逐项确认服务就绪。</li>
+<li>具备排查环境问题的能力（端口冲突、模型下载失败、容器不健康）。</li>
+</ol>
+<h2>二、教学重点</h2>
+<ul>
+<li><code>Makefile</code> + <code>docker/docker-compose-debug.yml</code> 的协作方式。</li>
+<li>四个中间件各自的职责、端口、健康检查。</li>
+<li>Embedding 服务为什么要离线、怎么离线。</li>
+</ul>
+<h2>三、教学难点</h2>
+<ul>
+<li>TEI（text-embeddings-inference）的模型加载机制：<code>MODEL_ID</code> 用 repo-id 会联网下载，用本地路径才离线。</li>
+<li>candle 后端 vs ONNX 后端的回退逻辑。</li>
+<li>数据卷与初始化脚本的执行时机（只在首次启动空卷时跑）。</li>
+</ul>
+<hr/>
+<h2>四、原理精讲</h2>
+<h3>4.1 为什么要四个中间件</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>服务</th>
+<th>镜像</th>
+<th>端口</th>
+<th>在本项目的职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MySQL</strong></td>
+<td>mysql:8.0</td>
+<td>3306</td>
+<td>存两类数据：<code>meta</code>（元数据知识库）+ <code>dw</code>（真实数仓）</td>
+</tr>
+<tr>
+<td><strong>Elasticsearch</strong></td>
+<td>elasticsearch:8.19.10</td>
+<td>9200</td>
+<td>字段<strong>取值</strong>的全文索引（带 IK 中文分词器）</td>
+</tr>
+<tr>
+<td><strong>Qdrant</strong></td>
+<td>qdrant:v1.16</td>
+<td>6333/6334</td>
+<td>字段、指标的<strong>语义向量</strong>索引</td>
+</tr>
+<tr>
+<td><strong>Embedding (TEI)</strong></td>
+<td>text-embeddings-inference:cpu-1.8</td>
+<td>8081</td>
+<td>把文本转成 1024 维向量（<code>BAAI/bge-large-zh-v1.5</code>）</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>这正是第 1 讲“元数据知识库”三索引（MySQL + Qdrant + ES）+ 向量化能力（Embedding）的物理载体。</p>
+</blockquote>
+<h3>4.2 Makefile 与 docker-compose 的协作</h3>
+<p>项目用 <code>Makefile</code> 封装冗长的 <code>docker compose</code> 命令。看 <code>Makefile</code> 顶部：</p>
+<pre class="code" data-lang="makefile"><code><span class="nv">DOCKER_COMPOSE</span> <span class="o">:=</span> <span class="nv">PROJECT_ROOT</span><span class="o">=</span><span class="k">$(</span>PROJECT_DIR<span class="k">)</span> docker compose <span class="se">\</span>
+    -p <span class="k">$(</span>COMPOSE_PROJECT_NAME<span class="k">)</span> <span class="se">\</span>
+    -f docker/docker-compose-debug.yml <span class="se">\</span>
+    --env-file docker/.env.debug <span class="se">\</span>
+    --profile middleware
+</code></pre>
+<p>关键点：
+- <code>-p storekeeper-nl2sql</code>：项目名（容器、网络的前缀）。
+- <code>-f docker/docker-compose-debug.yml</code>：编排文件。
+- <code>--env-file docker/.env.debug</code>：注入 MySQL 账号密码等环境变量。
+- <code>--profile middleware</code>：只启动带 <code>middleware</code> profile 的服务。</p>
+<p>常用目标：<code>make middleware</code>（启动并等待健康）、<code>make down</code>、<code>make ps</code>、<code>make logs</code>、<code>make clean</code>（删容器和数据卷，但<strong>保留 embedding 模型缓存</strong>）。</p>
+<h3>4.3 健康检查（healthcheck）：为什么 <code>--wait</code> 能等到“真就绪”</h3>
+<p>看 compose 里 MySQL 的健康检查（<code>docker/docker-compose-debug.yml</code>）：</p>
+<pre class="code" data-lang="yaml"><code><span class="nt">healthcheck</span><span class="p">:</span><span class="w"></span>
+<span class="w"> </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"CMD-SHELL"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"mysqladmin</span><span class="nv"> </span><span class="s">ping</span><span class="nv"> </span><span class="s">...</span><span class="nv"> </span><span class="s">--silent"</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w"> </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span><span class="w"></span>
+<span class="w"> </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w"></span>
+<span class="w"> </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30s</span><span class="w"></span>
+</code></pre>
+<p><code>make middleware</code> 用了 <code>up -d --wait</code>，会一直等到所有服务 healthcheck 通过才返回。这避免了“容器起来了但服务还没准备好”导致的连接失败。</p>
+<blockquote>
+<p>工程素养点：<strong>区分“容器 Running”和“服务 Ready”</strong>。前者只是进程起来了，后者才是能对外服务。</p>
+</blockquote>
+<h3>4.4 本项目最大的环境坑：Embedding 离线加载</h3>
+<p>TEI 的 <code>MODEL_ID</code> 默认填 HuggingFace repo-id（如 <code>BAAI/bge-large-zh-v1.5</code>），启动时会去 <code>huggingface.co</code> 下载模型。在国内/无外网环境，这会<strong>一直卡住超时重试</strong>。</p>
+<p>本项目的解法（已写进 <code>CLAUDE.md</code>，并在 compose 中固化）：把模型放本地，<code>MODEL_ID</code> 填<strong>容器内本地路径</strong>。看 <code>docker/docker-compose-debug.yml</code> 的 embedding 段：</p>
+<pre class="code" data-lang="yaml"><code><span class="nt">embedding</span><span class="p">:</span><span class="w"></span>
+<span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/huggingface/text-embeddings-inference:cpu-1.8</span><span class="w"></span>
+<span class="w"> </span><span class="nt">environment</span><span class="p">:</span><span class="w"></span>
+<span class="w"> </span><span class="nt">MODEL_ID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/models/bge-large-zh-v1.5</span><span class="w"> </span><span class="c1"># ← 本地路径，不是 repo-id</span><span class="w"></span>
+<span class="w"> </span><span class="nt">volumes</span><span class="p">:</span><span class="w"></span>
+<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./models/bge-large-zh-v1.5:/models/bge-large-zh-v1.5</span><span class="w"> </span><span class="c1"># ← 把本地模型挂进容器</span><span class="w"></span>
+<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./data/embedding:/data</span><span class="w"></span>
+</code></pre>
+<p>模型文件（约 1.2G 的 <code>pytorch_model.bin</code> 等）来自 <code>2.资料/2.docker compose/embedding/bge-large-zh-v1.5</code>，拷到项目 <code>docker/models/</code> 下即可。</p>
+<p><strong>candle 后端回退</strong>：TEI cpu 镜像默认想用 ONNX 权重（<code>model.onnx</code>），本地模型只有 pytorch 权重。启动日志会先报 <code>Could not start ORT backend: ... model.onnx does not exist</code>，随后自动回退：</p>
+<pre class="diagram">Starting Bert model on Cpu     ← candle 后端接管，加载 pytorch_model.bin
+Warming up model
+</pre>
+<p>这是<strong>正常现象</strong>，不是错误。</p>
+<h3>4.5 IK 中文分词器的自动安装</h3>
+<p>ES 默认不带中文分词器。compose 里通过启动命令自动安装 <code>analysis-ik</code>（见 <code>docker/docker-compose-debug.yml</code> 的 elasticsearch <code>command</code> 段），这样取值的全文检索才能正确切分中文。第 5 讲会用到 <code>ik_max_word</code>。</p>
+<hr/>
+<h2>五、代码精读</h2>
+<h3>5.1 起停脚本 <code>run.sh</code>（项目根目录）</h3>
+<p>本项目提供了一键起停脚本，封装了“中间件 → 等 embedding 就绪 → 后端 → 前端”的完整顺序。核心片段：</p>
+<pre class="code" data-lang="bash"><code>do_start<span class="o">()</span> <span class="o">{</span>
+  start_middleware <span class="o">||</span> <span class="k">return</span> <span class="m">1</span>
+  wait_http <span class="s2">"http://localhost:8081/health"</span> <span class="s2">"Embedding 模型"</span> <span class="m">60</span> <span class="c1"># 等模型 warmup</span>
+  start_backend
+  start_frontend
+<span class="o">}</span>
+</code></pre>
+<p>为什么要 <code>wait_http</code> 等 embedding？因为本地加载模型需要 warmup 时间，过早启动后端、构建知识库会因为 embedding 没就绪而失败。<strong>这体现了 4.3 的“服务 Ready”理念。</strong></p>
+<p><code>run.sh</code> 用“PID 文件 + 端口探测”双重判活，PID 记在 <code>.run/</code>，日志在 <code>logs/</code>。常用：</p>
+<pre class="code" data-lang="bash"><code>./run.sh start <span class="p">|</span> stop <span class="p">|</span> restart <span class="p">|</span> status <span class="p">|</span> logs
+./run.sh build-kb            <span class="c1"># 构建知识库（第5讲用）</span>
+./run.sh start backend       <span class="c1"># 只启某一层</span>
+</code></pre>
+<hr/>
+<h2>六、环境与上机</h2>
+<h3>上机任务 1：从零启动并验证</h3>
+<pre class="code" data-lang="bash"><code>./run.sh stop           <span class="c1"># 先停干净（若之前起过）</span>
+./run.sh start          <span class="c1"># 全启</span>
+./run.sh status         <span class="c1"># 看 5 项健康检查</span>
+</code></pre>
+<h3>上机任务 2：逐项手动验证（对照 <code>docs/02-掌柜问数-环境验证脚本.md</code>）</h3>
+<pre class="code" data-lang="bash"><code><span class="c1"># Embedding：应返回 1024 维向量</span>
+curl -sS http://localhost:8081/embed -X POST <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> -d <span class="s1">'{"inputs":["测试"]}'</span> <span class="p">|</span> head -c <span class="m">200</span>
+<span class="c1"># ES：集群健康 + 验证 IK 分词</span>
+curl -sS http://localhost:9200/_cluster/health?pretty
+curl -sS -X POST <span class="s2">"http://localhost:9200/_analyze"</span> -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -d <span class="s1">'{"analyzer":"ik_max_word","text":"尚硅谷掌柜问数"}'</span>
+<span class="c1"># Qdrant</span>
+curl -sS http://localhost:6333/healthz
+
+<span class="c1"># MySQL（业务账号）</span>
+mysql -h <span class="m">127</span>.0.0.1 -P <span class="m">3306</span> -u storekeeper -p<span class="s1">'178121'</span> --protocol<span class="o">=</span>TCP -e <span class="s2">"SHOW DATABASES;"</span>
+</code></pre>
+<h3>上机任务 3：观察 embedding 离线加载日志</h3>
+<pre class="code" data-lang="bash"><code>docker logs storekeeper-embedding <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> grep -E <span class="s2">"ORT backend|Bert model|Warming up"</span>
+</code></pre>
+<p>找到“ORT 失败 → candle 接管 → warmup”的三行，理解 4.4 的回退逻辑。</p>
+<hr/>
+<h2>七、常见坑速查</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>现象</th>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3306 端口冲突</td>
+<td>本机已装 MySQL（如 brew）占用</td>
+<td><code>lsof -iTCP:3306</code> 找到进程；停掉本机 MySQL 或改映射端口</td>
+</tr>
+<tr>
+<td>embedding 一直不健康、日志刷 <code>Download failed ... huggingface.co</code></td>
+<td><code>MODEL_ID</code> 用了 repo-id，联网失败</td>
+<td>改为本地路径并挂载模型（见 4.4）</td>
+</tr>
+<tr>
+<td><code>make middleware</code> 卡在 Waiting</td>
+<td>某服务 healthcheck 没过</td>
+<td><code>make logs</code> 看哪个服务报错；ES 内存不足可调 <code>ES_JAVA_OPTS</code></td>
+</tr>
+<tr>
+<td>Docker 命令报 daemon 未运行</td>
+<td>Docker Desktop 没开</td>
+<td>先启动 Docker Desktop</td>
+</tr>
+<tr>
+<td><code>make clean</code> 后查询报错</td>
+<td>数据卷被清，知识库没了</td>
+<td>重新 <code>./run.sh build-kb</code>（第5讲）</td>
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h2>八、扩展练习</h2>
+<h3>基础级</h3>
+<ol>
+<li>画一张表，列出四个中间件的「镜像 / 端口 / 数据卷 / 健康检查方式 / 在本项目的职责」。</li>
+<li>故意把 <code>MODEL_ID</code> 改回 <code>BAAI/bge-large-zh-v1.5</code>，重启 embedding，观察日志卡在哪、用了多久超时，再改回来。<strong>体会离线加载的价值。</strong></li>
+</ol>
+<h3>进阶级</h3>
+<ol start="3">
+<li>为 <code>run.sh</code> 增加一个 <code>./run.sh verify</code> 子命令，自动跑完上机任务 2 的全部验证并汇总通过/失败。</li>
+<li>研究 <code>docker-compose-debug.yml</code> 里被注释掉的 Kibana 段，取消注释并启动，用 Kibana 可视化查看 ES 索引（第 5 讲建完索引后效果更佳）。</li>
+</ol>
+<h3>挑战级（指向课程设计）</h3>
+<ol start="5">
+<li>当前 embedding 用的是 CPU 镜像。调研 GPU 版 TEI（<code>text-embeddings-inference:1.x</code> GPU tag），写一份“如果学院有 GPU 服务器，如何把 embedding 切到 GPU 加速”的方案（含 compose 改动点、性能预期）。</li>
+<li>把整套中间件改造成「一条命令在另一台机器复现」：编写一份完整的部署文档 + 一个打包脚本（含模型文件的处理），让同学拿到后能离线复现你的环境。</li>
+</ol>
+<hr/>
+<h2>九、思考题</h2>
+<ol>
+<li><code>make clean</code> 为什么要特意保留 embedding 的模型缓存？如果不保留会怎样？</li>
+<li>healthcheck 的 <code>start_period</code> 和 <code>interval</code> 有什么区别？为什么 ES 的 <code>start_period</code> 比 MySQL 长？</li>
+<li>如果把 MySQL、ES、Qdrant 三者的数据卷都删掉，重启后哪些能自动恢复、哪些需要重新构建？（提示：区分“初始化脚本自动灌的”和“build-kb 灌的”）</li>
+</ol>
+        </div>
+        <nav class="pager">
+          <button class="pg prev" data-go="1">← 上一讲</button>
+          <button class="pg next" data-go="3">下一讲 →</button>
+        </nav>
+      </article>
+      <article class="lecture" id="lecture-3" data-index="3">
+        <header class="lec-head">
+          <div class="kicker">第 03 讲 · LECTURE 03</div>
+          <h1>工程基础设施</h1>
+          <p class="lec-sub">配置 · 日志 · 异步客户端 · 分层与依赖注入</p>
+        </header>
+        <div class="prose">
+<blockquote>
+<p>对应笔记：第 4 章「基础设施搭建」
+学时：4（理论 2 + 上机 2）</p>
+</blockquote>
+<hr/>
+<h2>一、教学目标</h2>
+<ol>
+<li>理解一个工业级 Python 服务的“地基”：配置管理、日志、客户端生命周期、分层架构。</li>
+<li>掌握用 <strong>OmegaConf + dataclass</strong> 做“结构化、带类型校验”的配置加载。</li>
+<li>掌握 <strong>loguru</strong> 日志的配置驱动与 request_id 注入。</li>
+<li>理解 <strong>异步 SQLAlchemy</strong> 与“客户端管理器单例 + 每请求 session”的模式。</li>
+<li>建立<strong>分层架构（api/services/agent/repositories/clients）+ 依赖注入</strong>的工程观念。</li>
+</ol>
+<h2>二、教学重点</h2>
+<ul>
+<li>配置 schema（<code>app_config.py</code>）如何把 YAML 变成强类型对象。</li>
+<li>四类客户端管理器（MySQL/Embedding/Qdrant/ES）统一的 <code>init/close</code> 模式。</li>
+<li>分层与依赖方向。</li>
+</ul>
+<h2>三、教学难点</h2>
+<ul>
+<li>异步编程 <code>async/await</code>、<code>async_sessionmaker</code>、连接池。</li>
+<li>为什么“连接型客户端（DB/ES/Qdrant）”要单例长连接，而 session 要每请求新建。</li>
+</ul>
+<hr/>
+<h2>四、原理精讲</h2>
+<h3>4.1 配置管理：YAML × dataclass × OmegaConf</h3>
+<p>配置与代码分离是工程铁律。本项目用 OmegaConf 把 <code>backend/conf/app_config.yaml</code> 加载成<strong>强类型</strong> dataclass 对象。</p>
+<p>看 <code>backend/app/conf/app_config.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">DBConfig</span><span class="p">:</span>
+<span class="n">host</span><span class="p">:</span> <span class="nb">str</span>
+<span class="n">port</span><span class="p">:</span> <span class="nb">int</span>
+<span class="n">user</span><span class="p">:</span> <span class="nb">str</span>
+<span class="n">password</span><span class="p">:</span> <span class="nb">str</span>
+<span class="n">database</span><span class="p">:</span> <span class="nb">str</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">AppConfig</span><span class="p">:</span>
+<span class="n">logging</span><span class="p">:</span> <span class="n">LoggingConfig</span>
+<span class="n">db_meta</span><span class="p">:</span> <span class="n">DBConfig</span>
+<span class="n">db_dw</span><span class="p">:</span> <span class="n">DBConfig</span>
+<span class="n">qdrant</span><span class="p">:</span> <span class="n">QdrantConfig</span>
+<span class="n">embedding</span><span class="p">:</span> <span class="n">EmbeddingConfig</span>
+<span class="n">es</span><span class="p">:</span> <span class="n">ESConfig</span>
+<span class="n">llm</span><span class="p">:</span> <span class="n">LLMConfig</span>
+<span class="n">config_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="s1">'conf'</span> <span class="o">/</span> <span class="s1">'app_config.yaml'</span>
+<span class="n">context</span> <span class="o">=</span> <span class="n">OmegaConf</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span> <span class="c1"># 读 YAML</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="n">OmegaConf</span><span class="o">.</span><span class="n">structured</span><span class="p">(</span><span class="n">AppConfig</span><span class="p">)</span> <span class="c1"># 用 dataclass 当 schema</span>
+<span class="n">app_config</span><span class="p">:</span> <span class="n">AppConfig</span> <span class="o">=</span> <span class="n">OmegaConf</span><span class="o">.</span><span class="n">to_object</span><span class="p">(</span><span class="n">OmegaConf</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">context</span><span class="p">))</span> <span class="c1"># 合并并校验类型</span>
+</code></pre>
+<p>精读要点：
+- <code>OmegaConf.structured(AppConfig)</code>：把 dataclass 变成带类型约束的 schema。
+- <code>OmegaConf.merge(schema, context)</code>：用 YAML 的值填充 schema，<strong>类型不符会报错</strong>——这就是“结构化配置”的价值：配置写错（比如 port 写成字符串）在启动时就暴露，而不是运行到一半才崩。
+- <code>app_config</code> 是<strong>模块级单例</strong>，全项目 <code>from ... import app_config</code> 直接用。</p>
+<blockquote>
+<p>⚠️ 安全提醒：<code>app_config.yaml</code> 里含 LLM 的 <code>api_key</code> 和数据库密码。真实项目中应从环境变量/密钥管理读取，<strong>绝不入库</strong>。本教学项目为方便直接写在文件里，学生要养成“密钥不进 Git”的意识。</p>
+</blockquote>
+<p><code>meta_config.py</code> 同理，是知识库配置的 schema（第 4 讲详讲）。</p>
+<h3>4.2 项目根目录的动态定位</h3>
+<p>很多路径要相对“项目根”计算。看 <code>backend/app/constants/project_constant.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="k">def</span> <span class="nf">_find_project_root</span><span class="p">(</span><span class="n">identifier</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">".env"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="n">env_root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"PROJECT_ROOT"</span><span class="p">)</span> <span class="c1"># 1. 优先读环境变量（生产/Docker）</span>
+<span class="k">if</span> <span class="n">env_root</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">env_root</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">env_root</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+<span class="n">current_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span> <span class="c1"># 2. 否则向上递归找 .env（开发）</span>
+<span class="k">while</span> <span class="n">current_dir</span> <span class="o">!=</span> <span class="n">current_dir</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">current_dir</span> <span class="o">/</span> <span class="n">identifier</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<span class="n">load_dotenv</span><span class="p">(</span><span class="n">dotenv_path</span><span class="o">=</span><span class="n">current_dir</span> <span class="o">/</span> <span class="n">identifier</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">current_dir</span>
+<span class="n">current_dir</span> <span class="o">=</span> <span class="n">current_dir</span><span class="o">.</span><span class="n">parent</span>
+<span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</code></pre>
+<p>“环境变量优先、否则向上找标识文件”是一种<strong>兼容开发与部署</strong>的通用技巧。<code>Makefile</code> 启动容器时会注入 <code>PROJECT_ROOT</code>。</p>
+<h3>4.3 日志：配置驱动 + 位置精准 + request_id</h3>
+<p>看 <code>backend/app/conf/logger.py</code>，基于 loguru，重点理解三件事：</p>
+<ol>
+<li><strong>配置驱动</strong>：通过 <code>.env</code> 控制控制台/文件开关、级别、保留天数。</li>
+<li><strong>双输出</strong>：控制台彩色 + 文件 <code>logs/app_YYYYMMDD.log</code>（按天 rotation）。</li>
+<li><strong>位置精准</strong>：<code>fix_log_position</code> 遍历调用栈，跳过 loguru 内部帧和 logger.py 自身，定位到<strong>真正的业务调用位置</strong>——否则日志里全显示 logger.py 的行号，没法 debug。</li>
+</ol>
+<pre class="code" data-lang="python"><code><span class="n">LOG_FORMAT</span> <span class="o">=</span> <span class="p">(</span>
+<span class="s2">"&lt;green&gt;{time:YYYY-MM-DD HH:mm:ss.SSS}&lt;/green&gt; | "</span>
+<span class="s2">"&lt;level&gt;</span><span class="si">{level: &lt;8}</span><span class="s2">&lt;/level&gt; | "</span>
+<span class="s2">"&lt;cyan&gt;</span><span class="si">{name: &lt;20}</span><span class="s2">&lt;/cyan&gt;:&lt;cyan&gt;</span><span class="si">{function: &lt;15}</span><span class="s2">&lt;/cyan&gt;:&lt;cyan&gt;</span><span class="si">{line: &lt;4}</span><span class="s2">&lt;/cyan&gt; - "</span>
+<span class="s2">"&lt;level&gt;</span><span class="si">{message}</span><span class="s2">&lt;/level&gt;"</span>
+<span class="p">)</span>
+</code></pre>
+<p>全项目 <code>from backend.app.conf.logger import logger</code> 直接用，开箱即用。</p>
+<h3>4.4 客户端管理器：统一的 init/close 模式</h3>
+<p>四个中间件各有一个“客户端管理器”，模式高度统一：<code>__init__</code> 存配置，<code>init()</code> 建连接，<code>close()</code> 释放。</p>
+<p><strong>Embedding</strong>（<code>backend/app/clients/embedding_client_manager.py</code>）：</p>
+<pre class="code" data-lang="python"><code><span class="k">class</span> <span class="nc">EmbeddingClientManager</span><span class="p">:</span>
+<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">EmbeddingConfig</span><span class="p">):</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+<span class="k">def</span> <span class="nf">_get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">return</span> <span class="sa">f</span><span class="s2">"http://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">HuggingFaceEndpointEmbeddings</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_url</span><span class="p">())</span>
+<span class="n">embedding_client_manager</span> <span class="o">=</span> <span class="n">EmbeddingClientManager</span><span class="p">(</span><span class="n">app_config</span><span class="o">.</span><span class="n">embedding</span><span class="p">)</span> <span class="c1"># 模块级单例</span>
+</code></pre>
+<p><strong>Qdrant / ES</strong>（<code>qdrant_client_manager.py</code> / <code>es_client_manager.py</code>）：同样 <code>init()</code> 建异步客户端，<code>close()</code> 释放。</p>
+<p><strong>MySQL</strong>（<code>backend/app/clients/mysql_client_manager.py</code>）最值得精读，它涉及连接池和 session 工厂：</p>
+<pre class="code" data-lang="python"><code><span class="k">class</span> <span class="nc">MysqlClientManager</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">_get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">return</span> <span class="sa">f</span><span class="s2">"mysql+asyncmy://</span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">password</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">database</span><span class="si">}</span><span class="s2">?charset=utf8mb4"</span>
+<span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">create_async_engine</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_url</span><span class="p">(),</span>
+<span class="n">pool_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pool_pre_ping</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># 连接池</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">session_factory</span> <span class="o">=</span> <span class="n">async_sessionmaker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">,</span>
+<span class="n">autoflush</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="n">expire_on_commit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="n">autobegin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dw_mysql_client_manager</span> <span class="o">=</span> <span class="n">MysqlClientManager</span><span class="p">(</span><span class="n">app_config</span><span class="o">.</span><span class="n">db_dw</span><span class="p">)</span> <span class="c1"># 两个库两个管理器</span>
+<span class="n">meta_mysql_client_manager</span> <span class="o">=</span> <span class="n">MysqlClientManager</span><span class="p">(</span><span class="n">app_config</span><span class="o">.</span><span class="n">db_meta</span><span class="p">)</span>
+</code></pre>
+<p>精读要点：
+- <code>mysql+asyncmy://</code>：异步驱动（<code>asyncmy</code>），配合 <code>async/await</code> 实现高并发。
+- <code>pool_size=10</code>：连接池，复用连接、控制并发。
+- <code>pool_pre_ping=True</code>：取连接前先 ping，避免拿到已失效的连接。
+- <strong>engine（连接池）单例长存，session 每次用 <code>session_factory()</code> 新建</strong>——这是第 4.5 节的关键。</p>
+<h3>4.5 为什么“引擎单例、session 每请求”</h3>
+<ul>
+<li><strong>引擎/连接池</strong>：建立成本高（TCP、握手），应在应用启动时建一次、全程复用 → 单例 + <code>init/close</code>。</li>
+<li><strong>session（会话）</strong>：代表“一次工作单元/一个事务上下文”，应短生命周期、每个请求新建用完即弃 → <code>session_factory()</code> 配合 <code>async with</code>。</li>
+</ul>
+<p>混用会出事：多个请求共享一个 session 会导致事务串扰、状态污染。第 8 讲会看到 FastAPI 如何用 <code>Depends</code> 为每个请求注入一个新 session。</p>
+<h3>4.6 分层架构与依赖方向</h3>
+<pre class="diagram">api(路由/schema/依赖)  →  services(业务编排)  →  agent(智能体节点)
+                                                      ↓
+                              repositories(数据读写)  →  clients(连接管理)
+</pre>
+<ul>
+<li><code>entities/</code>：领域对象（dataclass，作为 Qdrant/ES 的 payload）。</li>
+<li><code>models/</code>：SQLAlchemy ORM 模型（仅 <code>meta</code> 库）。</li>
+<li><code>repositories/</code>：封装数据读写（隔离 SQL/检索细节）。</li>
+<li>依赖<strong>单向向下</strong>，上层依赖下层抽象，不反向。这让每层可独立测试、替换。</li>
+</ul>
+<hr/>
+<h2>五、环境与上机</h2>
+<h3>上机任务 1：验证配置加载</h3>
+<pre class="code" data-lang="bash"><code>uv run python -m backend.app.conf.app_config       <span class="c1"># 打印 es.host，验证 YAML 被正确读成对象</span>
+uv run python -m backend.app.conf.meta_config      <span class="c1"># 看 meta 配置 schema</span>
+</code></pre>
+<h3>上机任务 2：体验日志</h3>
+<pre class="code" data-lang="bash"><code>uv run python -m backend.app.conf.logger           <span class="c1"># 跑 __main__，看彩色日志 + 异常堆栈</span>
+</code></pre>
+<p>观察日志里显示的 <code>文件名:函数:行号</code> 是否指向 logger.py 自身还是真实调用处。</p>
+<h3>上机任务 3：逐个连通三大存储（各管理器自带 <strong>main</strong> 自测）</h3>
+<pre class="code" data-lang="bash"><code>uv run python -m backend.app.clients.mysql_client_manager      <span class="c1"># 查 meta 库 table_info</span>
+uv run python -m backend.app.clients.qdrant_client_manager     <span class="c1"># 建临时 collection + 查询</span>
+uv run python -m backend.app.clients.es_client_manager         <span class="c1"># 建 my-books 索引 + 搜索</span>
+uv run python -m backend.app.clients.embedding_client_manager  <span class="c1"># verify：返回 1024 维</span>
+</code></pre>
+<hr/>
+<h2>六、常见坑</h2>
+<ul>
+<li>直接 <code>python backend/app/conf/app_config.py</code> 会因绝对导入 <code>backend.app.*</code> 失败 → 必须 <code>python -m backend.app.conf.app_config</code>。</li>
+<li><code>expire_on_commit=False</code> 的作用：commit 后对象属性仍可访问（否则惰性加载会触发新查询甚至报错）。</li>
+<li>异步代码里忘了 <code>await</code> 是最常见 bug，表现为拿到一个 coroutine 而不是结果。</li>
+</ul>
+<hr/>
+<h2>七、扩展练习</h2>
+<h3>基础级</h3>
+<ol>
+<li>给 <code>app_config.yaml</code> 加一个新配置块（如 <code>app: {name: 掌柜问数, port: 8000}</code>），在 <code>app_config.py</code> 加对应 dataclass，验证能读出来；再故意把类型写错，观察启动报错。</li>
+<li>把日志级别从 <code>INFO</code> 调成 <code>DEBUG</code>，重跑一次查询，观察日志量变化。</li>
+</ol>
+<h3>进阶级</h3>
+<ol start="3">
+<li>给 MySQL 管理器加一个 <code>verify()</code> 方法（仿照 embedding 的 <code>verify()</code>），执行 <code>SELECT 1</code> 自检连通性，返回 bool。</li>
+<li>阅读 loguru 的 <code>enqueue=True</code> 文档，解释它在异步/多线程下为什么能避免日志错乱。</li>
+</ol>
+<h3>挑战级（指向课程设计）</h3>
+<ol start="5">
+<li>把密钥从 <code>app_config.yaml</code> 抽到环境变量：让 <code>api_key</code>、数据库密码改为从 <code>.env</code>/环境读取（OmegaConf 支持 <code>${oc.env:VAR}</code>），并更新文档。这是真实项目必做的安全加固。</li>
+<li>为整个项目设计一个“健康检查聚合接口”的方案（思路）：一个函数依次检查 4 个中间件连通性，返回结构化结果。第 8 讲可把它做成 <code>/health</code> 接口。</li>
+</ol>
+<hr/>
+<h2>八、思考题</h2>
+<ol>
+<li>为什么 <code>app_config</code> 做成模块级单例是安全的，而 session 不能做成单例？</li>
+<li><code>pool_pre_ping=True</code> 解决了什么真实问题？不开会在什么场景出 bug？</li>
+<li>分层架构里，<code>repositories</code> 依赖 <code>clients</code>，能不能反过来让 <code>clients</code> 依赖 <code>repositories</code>？为什么？</li>
+<li>如果要把向量库从 Qdrant 换成别的（如 Milvus），按现在的分层，需要改哪几层、不需要改哪几层？</li>
+</ol>
+        </div>
+        <nav class="pager">
+          <button class="pg prev" data-go="2">← 上一讲</button>
+          <button class="pg next" data-go="4">下一讲 →</button>
+        </nav>
+      </article>
+      <article class="lecture" id="lecture-4" data-index="4">
+        <header class="lec-head">
+          <div class="kicker">第 04 讲 · LECTURE 04</div>
+          <h1>元数据知识库（上）</h1>
+          <p class="lec-sub">实体 / ORM / Mapper · meta 库 · 配置语义</p>
+        </header>
+        <div class="prose">
+<blockquote>
+<p>对应笔记：第 5 章 5.1–5.3.4
+学时：4（理论 2 + 上机 2）</p>
+</blockquote>
+<hr/>
+<h2>一、教学目标</h2>
+<ol>
+<li>理解“元数据知识库”是什么、为什么是防大模型幻觉的核心。</li>
+<li>区分三个相似但职责不同的概念：<strong>实体（entities）/ ORM 模型（models）/ 映射器（mappers）</strong>。</li>
+<li>看懂 <code>meta</code> 库的四张表及其关系，并能用 <code>meta_config.yaml</code> 描述新的表和指标。</li>
+<li>理解配置中 <code>role</code> / <code>alias</code> / <code>sync</code> 三个字段的语义与下游影响。</li>
+</ol>
+<h2>二、教学重点</h2>
+<ul>
+<li><code>meta_config.yaml</code> 的结构与字段语义。</li>
+<li>实体 / ORM / Mapper 的三层数据表示与转换。</li>
+<li>从配置 → 写入 <code>meta</code> 库的流程（本讲只到结构化元数据，向量/全文索引留给第 5 讲）。</li>
+</ul>
+<h2>三、教学难点</h2>
+<ul>
+<li>为什么需要 entities 和 models 两套数据类，而不是一套到底。</li>
+<li><code>alias</code>（别名）和 <code>sync</code>（取值同步开关）为什么重要——它们直接决定召回质量。</li>
+</ul>
+<hr/>
+<h2>四、原理精讲</h2>
+<h3>4.1 什么是“元数据知识库”</h3>
+<p>元数据 = “描述数据的数据”。本项目把数仓的 schema 与业务知识，组织成大模型可消费的“知识”，包括：</p>
+<ul>
+<li><strong>表信息</strong>：表名、角色（维度/事实）、业务描述。</li>
+<li><strong>字段信息</strong>：字段名、类型、角色（主键/外键/维度/度量）、示例取值、描述、<strong>别名</strong>。</li>
+<li><strong>指标信息</strong>：业务指标（如 GMV）的名称、口径描述、相关字段、别名。</li>
+<li><strong>字段取值</strong>：维度字段的实际取值（如地区有“华东/华南”）。</li>
+</ul>
+<p>这套知识分别落到三个存储（第 1 讲讲过）：MySQL 存结构化部分，Qdrant 存向量，ES 存取值。<strong>本讲聚焦 MySQL（结构化）这一份。</strong></p>
+<h3>4.2 <code>meta</code> 库的四张表</h3>
+<p>见 <code>scripts/mysql/init/03-meta-schema.sql</code> 与 <code>backend/app/models/</code>：</p>
+<pre class="diagram">table_info        字段表/指标表的“目录”
+  └─ column_info  字段信息（外键 table_id 指向 table_info）
+metric_info       指标信息
+  └─ column_metric  指标↔字段的多对多关联表
+</pre>
+<ul>
+<li><code>table_info</code>：每个表一行。</li>
+<li><code>column_info</code>：每个字段一行，<code>table_id</code> 关联所属表。</li>
+<li><code>metric_info</code>：每个指标一行。</li>
+<li><code>column_metric</code>：指标与其相关字段的多对多桥表（一个指标可关联多个字段，一个字段可服务多个指标）。</li>
+</ul>
+<h3>4.3 三套数据表示：entities / models / mappers</h3>
+<p>这是本讲最易混淆、也最能体现工程功底的地方。同一个“字段信息”，在项目里有三种形态：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>形态</th>
+<th>位置</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>entity</strong></td>
+<td><code>backend/app/entities/column_info.py</code></td>
+<td>领域对象（dataclass），跨层传递、作 Qdrant payload</td>
+</tr>
+<tr>
+<td><strong>model（ORM）</strong></td>
+<td><code>backend/app/models/column_info_mysql.py</code></td>
+<td>SQLAlchemy ORM，映射到 <code>column_info</code> 表，负责读写 MySQL</td>
+</tr>
+<tr>
+<td><strong>mapper</strong></td>
+<td><code>backend/app/repositories/mysql/meta/mappers/column_info_mapper.py</code></td>
+<td>在 entity ↔ model 之间转换</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>为什么要分两套（entity 和 model）？</strong>
+- ORM model 绑定数据库表结构，带 SQLAlchemy 的“魔法”（会话、惰性加载），不适合到处传递。
+- entity 是纯数据对象，干净、可序列化（能直接当 Qdrant 的 payload、能 <code>json.dumps</code>），适合在 service/agent 层流动。
+- mapper 把两者解耦：数据库表结构变了，只改 model + mapper，entity 和业务逻辑不动。</p>
+<blockquote>
+<p>这是“<strong>领域模型与持久化模型分离</strong>”的经典实践，大厂代码里非常常见。</p>
+</blockquote>
+<h3>4.4 <code>meta_config.yaml</code>：知识库的“源头真相”</h3>
+<p>整个知识库的内容由一份 YAML 定义（<code>backend/conf/meta_config.yaml</code>）。看一段：</p>
+<pre class="code" data-lang="yaml"><code><span class="nt">tables</span><span class="p">:</span><span class="w"></span>
+<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dim_region</span><span class="w"></span>
+<span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dim</span><span class="w"> </span><span class="c1"># 表角色：维度表</span><span class="w"></span>
+<span class="w"> </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">地区维度表...</span><span class="w"> </span><span class="c1"># 给大模型看的业务描述</span><span class="w"></span>
+<span class="w"> </span><span class="nt">columns</span><span class="p">:</span><span class="w"></span>
+<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">region_name</span><span class="w"></span>
+<span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dimension</span><span class="w"> </span><span class="c1"># 字段角色：维度</span><span class="w"></span>
+<span class="w"> </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">订单所属的大区名称...</span><span class="w"></span>
+<span class="w"> </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">地区</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">区域</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">大区</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 别名：召回时多一条命中路径</span><span class="w"></span>
+<span class="w"> </span><span class="nt">sync</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># true=把该列的取值同步进 ES 全文索引</span><span class="w"></span>
+<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">region_id</span><span class="w"></span>
+<span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">primary_key</span><span class="w"></span>
+<span class="w"> </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">地区ID</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">区域ID</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w"> </span><span class="nt">sync</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"> </span><span class="c1"># 主键不需要同步取值</span><span class="w"></span>
+<span class="nt">metrics</span><span class="p">:</span><span class="w"></span>
+<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GMV</span><span class="w"></span>
+<span class="w"> </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">全称Gross Merchandise Value，表示所有订单的成交金额总和。</span><span class="w"></span>
+<span class="w"> </span><span class="nt">relevant_columns</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">fact_order.order_amount</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w"> </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">成交总额</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">订单总额</span><span class="p p-Indicator">]</span><span class="w"></span>
+</code></pre>
+<p>对应的 schema 在 <code>backend/app/conf/meta_config.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ColumnConfig</span><span class="p">:</span>
+<span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="n">role</span><span class="p">:</span> <span class="nb">str</span>
+<span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+<span class="n">alias</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="n">sync</span><span class="p">:</span> <span class="nb">bool</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">TableConfig</span><span class="p">:</span>
+<span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">;</span> <span class="n">role</span><span class="p">:</span> <span class="nb">str</span><span class="p">;</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+<span class="n">columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ColumnConfig</span><span class="p">]</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">MetaConfig</span><span class="p">:</span>
+<span class="n">tables</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">TableConfig</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">metrics</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">MetricConfig</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre>
+<h3>4.5 三个关键字段的语义（重点）</h3>
+<ul>
+<li><strong><code>role</code>（角色）</strong>：</li>
+<li>表级：<code>dim</code>（维度）/ <code>fact</code>（事实）。</li>
+<li>字段级：<code>primary_key</code> / <code>foreign_key</code> / <code>dimension</code> / <code>measure</code>。</li>
+<li>
+<p>作用：让大模型知道哪些是度量（可聚合）、哪些是维度（可分组）、哪些是键（可 join）。第 6 讲合并召回时会“显式补齐主外键”，靠的就是 role。</p>
+</li>
+<li>
+<p><strong><code>alias</code>（别名）</strong>：业务人员问“大区”，字段叫 <code>region_name</code>，靠别名才能召回。<strong>别名是召回率的关键。</strong> 第 5 讲会把 name、description、每个 alias 都向量化入库。</p>
+</li>
+<li>
+<p><strong><code>sync</code>（取值同步）</strong>：是否把该列的<strong>实际取值</strong>灌入 ES 全文索引。维度字段（地区、品牌）开启，主键/度量不开（取值无检索意义、且量大）。</p>
+</li>
+</ul>
+<h3>4.6 从配置写入 meta 库的流程（本讲范围）</h3>
+<p>入口脚本 <code>backend/app/scripts/build_meta_knowledge.py</code> 调用 <code>MetaKnowledgeService.build()</code>（<code>backend/app/services/meta_knowledge_service.py</code>）。本讲只看“写结构化元数据”这一步 <code>_save_tables_to_meta_db</code>：</p>
+<pre class="code" data-lang="python"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">_save_tables_to_meta_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ColumnInfo</span><span class="p">]:</span>
+<span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">meta_config</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span>
+<span class="n">table_info</span> <span class="o">=</span> <span class="n">TableInfo</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">table</span><span class="o">.</span><span class="n">role</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">table</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+<span class="n">column_types</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">dw_mysql_repository</span><span class="o">.</span><span class="n">get_column_types</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="c1"># 从 dw 库查真实字段类型</span>
+<span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+<span class="n">column_values</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">dw_mysql_repository</span><span class="o">.</span><span class="n">get_column_values</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># 取10个示例值</span>
+<span class="n">column_info</span> <span class="o">=</span> <span class="n">ColumnInfo</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">table</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+<span class="nb">type</span><span class="o">=</span><span class="n">column_types</span><span class="p">[</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="n">role</span><span class="o">=</span><span class="n">column</span><span class="o">.</span><span class="n">role</span><span class="p">,</span>
+<span class="n">examples</span><span class="o">=</span><span class="n">column_values</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">column</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+<span class="n">alias</span><span class="o">=</span><span class="n">column</span><span class="o">.</span><span class="n">alias</span><span class="p">,</span> <span class="n">table_id</span><span class="o">=</span><span class="n">table</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_mysql_repository</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">begin</span><span class="p">():</span> <span class="c1"># 一个事务里批量写</span>
+<span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_mysql_repository</span><span class="o">.</span><span class="n">save_table_infos</span><span class="p">(</span><span class="n">table_infos</span><span class="p">)</span>
+<span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_mysql_repository</span><span class="o">.</span><span class="n">save_column_infos</span><span class="p">(</span><span class="n">column_infos</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">column_infos</span>
+</code></pre>
+<p>精读要点：
+- <strong>配置只写“描述性信息”，真实的字段类型和示例取值从 <code>dw</code> 库现查</strong>（<code>get_column_types</code>、<code>get_column_values</code>）——配置不重复数据库已有的事实，降低维护成本。
+- <code>id</code> 用 <code>表名.字段名</code> 这种自然主键，全局唯一、可读。
+- 用 <code>session.begin()</code> 包成一个事务，保证“要么全写成功，要么全回滚”。</p>
+<hr/>
+<h2>五、环境与上机</h2>
+<h3>上机任务 1：看懂四张表</h3>
+<pre class="code" data-lang="bash"><code>mysql -h <span class="m">127</span>.0.0.1 -P <span class="m">3306</span> -u storekeeper -p<span class="s1">'178121'</span> --protocol<span class="o">=</span>TCP meta -e <span class="s2">"</span>
+<span class="s2">  SELECT * FROM table_info;</span>
+<span class="s2">  SELECT id, name, role, table_id FROM column_info LIMIT 20;</span>
+<span class="s2">  SELECT * FROM metric_info;</span>
+<span class="s2">  SELECT * FROM column_metric;</span>
+<span class="s2">"</span>
+</code></pre>
+<p>（若表为空，先 <code>./run.sh build-kb</code>，第 5 讲详讲。）</p>
+<h3>上机任务 2：读三套数据表示</h3>
+<p>依次打开并对照：
+- <code>backend/app/entities/column_info.py</code>（entity）
+- <code>backend/app/models/column_info_mysql.py</code>（ORM model）
+- <code>backend/app/repositories/mysql/meta/mappers/column_info_mapper.py</code>（mapper）</p>
+<p>回答：这三者各自有哪些字段？mapper 是怎么互转的？</p>
+<h3>上机任务 3：扩展配置（作业 2 的前半）</h3>
+<p>在 <code>meta_config.yaml</code> 给 <code>dim_product</code> 增加一个字段别名，或新增一个简单指标（如“订单总数”），先<strong>不</strong>重建索引，只观察 schema 校验是否通过：</p>
+<pre class="code" data-lang="bash"><code>uv run python -m backend.app.conf.meta_config    <span class="c1"># 确认能加载</span>
+</code></pre>
+<hr/>
+<h2>六、常见坑</h2>
+<ul>
+<li><code>meta_config.yaml</code> 里写的字段必须在 <code>dw</code> 库真实存在，否则 <code>get_column_types</code> 取不到类型会 KeyError。</li>
+<li><code>relevant_columns</code> 要写成 <code>表名.字段名</code> 全限定形式，否则 <code>column_metric</code> 关联不上。</li>
+<li>YAML 缩进敏感，<code>alias: [a, b]</code> 与多行写法都行，但缩进错了会解析失败。</li>
+</ul>
+<hr/>
+<h2>七、扩展练习</h2>
+<h3>基础级</h3>
+<ol>
+<li>为 <code>fact_order</code> 的 <code>order_amount</code> 补充更多业务别名（如“GMV、营业额、流水”），思考别名对召回的影响。</li>
+<li>画出四张表的 ER 图，标出主外键和多对多关系。</li>
+</ol>
+<h3>进阶级</h3>
+<ol start="3">
+<li>新增一个“退款”相关的虚拟场景：假设 <code>fact_order</code> 多了一个 <code>refund_amount</code> 字段（可先在 dw schema 里加），在配置里描述它，并新增一个“退款率”指标（口径自定）。</li>
+<li>解释：如果某个维度字段的取值有上百万个（如 <code>customer_name</code>），把它 <code>sync: true</code> 会有什么问题？应如何取舍？</li>
+</ol>
+<h3>挑战级（指向课程设计 · 知识库扩域方向）</h3>
+<ol start="5">
+<li>设计并接入<strong>一套全新的数仓主题</strong>（如“库存”或“物流”），包含 ≥2 张维度表 + 1 张事实表 + ≥2 个指标。在 <code>dw</code> 库建表灌数据、在 <code>meta_config.yaml</code> 描述，为第 5 讲的索引构建和后续问数做准备。产出：建表 SQL + 配置 + 你能问出的 5 个问题。</li>
+</ol>
+<hr/>
+<h2>八、思考题</h2>
+<ol>
+<li>为什么把“字段类型、示例取值”放在构建时从 dw 库现查，而不是写死在配置里？这体现了什么设计原则？</li>
+<li>entity 和 ORM model 字段几乎一样，合并成一套不行吗？分开的代价和收益分别是什么？</li>
+<li><code>column_metric</code> 这张多对多桥表，能不能用“在 metric_info 里存一个字段列表字符串”代替？两种设计各有什么利弊？</li>
+</ol>
+        </div>
+        <nav class="pager">
+          <button class="pg prev" data-go="3">← 上一讲</button>
+          <button class="pg next" data-go="5">下一讲 →</button>
+        </nav>
+      </article>
+      <article class="lecture" id="lecture-5" data-index="5">
+        <header class="lec-head">
+          <div class="kicker">第 05 讲 · LECTURE 05</div>
+          <h1>元数据知识库（下）</h1>
+          <p class="lec-sub">Embedding+Qdrant · ES+IK · build 全流程</p>
+        </header>
+        <div class="prose">
+<blockquote>
+<p>对应笔记：第 5 章 5.3.5–5.4
+学时：4（理论 2 + 上机 2）</p>
+</blockquote>
+<hr/>
+<h2>一、教学目标</h2>
+<ol>
+<li>理解“语义检索（向量）”与“全文检索（关键词）”的差异与互补，及各自适用场景。</li>
+<li>掌握用 Embedding 把文本向量化、写入 Qdrant 的全流程。</li>
+<li>掌握用 ES + IK 分词为字段取值建全文索引。</li>
+<li>读懂 <code>MetaKnowledgeService.build()</code> 的完整编排，并能独立构建/清空知识库。</li>
+</ol>
+<h2>二、教学重点</h2>
+<ul>
+<li>向量检索原理（embedding + 余弦相似度）与 Qdrant 的 collection/point/payload 模型。</li>
+<li>全文检索原理（倒排索引 + 中文分词）与 ES 的 index/mapping/analyzer。</li>
+<li>“name + description + 每个 alias 都建索引”的多入口召回策略。</li>
+</ul>
+<h2>三、教学难点</h2>
+<ul>
+<li>为什么同一份元数据要建两类索引、分别索引哪些内容。</li>
+<li>批量 embedding、ensure_collection/ensure_index 的幂等性、清空的副作用。</li>
+</ul>
+<hr/>
+<h2>四、原理精讲</h2>
+<h3>4.1 两类检索：语义 vs 关键词</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>向量检索（Qdrant）</th>
+<th>全文检索（ES）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>原理</td>
+<td>文本→向量，比余弦相似度</td>
+<td>分词→倒排索引，比关键词匹配</td>
+</tr>
+<tr>
+<td>擅长</td>
+<td><strong>语义相近</strong>（“营收”≈“销售额”）</td>
+<td><strong>精确/字面匹配</strong>（取值“华东”）</td>
+</tr>
+<tr>
+<td>本项目用于</td>
+<td>字段信息、指标信息的召回</td>
+<td>字段<strong>取值</strong>的召回</td>
+</tr>
+<tr>
+<td>失效场景</td>
+<td>专有名词、精确值</td>
+<td>同义词、语义改写</td>
+</tr>
+</tbody>
+</table></div>
+<p>本项目的设计：
+- <strong>字段/指标</strong> → 向量检索（用户用什么词都可能，需要语义匹配）。
+- <strong>取值</strong> → 全文检索（“华东”就是“华东”，要精确匹配，且取值量大、不适合全部向量化）。</p>
+<p>两者<strong>互补</strong>，覆盖不同的召回需求——这就是第 1 讲思考题的答案。</p>
+<h3>4.2 向量索引：Embedding + Qdrant</h3>
+<p><strong>Embedding</strong>：把文本映射到 1024 维向量空间，语义相近的文本向量距离近。本项目用 <code>BAAI/bge-large-zh-v1.5</code>（中文向量模型），通过 TEI 服务提供（第 2 讲）。</p>
+<p><strong>Qdrant 的数据模型</strong>：
+- <code>collection</code>：相当于“表”，建时要指定向量维度和距离度量。
+- <code>point</code>：一条数据 = <code>id</code> + <code>vector</code>（向量）+ <code>payload</code>（原始数据，这里是 ColumnInfo）。</p>
+<p>看 <code>backend/app/repositories/qdrant/column_qdrant_repository.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="k">class</span> <span class="nc">ColumnQdrantRepository</span><span class="p">:</span>
+<span class="n">collection_name</span> <span class="o">=</span> <span class="s1">'data-agent-column'</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">ensure_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">collection_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">):</span>
+<span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">create_collection</span><span class="p">(</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
+<span class="n">vectors_config</span><span class="o">=</span><span class="n">VectorParams</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">app_config</span><span class="o">.</span><span class="n">qdrant</span><span class="o">.</span><span class="n">embedding_size</span><span class="p">,</span> <span class="c1"># 1024</span>
+<span class="n">distance</span><span class="o">=</span><span class="n">Distance</span><span class="o">.</span><span class="n">COSINE</span><span class="p">))</span> <span class="c1"># 余弦相似度</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">embedding</span><span class="p">,</span> <span class="n">score_threshold</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ColumnInfo</span><span class="p">]:</span>
+<span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">query_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span>
+<span class="n">score_threshold</span><span class="o">=</span><span class="n">score_threshold</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+<span class="k">return</span> <span class="p">[</span><span class="n">ColumnInfo</span><span class="p">(</span><span class="o">**</span><span class="n">point</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">points</span><span class="p">]</span>
+</code></pre>
+<p>精读要点：
+- <code>ensure_collection</code>：<strong>幂等</strong>——不存在才建，可反复调用。
+- <code>Distance.COSINE</code> + <code>score_threshold=0.6</code>：只返回相似度 ≥ 0.6 的，过滤噪声。
+- <code>limit=5</code>：每次召回 top-5，控制候选规模。
+- payload 直接反序列化成 <code>ColumnInfo</code> entity（第 4 讲的“entity 可序列化”优势在此体现）。</p>
+<h3>4.3 “多入口”索引：name + description + alias</h3>
+<p>看 <code>MetaKnowledgeService._save_column_info_to_qdrant</code>（<code>backend/app/services/meta_knowledge_service.py</code>）：</p>
+<pre class="code" data-lang="python"><code><span class="k">for</span> <span class="n">column_info</span> <span class="ow">in</span> <span class="n">column_infos</span><span class="p">:</span>
+<span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"id"</span><span class="p">:</span> <span class="n">uuid4</span><span class="p">(),</span> <span class="s2">"embedding_text"</span><span class="p">:</span> <span class="n">column_info</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">"payload"</span><span class="p">:</span> <span class="n">column_info</span><span class="p">})</span>
+<span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"id"</span><span class="p">:</span> <span class="n">uuid4</span><span class="p">(),</span> <span class="s2">"embedding_text"</span><span class="p">:</span> <span class="n">column_info</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="s2">"payload"</span><span class="p">:</span> <span class="n">column_info</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">alia</span> <span class="ow">in</span> <span class="n">column_info</span><span class="o">.</span><span class="n">alias</span><span class="p">:</span>
+<span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"id"</span><span class="p">:</span> <span class="n">uuid4</span><span class="p">(),</span> <span class="s2">"embedding_text"</span><span class="p">:</span> <span class="n">alia</span><span class="p">,</span> <span class="s2">"payload"</span><span class="p">:</span> <span class="n">column_info</span><span class="p">})</span>
+<span class="c1"># 批量向量化（每批 10 条）</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">embedding_texts</span><span class="p">),</span> <span class="mi">10</span><span class="p">):</span>
+<span class="n">batch_embeddings</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_client</span><span class="o">.</span><span class="n">aembed_documents</span><span class="p">(</span><span class="n">embedding_texts</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">10</span><span class="p">])</span>
+</code></pre>
+<p><strong>关键设计</strong>：同一个字段，用它的<strong>名称、描述、每个别名</strong>分别生成一个 point，但 payload 都指向同一个 <code>ColumnInfo</code>。这样无论用户说“大区”“区域”还是“地区名称”，都能命中同一个字段。<strong>这是召回率的工程保障。</strong>（指标索引 <code>_save_metric_info_to_qdrant</code> 同理。）</p>
+<p>批量 embedding（每批 10 条）是为了效率，避免逐条请求 TEI。</p>
+<h3>4.4 全文索引：ES + IK 分词</h3>
+<p>看 <code>backend/app/repositories/es/value_es_repository.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="k">class</span> <span class="nc">ValueESRepository</span><span class="p">:</span>
+<span class="n">index_name</span> <span class="o">=</span> <span class="s1">'data-agent-value'</span>
+<span class="n">index_mappings</span> <span class="o">=</span> <span class="p">{</span>
+<span class="s2">"dynamic"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="s2">"properties"</span><span class="p">:</span> <span class="p">{</span>
+<span class="s2">"id"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"keyword"</span><span class="p">},</span>
+<span class="s2">"value"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"analyzer"</span><span class="p">:</span> <span class="s2">"ik_max_word"</span><span class="p">,</span> <span class="s2">"search_analyzer"</span><span class="p">:</span> <span class="s2">"ik_max_word"</span><span class="p">},</span>
+<span class="s2">"column_id"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"keyword"</span><span class="p">}</span>
+<span class="p">}</span>
+<span class="p">}</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keyword</span><span class="p">,</span> <span class="n">score_threshold</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ValueInfo</span><span class="p">]:</span>
+<span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">index_name</span><span class="p">,</span>
+<span class="n">query</span><span class="o">=</span><span class="p">{</span><span class="s2">"match"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"value"</span><span class="p">:</span> <span class="n">keyword</span><span class="p">}},</span>
+<span class="n">min_score</span><span class="o">=</span><span class="n">score_threshold</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+<span class="k">return</span> <span class="p">[</span><span class="n">ValueInfo</span><span class="p">(</span><span class="o">**</span><span class="n">hit</span><span class="p">[</span><span class="s1">'_source'</span><span class="p">])</span> <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">'hits'</span><span class="p">][</span><span class="s1">'hits'</span><span class="p">]]</span>
+</code></pre>
+<p>精读要点：
+- <code>value</code> 字段用 <code>ik_max_word</code> 分词器（中文最细粒度切分），<code>id</code>/<code>column_id</code> 用 <code>keyword</code>（不分词，精确匹配）。
+- <code>match</code> 查询 + <code>min_score</code> 阈值，返回 top-5 命中取值。
+- 取值通过 <code>column_id</code> 关联回字段——召回到取值“华东”，就知道它属于 <code>dim_region.region_name</code>。</p>
+<p>哪些取值进 ES？由第 4 讲的 <code>sync</code> 字段控制，见 <code>_save_value_info_to_es</code>：</p>
+<pre class="code" data-lang="python"><code><span class="n">column2sync</span> <span class="o">=</span> <span class="p">{</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">sync</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">meta_config</span><span class="o">.</span><span class="n">tables</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
+<span class="k">for</span> <span class="n">column_info</span> <span class="ow">in</span> <span class="n">column_infos</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">column2sync</span><span class="p">[</span><span class="n">column_info</span><span class="o">.</span><span class="n">id</span><span class="p">]:</span> <span class="c1"># 只同步 sync=true 的列</span>
+<span class="n">values</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">dw_mysql_repository</span><span class="o">.</span><span class="n">get_column_values</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)</span>
+<span class="n">value_infos</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ValueInfo</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">column_info</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">column_id</span><span class="o">=</span><span class="n">column_info</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+<span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_es_repository</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">value_infos</span><span class="p">)</span>
+</code></pre>
+<h3>4.5 构建总编排 <code>build()</code></h3>
+<p><code>MetaKnowledgeService.build()</code> 把全流程串起来：</p>
+<pre class="diagram">加载配置(OmegaConf)
+ ├─ 处理表信息
+ │   ├─ 2.1 _save_tables_to_meta_db        → 写 meta 库（第4讲）
+ │   ├─ 2.2 _save_column_info_to_qdrant     → 字段向量索引
+ │   └─ 2.3 _save_value_info_to_es          → 取值全文索引
+ └─ 处理指标信息
+     ├─ 3.1 _save_metrics_to_meta_db        → 写 meta 库
+     └─ 3.2 _save_metric_info_to_qdrant     → 指标向量索引
+</pre>
+<p>入口 <code>backend/app/scripts/build_meta_knowledge.py</code> 负责初始化所有客户端、解析命令行参数（<code>--conf</code>、<code>--clean</code>），并支持先 <code>clean()</code> 再 <code>build()</code>。</p>
+<h3>4.6 清空的副作用（重点警示）</h3>
+<p><code>.env</code> 里 <code>SYS_ISCLEAN_CONFIG=true</code> 时，<strong>每次</strong>运行 build 脚本都会先 <code>clean()</code>：删 meta 四张表、删 Qdrant 两个 collection、删 ES 索引。<code>clean()</code> 里注意删除顺序——先删子表（<code>column_metric</code>）再删父表，遵守外键约束（见 <code>meta_knowledge_service.py</code> 的 <code>clean()</code>）。</p>
+<blockquote>
+<p>上机时务必知道：反复跑 build-kb = 反复清空重建。生产环境要把 <code>SYS_ISCLEAN_CONFIG</code> 设为 false 做增量。</p>
+</blockquote>
+<hr/>
+<h2>五、环境与上机</h2>
+<h3>上机任务 1：构建知识库</h3>
+<pre class="code" data-lang="bash"><code>./run.sh build-kb
+</code></pre>
+<p>观察日志：5 个表 / 24 个字段 / 2 个指标，向量索引、全文索引依次完成。</p>
+<h3>上机任务 2：验证三索引</h3>
+<pre class="code" data-lang="bash"><code><span class="c1"># Qdrant：看 collection 和点数</span>
+curl -s http://localhost:6333/collections <span class="p">|</span> python3 -m json.tool
+curl -s http://localhost:6333/collections/data-agent-column <span class="p">|</span> python3 -m json.tool <span class="p">|</span> grep points_count
+
+<span class="c1"># ES：看取值索引文档数</span>
+curl -s <span class="s2">"http://localhost:9200/data-agent-value/_count?pretty"</span>
+<span class="c1"># MySQL meta：看结构化元数据</span>
+mysql -h <span class="m">127</span>.0.0.1 -P <span class="m">3306</span> -u storekeeper -p<span class="s1">'178121'</span> --protocol<span class="o">=</span>TCP meta -e <span class="s2">"SELECT count(*) FROM column_info;"</span>
+</code></pre>
+<h3>上机任务 3：对照实验——向量 vs 全文（回答第1讲思考题）</h3>
+<p>写一小段脚本（或用各 repository 的 <code>__main__</code>）：
+- 用 embedding 把“营收”向量化 → Qdrant 检索，看能否召回 <code>order_amount</code>（语义匹配）。
+- 用 ES 检索“华东” → 看能否召回 <code>dim_region.region_name</code> 的取值（精确匹配）。
+- 再反过来：用 ES 检索“营收”、用向量检索“华东”，对比效果差异，体会<strong>为什么需要两种检索</strong>。</p>
+<hr/>
+<h2>六、常见坑</h2>
+<ul>
+<li>build 前必须确保 embedding 服务真正就绪（第 2 讲），否则向量化报连接错误。</li>
+<li>ES 的 <code>min_score</code>/Qdrant 的 <code>score_threshold</code> 调太高会召回为空，调太低会引入噪声——需要调参。</li>
+<li>重跑 build-kb 会清空，别在“刚扩了知识库”后又误跑导致丢数据。</li>
+</ul>
+<hr/>
+<h2>七、扩展练习</h2>
+<h3>基础级</h3>
+<ol>
+<li>把 <code>column_qdrant_repository.search</code> 的 <code>score_threshold</code> 从 0.6 改到 0.8 和 0.4，分别重跑一次召回实验，记录召回数量变化。</li>
+<li>给某个字段加 3 个别名，重建索引，验证新别名能召回到该字段。</li>
+</ol>
+<h3>进阶级</h3>
+<ol start="3">
+<li>当前每个字段把 name/description/每个 alias 都建一个 point。思考并实现：能否给不同来源的 point 加一个 <code>source</code> 标记（payload 里加字段），以便分析“哪些召回来自别名”？</li>
+<li>ES 的 <code>ik_max_word</code>（最细粒度）vs <code>ik_smart</code>（智能粒度），用 <code>_analyze</code> 接口对比同一句话的分词结果，讨论对取值召回的影响。</li>
+</ol>
+<h3>挑战级（指向课程设计 · 召回评测方向）</h3>
+<ol start="5">
+<li>构造一个<strong>召回评测集</strong>：写 15–20 条业务问题，人工标注每条“应该召回哪些字段/指标/取值”（金标准）。写一个评测脚本，跑当前召回逻辑，计算召回率（Recall@5）。基于结果提出 ≥2 条改进（如调阈值、加别名、改 embedding_text 组合方式），并量化改进前后的差异。这是第 9 讲“召回评测”大作业的核心。</li>
+</ol>
+<hr/>
+<h2>八、思考题</h2>
+<ol>
+<li>为什么字段用向量检索、取值用全文检索，而不是统一用一种？把取值也全部向量化会有什么代价？</li>
+<li><code>ensure_collection</code> / <code>ensure_index</code> 设计成幂等有什么好处？对“反复构建”意味着什么？</li>
+<li>同一个字段建了多个 point（name/desc/alias），检索时可能同一字段被多次命中，代码里是怎么去重的？（提示：看 <code>recall_column</code> 的 <code>retrieved_columns_map</code>，第 6 讲）</li>
+<li>如果业务新增了大量同义词，是该加 alias、还是该换更强的 embedding 模型？分别的成本和收益？</li>
+</ol>
+        </div>
+        <nav class="pager">
+          <button class="pg prev" data-go="4">← 上一讲</button>
+          <button class="pg next" data-go="6">下一讲 →</button>
+        </nav>
+      </article>
+      <article class="lecture" id="lecture-6" data-index="6">
+        <header class="lec-head">
+          <div class="kicker">第 06 讲 · LECTURE 06</div>
+          <h1>问数智能体（上）</h1>
+          <p class="lec-sub">LangGraph State/Context · 并行召回 · LLM 过滤</p>
+        </header>
+        <div class="prose">
+<blockquote>
+<p>对应笔记：第 6 章 6.1–6.3.5.8
+学时：4（理论 2 + 上机 2）</p>
+</blockquote>
+<hr/>
+<h2>一、教学目标</h2>
+<ol>
+<li>理解 LangGraph 的核心抽象：<strong>State（状态）/ Context（上下文/依赖）/ Node（节点）/ Edge（边）</strong>。</li>
+<li>看懂图的<strong>并行 fan-out / fan-in</strong> 结构。</li>
+<li>掌握前 8 个节点：抽取关键字、三路并行召回、合并、过滤。</li>
+<li>理解“用 LLM 做关键词扩展”和“用 LLM 做相关性过滤”两种 LLM 用法。</li>
+</ol>
+<h2>二、教学重点</h2>
+<ul>
+<li>State 与 Context 的分工：State 是流动的数据，Context 是注入的依赖。</li>
+<li>节点函数签名 <code>async def node(state, runtime)</code> 与“返回部分 state 字典”的合并语义。</li>
+<li>召回三路并行、过滤裁剪候选。</li>
+</ul>
+<h2>三、教学难点</h2>
+<ul>
+<li>依赖通过 <code>runtime.context[...]</code> 注入而非 import（可测试性）。</li>
+<li>并行节点的写入互不冲突的原因（各写各的 state key）。</li>
+<li>LLM 输出用 <code>JsonOutputParser</code> 解析的稳定性。</li>
+</ul>
+<hr/>
+<h2>四、原理精讲</h2>
+<h3>4.1 LangGraph 的四个核心概念</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>在本项目</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>State</strong></td>
+<td><code>DataAgentState</code>（<code>backend/app/agent/state.py</code>）</td>
+<td>一个 TypedDict，承载查询、关键字、召回结果、SQL 等，<strong>在节点间流动</strong></td>
+</tr>
+<tr>
+<td><strong>Context</strong></td>
+<td><code>DataAgentContext</code>（<code>backend/app/agent/context.py</code>）</td>
+<td>一个 TypedDict，装各种<strong>依赖</strong>（repository、embedding client），运行时注入</td>
+</tr>
+<tr>
+<td><strong>Node</strong></td>
+<td><code>backend/app/agent/nodes/*.py</code></td>
+<td>一个 async 函数，读 state、用 context 干活、返回“要更新的 state 片段”</td>
+</tr>
+<tr>
+<td><strong>Edge</strong></td>
+<td><code>graph.py</code> 里的 <code>add_edge</code></td>
+<td>节点间的连接，决定执行顺序；条件边可分支</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>State vs Context 的分工</strong>（关键）：
+- State = <strong>数据</strong>：随这次查询流动、会被节点改写。
+- Context = <strong>依赖</strong>：和具体查询无关的“工具”（数据库连接、模型客户端），由外部注入。</p>
+<p>看 <code>state.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="k">class</span> <span class="nc">DataAgentState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="c1"># 用户查询</span>
+<span class="n">keywords</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="c1"># 抽取的关键字</span>
+<span class="n">retrieved_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ColumnInfo</span><span class="p">]</span> <span class="c1"># 召回的字段</span>
+<span class="n">retrieved_values</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ValueInfo</span><span class="p">]</span> <span class="c1"># 召回的取值</span>
+<span class="n">retrieved_metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricInfo</span><span class="p">]</span> <span class="c1"># 召回的指标</span>
+<span class="n">table_infos</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TableInfoState</span><span class="p">]</span> <span class="c1"># 合并后的表信息</span>
+<span class="n">metric_infos</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MetricInfoState</span><span class="p">]</span> <span class="c1"># 合并后的指标信息</span>
+<span class="n">date_info</span><span class="p">:</span> <span class="n">DateInfoState</span><span class="p">;</span> <span class="n">db_info</span><span class="p">:</span> <span class="n">DBInfoState</span>
+<span class="n">sql</span><span class="p">:</span> <span class="nb">str</span> <span class="c1"># 生成的 SQL</span>
+<span class="n">error</span><span class="p">:</span> <span class="nb">str</span> <span class="c1"># 校验错误（驱动条件边）</span>
+</code></pre>
+<p>看 <code>context.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="k">class</span> <span class="nc">DataAgentContext</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="n">embedding_client</span><span class="p">:</span> <span class="n">HuggingFaceEndpointEmbeddings</span>
+<span class="n">column_qdrant_repository</span><span class="p">:</span> <span class="n">ColumnQdrantRepository</span>
+<span class="n">value_es_repository</span><span class="p">:</span> <span class="n">ValueESRepository</span>
+<span class="n">metric_qdrant_repository</span><span class="p">:</span> <span class="n">MetricQdrantRepository</span>
+<span class="n">meta_mysql_repository</span><span class="p">:</span> <span class="n">MetaMySQLRepository</span>
+<span class="n">dw_mysql_repository</span><span class="p">:</span> <span class="n">DWMySQLRepository</span>
+</code></pre>
+<h3>4.2 图的结构：并行召回（fan-out / fan-in）</h3>
+<p>看 <code>backend/app/agent/graph.py</code> 的边定义（节选）：</p>
+<pre class="code" data-lang="python"><code><span class="n">graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">START</span><span class="p">,</span> <span class="s2">"extract_keywords"</span><span class="p">)</span>
+<span class="n">graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"extract_keywords"</span><span class="p">,</span> <span class="s2">"recall_column"</span><span class="p">)</span> <span class="c1"># ┐</span>
+<span class="n">graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"extract_keywords"</span><span class="p">,</span> <span class="s2">"recall_value"</span><span class="p">)</span> <span class="c1"># ├ fan-out：一个节点扇出到三个</span>
+<span class="n">graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"extract_keywords"</span><span class="p">,</span> <span class="s2">"recall_metric"</span><span class="p">)</span> <span class="c1"># ┘</span>
+<span class="n">graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"recall_column"</span><span class="p">,</span> <span class="s2">"merge_retrieved_info"</span><span class="p">)</span> <span class="c1"># ┐</span>
+<span class="n">graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"recall_value"</span><span class="p">,</span> <span class="s2">"merge_retrieved_info"</span><span class="p">)</span> <span class="c1"># ├ fan-in：三路汇聚</span>
+<span class="n">graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"recall_metric"</span><span class="p">,</span> <span class="s2">"merge_retrieved_info"</span><span class="p">)</span> <span class="c1"># ┘</span>
+<span class="n">graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"merge_retrieved_info"</span><span class="p">,</span> <span class="s2">"filter_table"</span><span class="p">)</span> <span class="c1"># 又一次 fan-out</span>
+<span class="n">graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"merge_retrieved_info"</span><span class="p">,</span> <span class="s2">"filter_metric"</span><span class="p">)</span>
+</code></pre>
+<p><code>extract_keywords</code> 后<strong>同时</strong>触发三个召回节点（并行），三者都完成后才进入 <code>merge_retrieved_info</code>（汇聚）。<strong>并行的前提</strong>：三个节点写的是不同的 state key（<code>retrieved_columns</code>/<code>retrieved_values</code>/<code>retrieved_metrics</code>），互不冲突。</p>
+<h3>4.3 节点 1：extract_keywords（jieba 分词）</h3>
+<p><code>backend/app/agent/nodes/extract_keywords.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">extract_keywords</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">runtime</span><span class="p">):</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">runtime</span><span class="o">.</span><span class="n">stream_writer</span>
+<span class="n">writer</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"progress"</span><span class="p">,</span> <span class="s2">"step"</span><span class="p">:</span> <span class="s2">"抽取关键字"</span><span class="p">,</span> <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"running"</span><span class="p">})</span>
+<span class="n">keywords</span> <span class="o">=</span> <span class="n">jieba</span><span class="o">.</span><span class="n">analyse</span><span class="o">.</span><span class="n">extract_tags</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">"query"</span><span class="p">],</span> <span class="n">allowPOS</span><span class="o">=</span><span class="n">allow_pos</span><span class="p">)</span> <span class="c1"># 只取指定词性</span>
+<span class="n">keywords</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">keywords</span> <span class="o">+</span> <span class="p">[</span><span class="n">state</span><span class="p">[</span><span class="s2">"query"</span><span class="p">]]))</span> <span class="c1"># 加上原始 query 兜底</span>
+<span class="n">writer</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"progress"</span><span class="p">,</span> <span class="s2">"step"</span><span class="p">:</span> <span class="s2">"抽取关键字"</span><span class="p">,</span> <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"success"</span><span class="p">})</span>
+<span class="k">return</span> <span class="p">{</span><span class="s2">"keywords"</span><span class="p">:</span> <span class="n">keywords</span><span class="p">}</span> <span class="c1"># 只返回要更新的字段</span>
+</code></pre>
+<p>要点：用 <code>allowPOS</code> 限定名词/动词/形容词等有意义的词性；把原始 query 也放进去做兜底；<strong>返回 dict 片段</strong>，LangGraph 自动合并进 state。</p>
+<h3>4.4 节点 2-4：三路召回（含 LLM 关键词扩展）</h3>
+<p>以字段召回 <code>recall_column.py</code> 为例：</p>
+<pre class="code" data-lang="python"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">recall_column</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">runtime</span><span class="p">):</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">runtime</span><span class="o">.</span><span class="n">stream_writer</span>
+<span class="n">writer</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"progress"</span><span class="p">,</span> <span class="s2">"step"</span><span class="p">:</span> <span class="s2">"召回字段"</span><span class="p">,</span> <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"running"</span><span class="p">})</span>
+<span class="n">embedding_client</span> <span class="o">=</span> <span class="n">runtime</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">"embedding_client"</span><span class="p">]</span> <span class="c1"># ← 依赖从 context 取</span>
+<span class="n">column_qdrant_repository</span> <span class="o">=</span> <span class="n">runtime</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">"column_qdrant_repository"</span><span class="p">]</span>
+<span class="c1"># 1) 用 LLM 扩展关键词（提高召回）</span>
+<span class="n">chain</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="n">load_prompt</span><span class="p">(</span><span class="s2">"extend_keywords_for_column_recall"</span><span class="p">),</span>
+<span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">"query"</span><span class="p">])</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">JsonOutputParser</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">chain</span><span class="o">.</span><span class="n">ainvoke</span><span class="p">({</span><span class="s2">"query"</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">"query"</span><span class="p">]})</span>
+<span class="n">keywords</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">"keywords"</span><span class="p">]</span> <span class="o">+</span> <span class="n">result</span><span class="p">))</span>
+<span class="c1"># 2) 逐关键词向量化 + Qdrant 检索 + 去重</span>
+<span class="n">retrieved_columns_map</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">keywords</span><span class="p">:</span>
+<span class="n">embedding</span> <span class="o">=</span> <span class="k">await</span> <span class="n">embedding_client</span><span class="o">.</span><span class="n">aembed_query</span><span class="p">(</span><span class="n">keyword</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">payload</span> <span class="ow">in</span> <span class="k">await</span> <span class="n">column_qdrant_repository</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">embedding</span><span class="p">):</span>
+<span class="n">retrieved_columns_map</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span> <span class="c1"># 按 id 去重</span>
+<span class="n">writer</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"progress"</span><span class="p">,</span> <span class="s2">"step"</span><span class="p">:</span> <span class="s2">"召回字段"</span><span class="p">,</span> <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"success"</span><span class="p">})</span>
+<span class="k">return</span> <span class="p">{</span><span class="s2">"retrieved_columns"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">retrieved_columns_map</span><span class="o">.</span><span class="n">values</span><span class="p">())}</span>
+</code></pre>
+<p>精读要点：
+- <strong>两层关键词扩展</strong>：jieba 已抽一批，这里再用 LLM 扩一批（同义词/相关词），合并去重——尽量提高召回率。
+- 依赖全部来自 <code>runtime.context</code>，<strong>不在节点里 import 具体实例</strong>——这让节点可在测试中注入 mock。
+- <code>retrieved_columns_map</code> 按字段 id 去重（呼应第 5 讲：同一字段有多个 point，会被多次命中）。
+- <code>取值召回 recall_value.py</code>、<code>指标召回 recall_metric.py</code> 结构几乎一致，只是换了 repository 和 prompt。</p>
+<p><code>extract_keywords</code> 用规则（jieba），召回里用 LLM 扩展——<strong>规则 + 模型结合</strong>，各取所长。</p>
+<h3>4.5 节点 5：merge_retrieved_info（合并与补全）</h3>
+<p><code>merge_retrieved_info.py</code> 是前半段最复杂的节点，干三件事：</p>
+<ol>
+<li><strong>指标→字段补全</strong>：指标的 <code>relevant_columns</code> 若没被召回，从 meta 库补进来。</li>
+<li><strong>取值并入字段</strong>：把召回的取值挂到对应字段的 <code>examples</code> 上（让大模型看到“地区有华东/华南”）。</li>
+<li><strong>补主外键</strong>：每张表显式补上主键/外键字段——否则大模型没法写 <code>JOIN</code>。</li>
+</ol>
+<pre class="code" data-lang="python"><code><span class="c1"># 显式补齐主外键（否则多表 join 缺键）</span>
+<span class="k">for</span> <span class="n">table_id</span> <span class="ow">in</span> <span class="n">table_to_columns_map</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+<span class="n">key_columns</span> <span class="o">=</span> <span class="k">await</span> <span class="n">meta_mysql_repository</span><span class="o">.</span><span class="n">get_key_columns_by_table_id</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
+<span class="n">column_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">table_to_columns_map</span><span class="p">[</span><span class="n">table_id</span><span class="p">]]</span>
+<span class="k">for</span> <span class="n">key_column</span> <span class="ow">in</span> <span class="n">key_columns</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">key_column</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">column_ids</span><span class="p">:</span>
+<span class="n">table_to_columns_map</span><span class="p">[</span><span class="n">table_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key_column</span><span class="p">)</span>
+</code></pre>
+<p>最终把召回的零散信息，组装成结构化的 <code>table_infos</code>（表→字段树）和 <code>metric_infos</code>，写回 state。<strong>这一步把“检索结果”翻译成“大模型能直接用的上下文”。</strong></p>
+<h3>4.6 节点 6-7：filter_table / filter_metric（LLM 相关性过滤）</h3>
+<p>召回偏向“宁多勿漏”（高召回），但候选里有噪声。过滤节点用 LLM 把无关的表/字段裁掉（提精度）。看 <code>filter_table.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="n">chain</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="n">load_prompt</span><span class="p">(</span><span class="s2">"filter_table_info"</span><span class="p">),</span>
+<span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">"query"</span><span class="p">,</span> <span class="s2">"table_infos"</span><span class="p">])</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">JsonOutputParser</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">chain</span><span class="o">.</span><span class="n">ainvoke</span><span class="p">({</span><span class="s2">"query"</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+<span class="s2">"table_infos"</span><span class="p">:</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">table_infos</span><span class="p">,</span> <span class="n">allow_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)})</span>
+<span class="c1"># result 形如 {"fact_order":["order_amount","region_id"], "dim_region":["region_id","region_name"]}</span>
+<span class="k">for</span> <span class="n">table_info</span> <span class="ow">in</span> <span class="n">table_infos</span><span class="p">[:]:</span> <span class="c1"># 用切片副本遍历，边遍历边删</span>
+<span class="k">if</span> <span class="n">table_info</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+<span class="n">table_infos</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">table_info</span><span class="p">)</span> <span class="c1"># 整张表无关 → 删表</span>
+<span class="k">else</span><span class="p">:</span>
+<span class="k">for</span> <span class="n">column_info</span> <span class="ow">in</span> <span class="n">table_info</span><span class="p">[</span><span class="s2">"columns"</span><span class="p">][:]:</span>
+<span class="k">if</span> <span class="n">column_info</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="n">table_info</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]]:</span>
+<span class="n">table_info</span><span class="p">[</span><span class="s2">"columns"</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">column_info</span><span class="p">)</span> <span class="c1"># 字段无关 → 删字段</span>
+</code></pre>
+<p>精读要点：
+- prompt（<code>backend/prompts/filter_table_info.prompt</code>）严格约束 LLM：只能从候选里选、不能新增、要保留 join 主外键、只输出 JSON。
+- 用 <code>list[:]</code> 切片副本遍历，避免“边遍历边删原列表”的坑。
+- 这是“<strong>召回高 recall → 过滤提 precision</strong>”的经典两段式检索增强。</p>
+<h3>4.7 进度流式输出协议</h3>
+<p>每个节点开头/结尾都 <code>writer({"type":"progress","step":..., "status":"running"/"success"/"error"})</code>。这是和前端约定的 SSE 协议（第 8 讲详讲），让用户实时看到“进行到哪一步”。</p>
+<hr/>
+<h2>五、环境与上机</h2>
+<h3>上机任务 1：单独跑通召回（命令行）</h3>
+<p>参考 <code>graph.py</code> 的 <code>__main__</code>，或写一小段：初始化各 client manager → 构造 context → 只跑到召回节点，打印三路各召回了什么。</p>
+<h3>上机任务 2：观察过滤前后</h3>
+<p>在 <code>merge_retrieved_info</code> 后和 <code>filter_table</code> 后各打一条日志（或看现有 <code>logger.info</code>），对比同一问题“过滤前候选表/字段”和“过滤后保留的表/字段”，体会精度提升。</p>
+<h3>上机任务 3：改 prompt 看变化</h3>
+<p>修改 <code>backend/prompts/extend_keywords_for_column_recall.prompt</code>，让它扩展更多/更少关键词，重跑召回，观察召回数量变化。</p>
+<hr/>
+<h2>六、常见坑</h2>
+<ul>
+<li>并行节点若误写了同一个 state key，会互相覆盖——本项目靠“各写各 key”避免。</li>
+<li>LLM 返回非合法 JSON 时 <code>JsonOutputParser</code> 会报错；prompt 里必须强约束“只输出 JSON”。</li>
+<li>过滤过狠（把必需表裁掉）会导致后续生成 SQL 失败——这是 precision/recall 的权衡。</li>
+</ul>
+<hr/>
+<h2>七、扩展练习</h2>
+<h3>基础级</h3>
+<ol>
+<li>给 <code>DataAgentState</code> 加一个字段（如 <code>keywords_expanded</code>），在召回节点里把 LLM 扩展出的关键词单独存进去，便于调试。</li>
+<li>统计一次查询中，三路召回各自的耗时（在节点里加计时日志），分析瓶颈在哪。</li>
+</ol>
+<h3>进阶级</h3>
+<ol start="3">
+<li>召回目前是“关键词逐个检索”。改造成<strong>批量向量化</strong>（一次 <code>aembed_documents</code> 多个关键词）减少请求次数，对比性能。</li>
+<li>过滤节点完全信任 LLM。设计一个“安全网”：如果 LLM 把所有表都裁掉了（result 为空），回退到“保留召回的全部表”，避免空候选。</li>
+</ol>
+<h3>挑战级（指向课程设计）</h3>
+<ol start="5">
+<li><strong>新增一路召回</strong>：当前只有 列/值/指标 三路。增加一路“<strong>表级语义召回</strong>”（直接用表的 name+description 建向量索引并召回），并接进图的 fan-out/fan-in。需要改：知识库构建（建表向量索引）、新增 repository、新节点、graph 连边。</li>
+<li><strong>多轮对话方向预研</strong>：当前 State 只有单轮 <code>query</code>。设计一个支持“上下文追问”的 State 扩展方案（如加 <code>history</code>），并说明召回/生成节点要如何利用历史。为第 9 讲多轮对话大作业铺垫。</li>
+</ol>
+<hr/>
+<h2>八、思考题</h2>
+<ol>
+<li>为什么把依赖放在 Context 注入，而不是在每个节点里直接 <code>import xxx_repository</code>？对单元测试有什么影响？</li>
+<li>三路召回能并行，是因为它们写不同的 state key。如果两个并行节点要更新同一个 key，LangGraph 会怎么处理？应如何设计避免冲突？</li>
+<li>召回阶段“宁多勿漏”、过滤阶段“宁缺毋滥”，这种两段式设计相比“一步到位精确召回”有什么优势？</li>
+<li><code>merge_retrieved_info</code> 为什么一定要显式补主外键？不补会在哪个节点出问题、表现是什么？</li>
+</ol>
+        </div>
+        <nav class="pager">
+          <button class="pg prev" data-go="5">← 上一讲</button>
+          <button class="pg next" data-go="7">下一讲 →</button>
+        </nav>
+      </article>
+      <article class="lecture" id="lecture-7" data-index="7">
+        <header class="lec-head">
+          <div class="kicker">第 07 讲 · LECTURE 07</div>
+          <h1>问数智能体（下）</h1>
+          <p class="lec-sub">生成 · 校验 · 纠错条件边 · 执行</p>
+        </header>
+        <div class="prose">
+<blockquote>
+<p>对应笔记：第 6 章 6.3.5.9–6.3.6
+学时：4（理论 2 + 上机 2）</p>
+</blockquote>
+<hr/>
+<h2>一、教学目标</h2>
+<ol>
+<li>掌握 SQL 生成闭环的后 5 个节点：补充上下文、生成、校验、纠错、执行。</li>
+<li>理解 LangGraph 的<strong>条件边（conditional edge）</strong>与“校验→纠错”的自我修复机制。</li>
+<li>理解 prompt 工程如何把“可控性”落到实处（只读、单条、指定方言）。</li>
+<li>能完整跑通整张 graph，并能构造触发纠错分支的场景。</li>
+</ol>
+<h2>二、教学重点</h2>
+<ul>
+<li>条件边：用 state 的 <code>error</code> 字段决定走“执行”还是“纠错”。</li>
+<li>generate_sql / correct_sql 的 prompt 设计与上下文拼装。</li>
+<li><code>EXPLAIN</code> 做校验、<code>execute_sql</code> 流式回传结果。</li>
+</ul>
+<h2>三、教学难点</h2>
+<ul>
+<li>条件边的写法与“状态驱动控制流”的思想。</li>
+<li>校验如何捕获错误、把错误信息喂回大模型实现纠错闭环。</li>
+</ul>
+<hr/>
+<h2>四、原理精讲</h2>
+<h3>4.1 后半段的整体结构</h3>
+<pre class="diagram">add_extra_context → generate_sql → validate_sql ──(error is None)──→ execute_sql → END
+                                        │                               ▲
+                                        └──(error 非空)──→ correct_sql ──┘
+</pre>
+<p><code>validate_sql</code> 后是一个<strong>条件边</strong>：校验通过直接执行，校验失败先纠错再执行。这就是系统“可控性”的核心闭环。</p>
+<h3>4.2 节点 8：add_extra_context（补充上下文）</h3>
+<p><code>backend/app/agent/nodes/add_extra_context.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">add_extra_context</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">runtime</span><span class="p">):</span>
+<span class="n">dw_mysql_repository</span> <span class="o">=</span> <span class="n">runtime</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">"dw_mysql_repository"</span><span class="p">]</span>
+<span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+<span class="n">date_info</span> <span class="o">=</span> <span class="n">DateInfoState</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="n">today</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">"</span><span class="p">),</span>
+<span class="n">weekday</span><span class="o">=</span><span class="n">today</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%A"</span><span class="p">),</span>
+<span class="n">quarter</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Q</span><span class="si">{</span><span class="p">(</span><span class="n">today</span><span class="o">.</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">3</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">db_info</span> <span class="o">=</span> <span class="k">await</span> <span class="n">dw_mysql_repository</span><span class="o">.</span><span class="n">get_db_info</span><span class="p">()</span> <span class="c1"># 数据库方言+版本</span>
+<span class="k">return</span> <span class="p">{</span><span class="s2">"date_info"</span><span class="p">:</span> <span class="n">date_info</span><span class="p">,</span> <span class="s2">"db_info"</span><span class="p">:</span> <span class="n">db_info</span><span class="p">}</span>
+</code></pre>
+<p>为什么需要这一步？
+- <strong>日期信息</strong>：用户问“今年”“上季度”，大模型需要知道“今天是哪天、现在第几季度”才能算出时间范围。
+- <strong>数据库信息</strong>：方言（MySQL）和版本决定 SQL 语法（函数名、分页写法）。<code>get_db_info()</code> 执行 <code>select version()</code> 并取 dialect（<code>backend/app/repositories/mysql/dw/dw_mysql_repository.py</code>）。</p>
+<h3>4.3 节点 9：generate_sql（生成）</h3>
+<p><code>generate_sql.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="n">chain</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="n">load_prompt</span><span class="p">(</span><span class="s2">"generate_sql"</span><span class="p">),</span>
+<span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">"query"</span><span class="p">,</span><span class="s2">"table_infos"</span><span class="p">,</span><span class="s2">"metric_infos"</span><span class="p">,</span><span class="s2">"date_info"</span><span class="p">,</span><span class="s2">"db_info"</span><span class="p">])</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">chain</span><span class="o">.</span><span class="n">ainvoke</span><span class="p">({</span>
+<span class="s2">"query"</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span>
+<span class="s2">"table_infos"</span><span class="p">:</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">table_infos</span><span class="p">,</span> <span class="n">allow_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="c1"># 过滤后的表</span>
+<span class="s2">"metric_infos"</span><span class="p">:</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">metric_infos</span><span class="p">,</span> <span class="n">allow_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="c1"># 指标口径</span>
+<span class="s2">"date_info"</span><span class="p">:</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">date_info</span><span class="p">,</span> <span class="o">...</span><span class="p">),</span>
+<span class="s2">"db_info"</span><span class="p">:</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">db_info</span><span class="p">,</span> <span class="o">...</span><span class="p">),</span>
+<span class="p">})</span>
+<span class="k">return</span> <span class="p">{</span><span class="s2">"sql"</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span>
+</code></pre>
+<p>精读要点：
+- 输入是<strong>过滤后的精简上下文</strong>（第 6 讲的成果）——喂得准、喂得少。
+- 用 <code>yaml.dump(..., allow_unicode=True)</code> 把结构化信息转成可读文本喂给大模型（YAML 比 JSON 更省 token、更易读）。
+- 用 <code>StrOutputParser</code>（SQL 是纯文本，不是 JSON）。</p>
+<p>prompt（<code>backend/prompts/generate_sql.prompt</code>）里把“可控性”写死成硬约束：</p>
+<pre class="diagram">1. 仅允许使用数据表信息中真实存在的表与字段，禁止编造。      ← 防幻觉
+2. 若有指标定义，必须严格遵循其业务口径。                  ← 口径一致
+3. 只能查询，不能写入/更新/删除。                          ← 安全
+4. 语法必须符合数据库环境指定的类型与版本。                ← 方言
+5. 默认只生成一条 SQL。                                    ← 可执行
+6. 仅输出纯文本 SQL，禁止 Markdown 代码块。                ← 可解析
+</pre>
+<blockquote>
+<p><strong>关键认知</strong>：可控性不是靠模型“自觉”，而是靠 prompt 硬约束 + 下游校验。这是 LLM 应用工程的精髓。</p>
+</blockquote>
+<h3>4.4 节点 10：validate_sql（校验）——条件边的驱动者</h3>
+<p><code>validate_sql.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">validate_sql</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">runtime</span><span class="p">):</span>
+<span class="n">dw_mysql_repository</span> <span class="o">=</span> <span class="n">runtime</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">"dw_mysql_repository"</span><span class="p">]</span>
+<span class="k">try</span><span class="p">:</span>
+<span class="k">await</span> <span class="n">dw_mysql_repository</span><span class="o">.</span><span class="n">validate_sql</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">"sql"</span><span class="p">])</span> <span class="c1"># 内部执行 EXPLAIN &lt;sql&gt;</span>
+<span class="k">return</span> <span class="p">{</span><span class="s2">"error"</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span> <span class="c1"># 校验通过</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="k">return</span> <span class="p">{</span><span class="s2">"error"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span> <span class="c1"># 校验失败，记录错误信息</span>
+</code></pre>
+<p>校验用 <code>EXPLAIN</code>（<code>dw_mysql_repository.validate_sql</code> 执行 <code>explain {sql}</code>）：
+- <code>EXPLAIN</code> 只解析和规划，<strong>不真正执行</strong>，能在不动数据的前提下发现语法错误、表/字段不存在等问题。
+- 关键：<strong>校验失败不抛异常中断，而是把错误信息写进 <code>state["error"]</code></strong>——交给条件边决策。</p>
+<h3>4.5 条件边：状态驱动的分支</h3>
+<p><code>graph.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="n">graph_builder</span><span class="o">.</span><span class="n">add_conditional_edges</span><span class="p">(</span>
+<span class="s2">"validate_sql"</span><span class="p">,</span>
+<span class="k">lambda</span> <span class="n">state</span><span class="p">:</span> <span class="s2">"execute_sql"</span> <span class="k">if</span> <span class="n">state</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">"correct_sql"</span><span class="p">,</span> <span class="c1"># 路由函数</span>
+<span class="p">{</span><span class="s2">"execute_sql"</span><span class="p">:</span> <span class="s2">"execute_sql"</span><span class="p">,</span> <span class="s2">"correct_sql"</span><span class="p">:</span> <span class="s2">"correct_sql"</span><span class="p">})</span> <span class="c1"># 映射</span>
+<span class="n">graph_builder</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"correct_sql"</span><span class="p">,</span> <span class="s2">"execute_sql"</span><span class="p">)</span>
+</code></pre>
+<p>精读要点：
+- 路由函数读 <code>state["error"]</code>：为 None → 去执行；非空 → 去纠错。
+- 这就是“<strong>控制流由数据状态驱动</strong>”——graph 的走向取决于运行时的 state，而非写死。
+- 纠错后无条件进入执行（<code>correct_sql → execute_sql</code>）。</p>
+<blockquote>
+<p>注意：本项目纠错是“一次性”的（纠错后直接执行，不再二次校验）。扩展练习会让你把它改成“循环纠错直到通过或达上限”。</p>
+</blockquote>
+<h3>4.6 节点 11：correct_sql（纠错）</h3>
+<p><code>correct_sql.py</code>：把<strong>原 SQL + 错误信息 + 全部上下文</strong>一起喂回大模型重写：</p>
+<pre class="code" data-lang="python"><code><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">chain</span><span class="o">.</span><span class="n">ainvoke</span><span class="p">({</span>
+<span class="s2">"query"</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span> <span class="s2">"table_infos"</span><span class="p">:</span> <span class="o">...</span><span class="p">,</span> <span class="s2">"metric_infos"</span><span class="p">:</span> <span class="o">...</span><span class="p">,</span> <span class="s2">"date_info"</span><span class="p">:</span> <span class="o">...</span><span class="p">,</span> <span class="s2">"db_info"</span><span class="p">:</span> <span class="o">...</span><span class="p">,</span>
+<span class="s2">"sql"</span><span class="p">:</span> <span class="n">sql</span><span class="p">,</span> <span class="c1"># 出错的 SQL</span>
+<span class="s2">"error"</span><span class="p">:</span> <span class="n">error</span><span class="p">,</span> <span class="c1"># validate_sql 捕获的错误</span>
+<span class="p">})</span>
+<span class="k">return</span> <span class="p">{</span><span class="s2">"sql"</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span> <span class="c1"># 覆盖 state 里的 sql</span>
+</code></pre>
+<p>让大模型“看着错误改作业”，比从头重写更可能改对。</p>
+<h3>4.7 节点 12：execute_sql（执行 + 回传结果）</h3>
+<p><code>execute_sql.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">execute_sql</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">runtime</span><span class="p">):</span>
+<span class="n">dw_mysql_repository</span> <span class="o">=</span> <span class="n">runtime</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s2">"dw_mysql_repository"</span><span class="p">]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">dw_mysql_repository</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">"sql"</span><span class="p">])</span> <span class="c1"># 真正在 dw 库执行</span>
+<span class="n">writer</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"progress"</span><span class="p">,</span> <span class="s2">"step"</span><span class="p">:</span> <span class="s2">"执行SQL"</span><span class="p">,</span> <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"success"</span><span class="p">})</span>
+<span class="n">writer</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"result"</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">:</span> <span class="n">result</span><span class="p">})</span> <span class="c1"># ← 用 result 类型推送数据</span>
+</code></pre>
+<p><code>dw_mysql_repository.execute_sql</code> 把结果行转成 <code>list[dict]</code>（<code>[dict(row) for row in result.mappings().fetchall()]</code>），便于 JSON 序列化推给前端。注意它<strong>只 <code>writer</code> 不 <code>return</code></strong>——结果通过流式事件出去，不需要写回 state。</p>
+<h3>4.8 graph 的编译与运行</h3>
+<p><code>graph.py</code> 末尾：</p>
+<pre class="code" data-lang="python"><code><span class="n">graph</span> <span class="o">=</span> <span class="n">graph_builder</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
+</code></pre>
+<p>编译成可执行图。运行用 <code>graph.astream(input=state, context=context, stream_mode="custom")</code>——<code>stream_mode="custom"</code> 配合节点里的 <code>stream_writer</code>，实现自定义事件流（第 8 讲会看到 service 如何转发为 SSE）。</p>
+<hr/>
+<h2>五、环境与上机</h2>
+<h3>上机任务 1：命令行端到端</h3>
+<pre class="code" data-lang="bash"><code>uv run python -m backend.app.agent.graph     <span class="c1"># 跑 __main__：对一个示例 query 流式打印全过程</span>
+</code></pre>
+<p>观察从“抽取关键字”到“result”的完整事件流。</p>
+<h3>上机任务 2：构造纠错分支</h3>
+<p>想办法让 <code>generate_sql</code> 产出一条会被 <code>EXPLAIN</code> 拒绝的 SQL（例如临时把某 prompt 改坏，或在 <code>validate_sql</code> 前手动注入一个错误 sql），观察 graph 是否走了 <code>correct_sql</code> 分支、纠错后是否成功执行。看日志里的“校正SQL”步骤。</p>
+<h3>上机任务 3：读懂条件边</h3>
+<p>对照 <code>graph.py</code> 的 <code>add_conditional_edges</code>，画出后半段的状态机图，标出“什么条件走哪条边”。</p>
+<hr/>
+<h2>六、常见坑</h2>
+<ul>
+<li>生成的 SQL 带了 Markdown <code>```sql</code>，导致执行失败——靠 prompt 第 6 条约束避免；若仍出现可在 generate 后加清洗。</li>
+<li>纠错只做一次，若大模型一次没改对，仍会执行失败——见扩展练习的“循环纠错”。</li>
+<li><code>execute_sql</code> 直接执行大模型生成的 SQL，存在安全风险（虽 prompt 约束只读，但不够）——见扩展练习“安全护栏”。</li>
+</ul>
+<hr/>
+<h2>七、扩展练习</h2>
+<h3>基础级</h3>
+<ol>
+<li>在 <code>validate_sql</code> 失败时，把 <code>error</code> 也通过 <code>writer</code> 推一条更友好的提示给前端。</li>
+<li>给 <code>add_extra_context</code> 增加“上一年/本月起止日期”等更多时间信息，看是否提升时间类问题的准确率。</li>
+</ol>
+<h3>进阶级</h3>
+<ol start="3">
+<li><strong>循环纠错</strong>：把“校验→纠错→执行”改成“校验→纠错→再校验”，最多重试 N 次，N 次仍失败则返回错误。需要改条件边逻辑和 state（加重试计数）。</li>
+<li>给 <code>generate_sql</code> 加 few-shot 示例（在 prompt 里放 2–3 个“问题→SQL”样例），观察对复杂问题的提升。</li>
+</ol>
+<h3>挑战级（指向课程设计）</h3>
+<ol start="5">
+<li><strong>SQL 安全护栏方向</strong>：实现一个独立的“安全校验节点”，在执行前用 SQL 解析（如 <code>sqlglot</code>）确保：只含 SELECT、无多语句、无危险函数，并强制加 <code>LIMIT</code>/超时。把它接进图，拦截危险 SQL。这是第 9 讲“SQL 安全”大作业的核心。</li>
+<li><strong>自洽/多候选</strong>：让 <code>generate_sql</code> 一次生成 3 条候选 SQL，分别校验，选第一条通过的执行（或投票）。对比单条生成的稳定性提升。</li>
+</ol>
+<hr/>
+<h2>八、思考题</h2>
+<ol>
+<li>为什么 <code>validate_sql</code> 用 <code>EXPLAIN</code> 而不是真正执行一遍来校验？<code>EXPLAIN</code> 能发现哪些错误、发现不了哪些错误？</li>
+<li>条件边的“路由函数”读的是 state。如果一个节点忘了设置 <code>error</code>（既不是 None 也没赋值），会发生什么？如何防御？</li>
+<li>纠错节点把“错误信息”喂回大模型。为什么给出错误信息能提高改对的概率？这与人改 bug 的过程有何相似？</li>
+<li><code>execute_sql</code> 只 <code>writer</code> 不 <code>return</code>，而其他节点都 <code>return</code> 一个 dict。为什么它可以不返回？（提示：它是终点节点，结果走流式而非 state）</li>
+</ol>
+        </div>
+        <nav class="pager">
+          <button class="pg prev" data-go="6">← 上一讲</button>
+          <button class="pg next" data-go="8">下一讲 →</button>
+        </nav>
+      </article>
+      <article class="lecture" id="lecture-8" data-index="8">
+        <header class="lec-head">
+          <div class="kicker">第 08 讲 · LECTURE 08</div>
+          <h1>API 服务化与流式接口</h1>
+          <p class="lec-sub">FastAPI · lifespan · Depends · SSE</p>
+        </header>
+        <div class="prose">
+<blockquote>
+<p>对应笔记：第 7 章「API 接口」
+学时：4（理论 2 + 上机 2）</p>
+</blockquote>
+<hr/>
+<h2>一、教学目标</h2>
+<ol>
+<li>理解 FastAPI 应用的组织：应用实例、路由、schema、依赖。</li>
+<li>掌握 <strong>lifespan</strong> 在应用启停时初始化/释放长连接客户端。</li>
+<li>掌握 <strong>Depends 依赖注入</strong>如何为每个请求装配 <code>QueryService</code> 与每请求 session。</li>
+<li>掌握 <strong>SSE（Server-Sent Events）流式接口</strong>：把 graph 的事件流实时推给前端。</li>
+</ol>
+<h2>二、教学重点</h2>
+<ul>
+<li>lifespan 与客户端单例的配合（呼应第 3 讲）。</li>
+<li>依赖注入链：从 client → repository → service。</li>
+<li>SSE 的数据格式与 <code>StreamingResponse</code>。</li>
+</ul>
+<h2>三、教学难点</h2>
+<ul>
+<li>异步生成器 + SSE 的 <code>data: {...}\n\n</code> 格式。</li>
+<li>为什么连接型客户端在 lifespan 建、session 在 Depends 建（生命周期不同）。</li>
+</ul>
+<hr/>
+<h2>四、原理精讲</h2>
+<h3>4.1 应用入口 <code>backend/main.py</code></h3>
+<pre class="code" data-lang="python"><code><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span><span class="n">lifespan</span><span class="o">=</span><span class="n">lifespan</span><span class="p">)</span> <span class="c1"># 注册生命周期</span>
+<span class="n">app</span><span class="o">.</span><span class="n">add_middleware</span><span class="p">(</span><span class="n">CORSMiddleware</span><span class="p">,</span>
+<span class="n">allow_origins</span><span class="o">=</span><span class="p">[</span><span class="s2">"http://localhost:5173"</span><span class="p">,</span><span class="s2">"http://127.0.0.1:5173"</span><span class="p">],</span> <span class="o">...</span><span class="p">)</span> <span class="c1"># 只放行前端</span>
+<span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">query_router</span><span class="p">)</span> <span class="c1"># 注册路由</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">middleware</span><span class="p">(</span><span class="s2">"http"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">assign_request_id</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">call_next</span><span class="p">):</span>
+<span class="n">request_id_ctx_var</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span> <span class="c1"># 每个请求生成唯一 request_id（配合日志）</span>
+<span class="k">return</span> <span class="k">await</span> <span class="n">call_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+</code></pre>
+<p>要点：
+- <code>lifespan</code> 管启停（4.2）。
+- CORS 白名单只放行前端的 5173（同源安全）。
+- HTTP 中间件给每个请求注入 <code>request_id</code>，配合第 3 讲的日志，能把一次请求的所有日志串起来追踪。
+- <strong>启动方式</strong>：<code>python -m backend.main</code>（绝对导入要求），不能 <code>python backend/main.py</code>。</p>
+<h3>4.2 lifespan：长连接客户端的启停</h3>
+<p><code>backend/app/core/lifespan.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="nd">@asynccontextmanager</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+<span class="n">embedding_client_manager</span><span class="o">.</span><span class="n">init</span><span class="p">()</span> <span class="c1"># 应用启动前：建所有长连接</span>
+<span class="n">qdrant_client_manager</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="n">es_client_manager</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="n">meta_mysql_client_manager</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="n">dw_mysql_client_manager</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="k">yield</span> <span class="c1"># ← 应用运行期</span>
+<span class="k">await</span> <span class="n">qdrant_client_manager</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># 应用关闭前：释放</span>
+<span class="k">await</span> <span class="n">es_client_manager</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="k">await</span> <span class="n">meta_mysql_client_manager</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="k">await</span> <span class="n">dw_mysql_client_manager</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre>
+<p>呼应第 3 讲：<strong>引擎/连接池等长连接，在应用启动时 init 一次、关闭时 close</strong>，全程复用。<code>yield</code> 之前是启动逻辑，之后是关闭逻辑。</p>
+<h3>4.3 依赖注入链 <code>backend/app/api/dependencies.py</code></h3>
+<p>FastAPI 的 <code>Depends</code> 把对象的“装配过程”声明出来，按需、按请求构造。本项目的依赖链：</p>
+<pre class="diagram">get_meta_session / get_dw_session   （每请求新建 session，用 async with 自动关闭）
+        ↓
+get_*_repository                    （用 session/client 构造 repository）
+        ↓
+get_query_service                   （把所有 repository + embedding client 装进 QueryService）
+</pre>
+<p>关键代码：</p>
+<pre class="code" data-lang="python"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_meta_session</span><span class="p">():</span>
+<span class="k">async</span> <span class="k">with</span> <span class="n">meta_mysql_client_manager</span><span class="o">.</span><span class="n">session_factory</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span> <span class="c1"># 每请求一个新 session</span>
+<span class="k">yield</span> <span class="n">session</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">get_meta_mysql_repository</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_meta_session</span><span class="p">)):</span>
+<span class="k">return</span> <span class="n">MetaMySQLRepository</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">get_query_service</span><span class="p">(</span>
+<span class="n">embedding_client</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_embedding_client</span><span class="p">),</span>
+<span class="n">column_qdrant_repository</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_column_qdrant_repository</span><span class="p">),</span>
+<span class="o">...</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QueryService</span><span class="p">:</span>
+<span class="k">return</span> <span class="n">QueryService</span><span class="p">(</span><span class="n">embedding_client</span><span class="o">=</span><span class="n">embedding_client</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</code></pre>
+<p>精读要点（呼应第 3 讲 4.5）：
+- <strong>session 用 <code>Depends(get_meta_session)</code> 每请求新建</strong>，<code>async with</code> 保证请求结束自动关闭——和 lifespan 里的“长连接单例”形成对比：<strong>连接池长存、session 短命</strong>。
+- repository 是对 session/client 的薄封装，依赖注入让它们自动装配。
+- <code>QueryService</code> 拿到全套依赖，成为路由可直接调用的“业务门面”。</p>
+<h3>4.4 查询路由 <code>backend/app/api/routers/query_router.py</code></h3>
+<pre class="code" data-lang="python"><code><span class="nd">@query_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/api/query"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">QuerySchema</span><span class="p">,</span> <span class="n">query_service</span><span class="p">:</span> <span class="n">QueryService</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_query_service</span><span class="p">)):</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"收到查询请求，入参: </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">StreamingResponse</span><span class="p">(</span><span class="n">query_service</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">query</span><span class="p">),</span>
+<span class="n">media_type</span><span class="o">=</span><span class="s2">"text/event-stream"</span><span class="p">)</span> <span class="c1"># ← SSE</span>
+</code></pre>
+<p>要点：
+- 入参 <code>QuerySchema</code>（<code>backend/app/api/schemas/query_schema.py</code>，Pydantic 模型）自动做请求体校验。
+- <code>query_service</code> 由 <code>Depends(get_query_service)</code> 注入（4.3 的链最终在这里被触发）。
+- 返回 <code>StreamingResponse</code> + <code>media_type="text/event-stream"</code>——这是 SSE 的关键。</p>
+<h3>4.5 SSE 流式：QueryService 如何转发 graph 事件</h3>
+<p><code>backend/app/services/query_service.py</code>：</p>
+<pre class="code" data-lang="python"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="n">context</span> <span class="o">=</span> <span class="n">DataAgentContext</span><span class="p">(</span><span class="n">embedding_client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_client</span><span class="p">,</span>
+<span class="n">column_qdrant_repository</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column_qdrant_repository</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="c1"># 装 Context</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">DataAgentState</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+<span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">astream</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">state</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="n">stream_mode</span><span class="o">=</span><span class="s2">"custom"</span><span class="p">):</span>
+<span class="k">yield</span> <span class="sa">f</span><span class="s2">"data: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">"</span> <span class="c1"># ← SSE 格式</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="k">yield</span> <span class="sa">f</span><span class="s2">"data: </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s1">'type'</span><span class="p">:</span><span class="s1">'error'</span><span class="p">,</span><span class="s1">'message'</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)},</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">"</span>
+</code></pre>
+<p>精读要点：
+- 这里把第 6/7 讲的 <code>runtime.context</code> 真正“喂”进 graph——Context 在此装配。
+- <code>graph.astream(..., stream_mode="custom")</code>：配合节点里的 <code>stream_writer</code>，逐个产出节点推送的事件（progress / result / error）。
+- <strong>SSE 格式</strong>：每条消息是 <code>data: &lt;内容&gt;\n\n</code>（两个换行结尾）。这是 SSE 协议规定，浏览器 <code>EventSource</code>/前端按此解析。
+- <code>ensure_ascii=False</code>：中文不转义，前端可读；<code>default=str</code>：兜底序列化（如 datetime）。
+- 整个函数是<strong>异步生成器</strong>（<code>yield</code>），与 <code>StreamingResponse</code> 配合实现“边算边推”。</p>
+<h3>4.6 前后端约定的事件协议（回顾）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>type</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>progress</code></td>
+<td>节点进度</td>
+<td><code>{"type":"progress","step":"召回字段","status":"running"}</code></td>
+</tr>
+<tr>
+<td><code>result</code></td>
+<td>查询结果</td>
+<td><code>{"type":"result","data":[{...}]}</code></td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>错误</td>
+<td><code>{"type":"error","message":"..."}</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>节点用 <code>writer(...)</code> 推送（第 6/7 讲），service 包成 <code>data: ...\n\n</code> 转发，前端按 type 渲染。<strong>这套协议是前后端解耦的契约。</strong></p>
+<hr/>
+<h2>五、环境与上机</h2>
+<h3>上机任务 1：看接口文档</h3>
+<p>启动后端后打开 http://localhost:8000/docs ，找到 <code>POST /api/query</code>，看请求体 schema。</p>
+<h3>上机任务 2：用 curl 观察 SSE</h3>
+<pre class="code" data-lang="bash"><code>curl -s -N -X POST http://localhost:8000/api/query <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  -d <span class="s1">'{"query":"统计一下各个地区销售排行前三的产品"}'</span>
+</code></pre>
+<p>逐行观察 <code>data: {...}</code>，对应第 6/7 讲的每个节点，最后是 <code>result</code>。</p>
+<h3>上机任务 3：追踪 request_id</h3>
+<p>连续打两次请求，看后端日志里两次请求的 <code>request_id</code> 是否不同，理解中间件注入的作用。</p>
+<hr/>
+<h2>六、常见坑</h2>
+<ul>
+<li>前端跨域被拦：检查 CORS 白名单是否包含前端实际地址。</li>
+<li>SSE 没换两行（少一个 <code>\n</code>）会导致前端解析不出——格式必须 <code>data: ...\n\n</code>。</li>
+<li>session 没用 <code>async with</code> 会泄漏连接，压测时连接池耗尽。</li>
+<li><code>python backend/main.py</code> 启动报 import 错——必须 <code>-m backend.main</code>。</li>
+</ul>
+<hr/>
+<h2>七、扩展练习</h2>
+<h3>基础级</h3>
+<ol>
+<li>给 <code>QuerySchema</code> 加字段校验（如 query 非空、长度上限），观察非法请求返回的 422 错误。</li>
+<li>新增一个 <code>GET /health</code> 接口，返回服务运行状态（可结合第 3 讲挑战题的健康检查聚合）。</li>
+</ol>
+<h3>进阶级</h3>
+<ol start="3">
+<li>给 <code>/api/query</code> 加上耗时统计：在中间件里记录每个请求从开始到结束的时间，写进日志和响应头。</li>
+<li>把 SSE 换成 WebSocket 实现同样的流式效果，对比两者在“服务端单向推送”场景下的优劣。</li>
+</ol>
+<h3>挑战级（指向课程设计）</h3>
+<ol start="5">
+<li><strong>会话管理（多轮对话方向）</strong>：给接口加 <code>session_id</code>，在服务端维护每个会话的历史，使 <code>/api/query</code> 支持上下文追问。需要打通到 graph 的 State（呼应第 6 讲扩展）。</li>
+<li><strong>限流与并发</strong>：给接口加简单限流（如每 IP 每秒 N 次）和并发上限，压测对比加与不加的稳定性。讨论 LLM 应用为什么尤其需要限流。</li>
+</ol>
+<hr/>
+<h2>八、思考题</h2>
+<ol>
+<li>为什么连接型客户端在 lifespan 建（单例），而 session 在 Depends 建（每请求）？把 session 也做成单例会出什么问题？</li>
+<li>SSE 相比“一次性返回全部结果”，对用户体验和服务端资源各有什么影响？什么场景下流式是必须的？</li>
+<li><code>Depends</code> 的依赖链是“声明式”的——路由只声明它要 <code>QueryService</code>，FastAPI 自动把整条链装配好。这种 IoC（控制反转）相比手动 new 对象有什么好处？</li>
+<li><code>query_service.query</code> 是异步生成器，一旦客户端中途断开连接，服务端的 graph 还会继续跑吗？该如何优雅处理？</li>
+</ol>
+        </div>
+        <nav class="pager">
+          <button class="pg prev" data-go="7">← 上一讲</button>
+          <button class="pg next" data-go="9">下一讲 →</button>
+        </nav>
+      </article>
+      <article class="lecture" id="lecture-9" data-index="9">
+        <header class="lec-head">
+          <div class="kicker">第 09 讲 · LECTURE 09</div>
+          <h1>前后端联调与课程设计</h1>
+          <p class="lec-sub">联调 · 答辩 · 扩展选题</p>
+        </header>
+        <div class="prose">
+<blockquote>
+<p>对应笔记：第 8 章「前后端联调」
+学时：4（理论 1 + 上机/答辩 3）</p>
+</blockquote>
+<hr/>
+<h2>一、教学目标</h2>
+<ol>
+<li>完成前后端完整联调，在浏览器中跑通端到端问数。</li>
+<li>读懂前端如何消费 SSE 事件流并渲染进度/结果。</li>
+<li>把全课知识点串成一条完整链路，形成系统级理解。</li>
+<li>启动并完成<strong>课程设计大作业</strong>，发挥能动性做出属于自己的增强。</li>
+</ol>
+<h2>二、教学重点</h2>
+<ul>
+<li>前端启动与 CORS 联调。</li>
+<li>前端对 SSE 三类事件（progress/result/error）的处理。</li>
+<li>全链路回顾与系统级 debug 方法。</li>
+</ul>
+<h2>三、教学难点</h2>
+<ul>
+<li>端到端问题定位：一个查询失败，如何快速判断是前端、API、智能体、知识库还是中间件的问题。</li>
+</ul>
+<hr/>
+<h2>四、原理精讲</h2>
+<h3>4.1 前端工程</h3>
+<p>前端在 <code>fronted/</code>（注意拼写是 <code>fronted</code> 不是 <code>frontend</code>），Vue 3 + Vite：</p>
+<pre class="code" data-lang="bash"><code><span class="nb">cd</span> fronted <span class="o">&amp;&amp;</span> npm install <span class="o">&amp;&amp;</span> npm run dev      <span class="c1"># http://127.0.0.1:5173</span>
+</code></pre>
+<p>或直接 <code>./run.sh start frontend</code>。</p>
+<p>后端 CORS 白名单只放行 <code>localhost:5173</code> / <code>127.0.0.1:5173</code>（见 <code>backend/main.py</code>），所以前端必须跑在这个端口。</p>
+<h3>4.2 前端如何消费 SSE</h3>
+<p>前端向 <code>POST /api/query</code> 发请求，按 SSE 逐条读取 <code>data: {...}</code>，根据 <code>type</code> 分别处理：
+- <code>progress</code>：更新进度条/步骤状态（running/success/error）——让用户看到“正在召回字段…”。
+- <code>result</code>：拿到 <code>data</code>（结果行数组），渲染成表格。
+- <code>error</code>：弹出错误提示。</p>
+<p>这正是第 8 讲“事件协议”在前端的落地。建议学生打开浏览器开发者工具的 Network 面板，观察 <code>/api/query</code> 的 EventStream。</p>
+<h3>4.3 全链路回顾（把 9 讲串起来）</h3>
+<p>一次“统计各地区销售前三产品”的完整旅程：</p>
+<pre class="diagram">前端输入(第9讲)
+  → POST /api/query (第8讲: 路由+Depends装配QueryService)
+    → lifespan 早已备好的长连接 + 每请求新session (第8讲/第3讲)
+    → graph.astream + Context注入 (第8讲/第6讲)
+      → extract_keywords: jieba (第6讲)
+      → 并行召回: Qdrant向量(字段/指标) + ES全文(取值) (第6讲/第5讲)
+          ← 知识库由 build-kb 预先构建 (第5讲/第4讲)
+      → merge: 补主外键、并取值 (第6讲)
+      → filter: LLM裁剪候选 (第6讲)
+      → add_extra_context: 日期/方言 (第7讲)
+      → generate_sql: LLM + prompt硬约束 (第7讲)
+      → validate_sql: EXPLAIN → 条件边 (第7讲)
+          → (失败) correct_sql: 喂错误重写 (第7讲)
+      → execute_sql: dw库执行, writer推result (第7讲)
+    → service包成 data:...\n\n SSE (第8讲)
+  → 前端按type渲染进度与结果表 (第9讲)
+全程: 配置/日志/异步/分层/依赖注入 作为地基 (第3讲)
+环境: 4中间件由Compose编排, embedding离线加载 (第2讲)
+为什么这么设计: 防幻觉/可控/省token (第1讲)
+</pre>
+<h3>4.4 端到端 debug 方法论</h3>
+<p>查询出问题时，<strong>自底向上</strong>逐层排除：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>层</th>
+<th>怎么查</th>
+<th>工具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>中间件</td>
+<td>5 项健康检查</td>
+<td><code>./run.sh status</code></td>
+</tr>
+<tr>
+<td>知识库</td>
+<td>三索引是否有数据</td>
+<td>第 5 讲上机任务 2</td>
+</tr>
+<tr>
+<td>智能体</td>
+<td>命令行跑 graph，看哪个节点报错</td>
+<td><code>python -m backend.app.agent.graph</code></td>
+</tr>
+<tr>
+<td>API</td>
+<td>curl 打接口看 SSE</td>
+<td>第 8 讲上机任务 2</td>
+</tr>
+<tr>
+<td>前端</td>
+<td>浏览器 Network/Console</td>
+<td>开发者工具</td>
+</tr>
+<tr>
+<td>日志</td>
+<td>按 request_id 串起一次请求</td>
+<td><code>logs/app_*.log</code></td>
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h2>五、环境与上机</h2>
+<h3>上机任务 1：完整联调</h3>
+<pre class="code" data-lang="bash"><code>./run.sh start
+./run.sh status          <span class="c1"># 全绿</span>
+</code></pre>
+<p>浏览器 http://127.0.0.1:5173 ，依次问：
+- “统计一下各个地区销售排行前三的产品”
+- “各品牌的成交总额是多少”
+- “上个季度华东地区的订单数量”
+观察进度流与结果表。</p>
+<h3>上机任务 2：故障演练</h3>
+<p>故意制造一个故障（如停掉 embedding：<code>./run.sh stop</code> 后只 <code>make middleware</code> 不构建知识库，或清空某索引），用 4.4 的方法论定位问题、修复，并写一段“故障定位报告”。</p>
+<hr/>
+<h2>六、课程设计大作业（综合验收）</h2>
+<p>在掌柜问数基础上完成一项<strong>可演示的功能增强</strong>，并提交代码 + 报告 + 答辩。前面每一讲的“挑战级”练习都在为这些方向铺垫——现在把它做完整。</p>
+<h3>选题方向（任选其一，或自拟报教师批准）</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>方向</th>
+<th>核心改动层</th>
+<th>关联讲次</th>
+<th>验收要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>① 结果可视化</strong></td>
+<td>前端</td>
+<td>第 8、9 讲</td>
+<td>根据结果自动选图（柱/折线/饼），合理映射维度/度量</td>
+</tr>
+<tr>
+<td><strong>② 多轮对话</strong></td>
+<td>State + API + 召回/生成</td>
+<td>第 6、8 讲挑战题</td>
+<td>支持上下文追问（“那华东呢？”），会话隔离</td>
+</tr>
+<tr>
+<td><strong>③ SQL 安全护栏</strong></td>
+<td>新增校验节点</td>
+<td>第 7 讲挑战题</td>
+<td>只读、防多语句、强制 LIMIT/超时，拦截危险 SQL</td>
+</tr>
+<tr>
+<td><strong>④ 召回评测</strong></td>
+<td>评测脚本</td>
+<td>第 5 讲挑战题</td>
+<td>金标准集 + Recall@K 量化 + ≥2 项改进及效果对比</td>
+</tr>
+<tr>
+<td><strong>⑤ 知识库扩域</strong></td>
+<td>dw建表 + meta配置</td>
+<td>第 4 讲挑战题</td>
+<td>接入新主题（库存/物流），能问出 ≥5 个有意义的问题</td>
+</tr>
+</tbody>
+</table></div>
+<h3>进阶/自拟方向（鼓励）</h3>
+<ul>
+<li>循环纠错 + 多候选自洽（第 7 讲）。</li>
+<li>新增“表级召回”一路（第 6 讲）。</li>
+<li>把密钥与配置安全化、加健康检查与限流（第 3、8 讲）。</li>
+<li>接入更强的中文 embedding 或换 LLM，做 A/B 对比。</li>
+</ul>
+<h3>交付物</h3>
+<ol>
+<li><strong>可运行代码</strong>：在原仓库新建分支提交，commit 清晰。</li>
+<li><strong>设计报告</strong>（参照 <code>docs/04-掌柜问数-设计文档.md</code> 风格）：需求 → 方案 → 关键实现（贴关键代码与你改动的节点/层）→ 测试与效果 → 不足与展望。</li>
+<li><strong>5 分钟现场演示 + 答辩</strong>：展示功能 + 回答“为什么这么做”。</li>
+</ol>
+<h3>评分（与大纲一致）</h3>
+<p>代码 20% + 报告 10% + 答辩 10%（大作业共 40%）。重点看：是否真正理解了所改动的层、改动是否合理、效果是否可量化、能否讲清设计权衡。</p>
+<hr/>
+<h2>七、扩展练习（课后持续）</h2>
+<h3>基础级</h3>
+<ol>
+<li>给前端结果表加“导出 CSV”“复制 SQL”小功能。</li>
+<li>把生成的 SQL 也作为一个事件（<code>type:"sql"</code>）推给前端展示，让用户看到“它到底查了什么”。</li>
+</ol>
+<h3>进阶级</h3>
+<ol start="3">
+<li>给系统加“问题历史记录”侧边栏（前端本地存储即可）。</li>
+<li>做一个 mini 压测：用脚本并发打 N 个查询，观察响应时间和中间件负载，写性能小报告。</li>
+</ol>
+<h3>挑战级</h3>
+<ol start="5">
+<li>把你课程设计的方向，做成一篇“技术博客 + Demo 视频”对外分享，体会“把项目讲清楚”也是工程能力的一部分。</li>
+</ol>
+<hr/>
+<h2>八、思考题（系统级）</h2>
+<ol>
+<li>回看整张系统，你认为<strong>最影响最终准确率</strong>的是哪一个环节？给出你的判断依据（最好用实验支撑）。</li>
+<li>如果要把掌柜问数推向真实生产（上千张表、高并发、敏感数据），现在的架构有哪三处最需要加固？</li>
+<li>本项目用“工程设计”而非“更大模型”来保证准确性。随着大模型能力增强，这套“知识库 + 召回 + 校验”的工程是否会被淘汰？说说你的看法。</li>
+<li>学完整个项目，如果让你从零设计一个面向<strong>另一个领域</strong>（如医疗病历问答、法律条文检索）的“自然语言问 X”系统，你会复用掌柜问数的哪些设计、改掉哪些？</li>
+</ol>
+<hr/>
+<h2>结语</h2>
+<p>掌柜问数不是一个“调通了就结束”的 Demo，而是一套可以不断生长的工程骨架。希望你学完这门课，不只是会跑它，而是<strong>理解它每一处设计的取舍</strong>，并能在它之上长出属于自己的、更优秀的增强。把课程设计当成一次真实的小型工程，去发挥你的能动性——这正是这门课最想留给你的东西。</p>
+        </div>
+        <nav class="pager">
+          <button class="pg prev" data-go="8">← 上一讲</button>
+          <span></span>
+        </nav>
+      </article></div>
+  </main>
+</div>
+<script>
+(function(){
+  var items=[].slice.call(document.querySelectorAll('[data-index]'));
+  var navItems=[].slice.call(document.querySelectorAll('.nav-item'));
+  var lectures=[].slice.call(document.querySelectorAll('.lecture'));
+  var sidebar=document.getElementById('sidebar');
+  var backdrop=document.getElementById('backdrop');
+  var progress=document.getElementById('progress');
+
+  function show(idx){
+    idx=Math.max(0,Math.min(lectures.length-1,idx));
+    lectures.forEach(function(l){l.classList.toggle('active', +l.dataset.index===idx);});
+    navItems.forEach(function(n){n.classList.toggle('active', +n.dataset.index===idx);});
+    var hash = idx===0?'home':'lecture-'+idx;
+    if(location.hash.slice(1)!==hash){history.replaceState(null,'','#'+hash);}
+    window.scrollTo({top:0,behavior:'instant' in window?'instant':'auto'});
+    closeNav();
+    updateProgress();
+  }
+  function go(target){ // target: number or 'home'
+    if(target==='home'){show(0);return;}
+    show(parseInt(target,10));
+  }
+  function fromHash(){
+    var h=location.hash.slice(1);
+    if(h==='home'||!h){show(0);return;}
+    var m=h.match(/lecture-(\d+)/);
+    show(m?parseInt(m[1],10):0);
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('[data-index]');
+    if(a && a.getAttribute('href')){e.preventDefault();show(+a.dataset.index);return;}
+    var pg=e.target.closest('[data-go]');
+    if(pg){e.preventDefault();go(pg.dataset.go);}
+  });
+  // hamburger
+  var hamb=document.getElementById('hamb');
+  function openNav(){sidebar.classList.add('open');backdrop.classList.add('show');}
+  function closeNav(){sidebar.classList.remove('open');backdrop.classList.remove('show');}
+  if(hamb){hamb.addEventListener('click',openNav);backdrop.addEventListener('click',closeNav);}
+  // progress within active lecture
+  function updateProgress(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    progress.style.width=(max>0?(h.scrollTop/max*100):0)+'%';
+  }
+  window.addEventListener('scroll',updateProgress,{passive:true});
+  window.addEventListener('hashchange',fromHash);
+  document.addEventListener('keydown',function(e){
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+    var cur=+document.querySelector('.lecture.active').dataset.index;
+    if(e.key==='ArrowRight')show(cur+1);
+    if(e.key==='ArrowLeft')show(cur-1);
+  });
+  fromHash();
+  // floating ad close
+  var ad=document.getElementById('adFloat'), adClose=document.getElementById('adClose');
+  if(adClose){adClose.addEventListener('click',function(){ad.classList.add('hidden');});}
+})();
+</script>
+</body>
+</html>

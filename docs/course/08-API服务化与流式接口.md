@@ -36,7 +36,7 @@ app.add_middleware(CORSMiddleware,
 app.include_router(query_router)                 # 注册路由
 
 @app.middleware("http")
-async def add_process_time_header(request, call_next):
+async def assign_request_id(request, call_next):
     request_id_ctx_var.set(uuid.uuid4())         # 每个请求生成唯一 request_id（配合日志）
     return await call_next(request)
 ```

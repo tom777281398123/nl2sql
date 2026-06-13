@@ -17,8 +17,8 @@ async def recall_metric(state: DataAgentState, runtime: Runtime[DataAgentContext
     query = state["query"]
     keywords = state["keywords"]
 
-    embedding_client = runtime.context['embedding_client']
-    metric_qdrant_repository = runtime.context['metric_qdrant_repository']
+    embedding_client = runtime.context["embedding_client"]
+    metric_qdrant_repository = runtime.context["metric_qdrant_repository"]
 
     try:
         # 使用LLM扩展关键词

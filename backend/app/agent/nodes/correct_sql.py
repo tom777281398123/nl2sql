@@ -24,7 +24,10 @@ async def correct_sql(state: DataAgentState, runtime: Runtime[DataAgentContext])
     db_info = state["db_info"]
 
     try:
-        prompt = PromptTemplate(template=load_prompt("correct_sql"), input_variables=["query", "metric_infos"])
+        prompt = PromptTemplate(
+            template=load_prompt("correct_sql"),
+            input_variables=["query", "table_infos", "metric_infos", "date_info", "db_info", "sql", "error"],
+        )
         output_parser = StrOutputParser()
 
         chain = prompt | llm | output_parser
