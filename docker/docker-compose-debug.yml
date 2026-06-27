@@ -17,7 +17,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3306:3306"
+      - "${MYSQL_PORT:-3306}:3306"
     volumes:
       - ./data/mysql:/var/lib/mysql
       - ../scripts/mysql/init:/docker-entrypoint-initdb.d:ro
@@ -70,28 +70,28 @@ services:
       start_period: 40s
     networks:
       - storekeeper
-#
-#  kibana:
-#    image: docker.elastic.co/kibana/kibana:8.19.10
-#    container_name: storekeeper-kibana
-#    restart: unless-stopped
-#    profiles: ['middleware']
-#    env_file: *env_file
-#    environment:
-#      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
-#    ports:
-#      - "5601:5601"
-#    depends_on:
-#      elasticsearch:
-#        condition: service_healthy
-#    healthcheck:
-#      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:5601/api/status >/dev/null"]
-#      interval: 10s
-#      timeout: 10s
-#      retries: 30
-#      start_period: 60s
-#    networks:
-#      - storekeeper
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.19.10
+    container_name: storekeeper-kibana
+    restart: unless-stopped
+    profiles: ['middleware']
+    env_file: *env_file
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:5601/api/status >/dev/null"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+    networks:
+      - storekeeper
 
   qdrant:
     image: qdrant/qdrant:v1.16

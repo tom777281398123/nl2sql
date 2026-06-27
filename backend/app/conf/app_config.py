@@ -1,7 +1,11 @@
 from dataclasses import dataclass
 from pathlib import Path
 
+from dotenv import load_dotenv
 from omegaconf import OmegaConf
+
+# 在解析 ${oc.env:...} 插值前，先把 .env 加载进 os.environ
+load_dotenv()
 
 
 # 日志配置

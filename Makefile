@@ -26,7 +26,7 @@ middleware: build-volumes
 	@echo ""
 	@echo "✓ All NL2SQL middleware services are running!"
 	@echo "=========================================="
-	@echo "  MySQL:          localhost:3306"
+	@echo "  MySQL:          localhost:$(shell grep '^MYSQL_PORT=' docker/.env.debug | cut -d= -f2)"
 	@echo "  Elasticsearch:  localhost:9200"
 	@echo "  Qdrant HTTP:    localhost:6333"
 	@echo "  Qdrant gRPC:    localhost:6334"
