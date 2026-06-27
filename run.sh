@@ -14,7 +14,7 @@
 #   ./run.sh stop   middleware|backend|frontend
 #
 # 说明:
-#   - 中间件 (MySQL/ES/Qdrant/Embedding) 由 Makefile + docker compose 管理。
+#   - 中间件 (MySQL/ES/Kibana/Qdrant/Embedding) 由 Makefile + docker compose 管理。
 #   - 后端 (FastAPI:8000) 与 前端 (Vite:5173) 以后台进程方式启动，
 #     PID 写入 .run/ 目录，日志写入 logs/。
 #   - embedding 模型走本地离线加载，详见 CLAUDE.md。
@@ -54,11 +54,46 @@ pid_alive() {
   [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null
 }
 
+http_ready() {
+  local url="$1"
+  curl -fsS -m 3 -o /dev/null "$url" 2>/dev/null
+}
+
+listen_pid() {
+  local port="$1"
+  command -v lsof >/dev/null 2>&1 || return 1
+  lsof -nP -tiTCP:"$port" -sTCP:LISTEN 2>/dev/null | head -n 1
+}
+
+recover_http_process() {
+  local name="$1" port="$2" url="$3" pidfile="$4"
+  http_ready "$url" || return 1
+
+  local pid; pid="$(listen_pid "$port" 2>/dev/null || true)"
+  if [ -n "$pid" ]; then
+    echo "$pid" >"$pidfile"
+    ok "$name 已在运行 (端口 $port, PID $pid)"
+  else
+    ok "$name 已在运行 (端口 $port)"
+    warn "未能记录 $name PID，停止时可能需要手动处理端口 $port"
+  fi
+  return 0
+}
+
+fail_if_port_busy() {
+  local name="$1" port="$2"
+  local pid; pid="$(listen_pid "$port" 2>/dev/null || true)"
+  [ -z "$pid" ] && return 0
+  err "$name 端口 $port 已被占用 (PID $pid)，为避免重复启动已中止"
+  warn "如确认是旧进程，可先手动停止，或执行: kill $pid"
+  return 1
+}
+
 # 等待某 URL 返回成功 (默认 60 次 * 2s)
 wait_http() {
   local url="$1" name="$2" tries="${3:-60}"
   for ((i=1; i<=tries; i++)); do
-    if curl -fsS -m 3 -o /dev/null "$url" 2>/dev/null; then
+    if http_ready "$url"; then
       ok "$name 就绪"
       return 0
     fi
@@ -71,7 +106,7 @@ wait_http() {
 # ============================ 中间件 ============================
 start_middleware() {
   need docker; need make
-  info "启动中间件 (MySQL / ES / Qdrant / Embedding)"
+  info "启动中间件 (MySQL / ES / Kibana / Qdrant / Embedding)"
   if ! docker info >/dev/null 2>&1; then
     err "Docker 守护进程未运行，请先启动 Docker Desktop"
     return 1
@@ -89,14 +124,24 @@ stop_middleware() {
 start_backend() {
   need uv
   if pid_alive "$BACKEND_PID"; then
-    ok "后端已在运行 (PID $(cat "$BACKEND_PID"))"
-    return 0
+    if http_ready "http://localhost:8000/docs"; then
+      ok "后端已在运行 (PID $(cat "$BACKEND_PID"))"
+      return 0
+    fi
+    warn "后端 PID 存在但健康检查未通过 (PID $(cat "$BACKEND_PID"))"
+    warn "查看日志: tail -f $BACKEND_LOG"
+    return 1
   fi
+  recover_http_process "后端" 8000 "http://localhost:8000/docs" "$BACKEND_PID" && return 0
+  fail_if_port_busy "后端" 8000 || return 1
+
   info "启动后端 FastAPI (http://0.0.0.0:8000)"
   nohup uv run python -m backend.main >"$BACKEND_LOG" 2>&1 &
   echo $! >"$BACKEND_PID"
-  wait_http "http://localhost:8000/docs" "后端" 30 \
-    || warn "查看日志: tail -f $BACKEND_LOG"
+  if ! wait_http "http://localhost:8000/docs" "后端" 30; then
+    warn "查看日志: tail -f $BACKEND_LOG"
+    return 1
+  fi
 }
 
 stop_backend() {
@@ -116,17 +161,27 @@ stop_backend() {
 start_frontend() {
   need npm
   if pid_alive "$FRONTEND_PID"; then
-    ok "前端已在运行 (PID $(cat "$FRONTEND_PID"))"
-    return 0
+    if http_ready "http://127.0.0.1:5173/"; then
+      ok "前端已在运行 (PID $(cat "$FRONTEND_PID"))"
+      return 0
+    fi
+    warn "前端 PID 存在但健康检查未通过 (PID $(cat "$FRONTEND_PID"))"
+    warn "查看日志: tail -f $FRONTEND_LOG"
+    return 1
   fi
+  recover_http_process "前端" 5173 "http://127.0.0.1:5173/" "$FRONTEND_PID" && return 0
+  fail_if_port_busy "前端" 5173 || return 1
+
   if [ ! -d "$SCRIPT_DIR/fronted/node_modules" ]; then
     info "首次启动，安装前端依赖 (npm install)"
     ( cd "$SCRIPT_DIR/fronted" && npm install )
   fi
   info "启动前端 Vite (http://127.0.0.1:5173)"
   ( cd "$SCRIPT_DIR/fronted" && nohup npm run dev >"$FRONTEND_LOG" 2>&1 & echo $! >"$FRONTEND_PID" )
-  wait_http "http://127.0.0.1:5173/" "前端" 30 \
-    || warn "查看日志: tail -f $FRONTEND_LOG"
+  if ! wait_http "http://127.0.0.1:5173/" "前端" 30; then
+    warn "查看日志: tail -f $FRONTEND_LOG"
+    return 1
+  fi
 }
 
 stop_frontend() {
@@ -148,7 +203,26 @@ stop_frontend() {
 build_kb() {
   need uv
   info "构建/重建元数据知识库 (build_meta_knowledge)"
-  warn ".env 中 SYS_ISCLEAN_CONFIG=true 时会先清空再重建，请知悉"
+  local clean_flag source_desc
+  if [ "${SYS_ISCLEAN_CONFIG+x}" = "x" ]; then
+    clean_flag="$SYS_ISCLEAN_CONFIG"
+    source_desc="当前 shell 环境变量"
+  else
+    clean_flag="$(grep -E '^SYS_ISCLEAN_CONFIG=' "$SCRIPT_DIR/.env" 2>/dev/null | tail -n 1 | cut -d= -f2-)"
+    source_desc=".env"
+  fi
+  case "$clean_flag" in
+    true|TRUE|True|1|yes|YES|Yes|y|Y)
+      warn "$source_desc 中 SYS_ISCLEAN_CONFIG=$clean_flag，本命令会先清空 meta 表、Qdrant collection 和 ES 索引，再重建"
+      warn "如需保留已有知识库数据，可临时执行: SYS_ISCLEAN_CONFIG=false ./run.sh build-kb"
+      ;;
+    "")
+      warn "未读取到 SYS_ISCLEAN_CONFIG，是否清空取决于 build 脚本默认行为"
+      ;;
+    *)
+      warn "$source_desc 中 SYS_ISCLEAN_CONFIG=$clean_flag，默认不会先清空知识库数据"
+      ;;
+  esac
   uv run python -m backend.app.scripts.build_meta_knowledge --conf backend/conf/meta_config.yaml
 }
 
@@ -156,9 +230,9 @@ build_kb() {
 do_start() {
   start_middleware || return 1
   # 等 embedding 真正能 embed (本地加载需要 warmup)
-  wait_http "http://localhost:8081/health" "Embedding 模型" 60
-  start_backend
-  start_frontend
+  wait_http "http://localhost:8081/health" "Embedding 模型" 60 || return 1
+  start_backend || return 1
+  start_frontend || return 1
   echo
   c_green "===================================================="
   c_green "  全部启动完成"

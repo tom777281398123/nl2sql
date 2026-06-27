@@ -38,3 +38,6 @@ node_modules/
 ._*
 Thumbs.db
 *.lock
+
+# 环境变量（含密钥），不提交
+.env
