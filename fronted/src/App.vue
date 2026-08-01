@@ -6,7 +6,17 @@
           <h1>数据问答</h1>
           <p>输入自然语言问题，查看执行进度和查询结果</p>
         </div>
-        <span class="status-pill">NL2SQL</span>
+        <div class="header-actions">
+          <button
+              type="button"
+              class="new-chat-button"
+              :disabled="loading || messages.length === 0"
+              @click="startNewConversation"
+          >
+            新对话
+          </button>
+          <span class="status-pill">NL2SQL</span>
+        </div>
       </div>
 
       <div ref="messagesEl" class="messages">
@@ -86,7 +96,12 @@ const API_URL = import.meta.env.VITE_API_URL || "/api/query";
 const question = ref("");
 const loading = ref(false);
 const messages = ref([]);
+const conversationHistory = ref([]);
 const messagesEl = ref(null);
+
+const MAX_HISTORY_ITEMS = 12;
+const MAX_RESULT_ROWS_IN_HISTORY = 30;
+const MAX_HISTORY_CONTENT_LENGTH = 7500;
 
 function scrollToBottom() {
   const el = messagesEl.value;
@@ -94,10 +109,29 @@ function scrollToBottom() {
   el.scrollTop = el.scrollHeight;
 }
 
+function startNewConversation() {
+  if (loading.value) return;
+  question.value = "";
+  messages.value = [];
+  conversationHistory.value = [];
+}
+
+function summarizeResultForHistory(rows) {
+  if (!rows.length) return "查询结果为空。";
+
+  const preview = rows.slice(0, MAX_RESULT_ROWS_IN_HISTORY);
+  const omitted = rows.length - preview.length;
+  const suffix = omitted > 0 ? `；其余 ${omitted} 行未写入对话上下文。` : "";
+  return `查询结果（共 ${rows.length} 行）：${JSON.stringify(preview)}${suffix}`
+      .slice(0, MAX_HISTORY_CONTENT_LENGTH);
+}
+
 async function sendQuestion() {
   if (!question.value || loading.value) return;
 
   const q = question.value;
+  const requestHistory = conversationHistory.value.slice(-MAX_HISTORY_ITEMS);
+  let assistantHistoryContent = "";
   question.value = "";
   loading.value = true;
 
@@ -121,7 +155,10 @@ async function sendQuestion() {
         "Content-Type": "application/json",
         "Accept": "text/event-stream",
       },
-      body: JSON.stringify({query: q}),
+      body: JSON.stringify({
+        query: q,
+        history: requestHistory,
+      }),
     });
 
     if (!response.ok) {
@@ -172,6 +209,7 @@ async function sendQuestion() {
 
         // ✅ 表格结果
         else if (data.type === "result" && Array.isArray(data.data)) {
+          assistantHistoryContent = summarizeResultForHistory(data.data);
           messages.value.push({
             role: "assistant",
             type: data.data.length ? "table" : "text",
@@ -183,6 +221,7 @@ async function sendQuestion() {
 
         // ✅ 错误
         else if (data.type === "error") {
+          assistantHistoryContent = `查询失败：${data.message || "发生错误"}`;
           messages.value.push({
             role: "assistant",
             type: "error",
@@ -201,6 +240,7 @@ async function sendQuestion() {
         try {
           const data = JSON.parse(payload);
           if (data.type === "error") {
+            assistantHistoryContent = `查询失败：${data.message || "发生错误"}`;
             messages.value.push({
               role: "assistant",
               type: "error",
@@ -213,12 +253,25 @@ async function sendQuestion() {
       }
     }
   } catch (e) {
+    assistantHistoryContent = `请求失败：${e?.message || "请求失败"}`;
     messages.value.push({
       role: "assistant",
       type: "error",
       content: e?.message || "请求失败",
     });
   } finally {
+    const completedTurn = [{role: "user", content: q}];
+    if (assistantHistoryContent) {
+      completedTurn.push({
+        role: "assistant",
+        content: assistantHistoryContent.slice(0, MAX_HISTORY_CONTENT_LENGTH),
+      });
+    }
+    conversationHistory.value = [
+      ...conversationHistory.value,
+      ...completedTurn,
+    ].slice(-MAX_HISTORY_ITEMS);
+
     loading.value = false;
     await nextTick();
     scrollToBottom();
@@ -292,6 +345,35 @@ function parseSseData(eventText) {
   margin: 6px 0 0;
   color: #667085;
   font-size: 14px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.new-chat-button {
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #344054;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.new-chat-button:hover:not(:disabled) {
+  border-color: #98a2b3;
+  background: #f8fafc;
+}
+
+.new-chat-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .status-pill {

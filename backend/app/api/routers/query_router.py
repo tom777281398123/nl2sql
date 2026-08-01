@@ -14,7 +14,13 @@ query_router = APIRouter()
 async def query(
     schema: QuerySchema, query_service: QueryService = Depends(get_query_service)
 ):
-    logger.info(f"收到查询请求，入参: {schema}")
+    logger.info(
+        f"收到查询请求，query={schema.query!r}, history_count={len(schema.history)}"
+    )
     return StreamingResponse(
-        query_service.query(schema.query), media_type="text/event-stream"
+        query_service.query(
+            schema.query,
+            history=[turn.model_dump() for turn in schema.history],
+        ),
+        media_type="text/event-stream",
     )

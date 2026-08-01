@@ -4,7 +4,7 @@ from langchain_huggingface import HuggingFaceEndpointEmbeddings
 
 from backend.app.agent.context import DataAgentContext
 from backend.app.agent.graph import graph
-from backend.app.agent.state import DataAgentState
+from backend.app.agent.state import ConversationTurnState, DataAgentState
 from backend.app.repositories.es.value_es_repository import ValueESRepository
 from backend.app.repositories.mysql.dw.dw_mysql_repository import DWMySQLRepository
 from backend.app.repositories.mysql.meta.meta_mysql_repository import MetaMySQLRepository
@@ -27,7 +27,11 @@ class QueryService:
         self.meta_mysql_repository = meta_mysql_repository
         self.dw_mysql_repository = dw_mysql_repository
 
-    async def query(self, query: str):
+    async def query(
+        self,
+        query: str,
+        history: list[ConversationTurnState] | None = None,
+    ):
         context = DataAgentContext(
             embedding_client=self.embedding_client,
             column_qdrant_repository=self.column_qdrant_repository,
@@ -36,7 +40,7 @@ class QueryService:
             meta_mysql_repository=self.meta_mysql_repository,
             dw_mysql_repository=self.dw_mysql_repository
         )
-        state = DataAgentState(query=query)
+        state = DataAgentState(query=query, history=history or [])
         try:
             async for chunk in graph.astream(input=state, context=context, stream_mode="custom"):
                 yield f"data: {json.dumps(chunk, ensure_ascii=False, default=str)}\n\n"  # SSE 格式发送数据

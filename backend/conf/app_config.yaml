@@ -40,7 +40,9 @@ es:
   index_name: data_agent
 
 
+# 模型凭据通过环境变量注入，避免提交到仓库。
 llm:
   model_name: ${oc.env:LLM_MODEL_NAME}
   api_key: ${oc.env:LLM_API_KEY}
   base_url: ${oc.env:LLM_BASE_URL}
+  user_agent: ${oc.env:LLM_USER_AGENT}

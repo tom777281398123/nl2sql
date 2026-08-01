@@ -1,3 +1,5 @@
+"""从 YAML 和环境变量加载应用基础设施配置。"""
+
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -11,6 +13,7 @@ load_dotenv()
 # 日志配置
 @dataclass
 class File:
+    """文件日志输出配置。"""
     enable: bool
     level: str
     path: str
@@ -20,12 +23,14 @@ class File:
 
 @dataclass
 class Console:
+    """控制台日志输出配置。"""
     enable: bool
     level: str
 
 
 @dataclass
 class LoggingConfig:
+    """应用日志配置集合。"""
     file: File
     console: Console
 
@@ -33,6 +38,7 @@ class LoggingConfig:
 # 数据库配置
 @dataclass
 class DBConfig:
+    """单个 MySQL 数据源的连接参数。"""
     host: str
     port: int
     user: str
@@ -42,6 +48,7 @@ class DBConfig:
 
 @dataclass
 class QdrantConfig:
+    """Qdrant 服务地址及向量维度。"""
     host: str
     port: int
     embedding_size: int
@@ -49,6 +56,7 @@ class QdrantConfig:
 
 @dataclass
 class EmbeddingConfig:
+    """Embedding 服务地址与模型标识。"""
     host: str
     port: int
     model: str
@@ -56,6 +64,7 @@ class EmbeddingConfig:
 
 @dataclass
 class ESConfig:
+    """Elasticsearch 服务与索引配置。"""
     host: str
     port: int
     index_name: str
@@ -63,13 +72,16 @@ class ESConfig:
 
 @dataclass
 class LLMConfig:
+    """OpenAI 兼容聊天模型配置。"""
     model_name: str
     api_key: str
     base_url: str
+    user_agent: str
 
 
 @dataclass
 class AppConfig:
+    """应用运行所需的全部基础设施配置。"""
     logging: LoggingConfig
     db_meta: DBConfig
     db_dw: DBConfig

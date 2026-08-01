@@ -24,6 +24,8 @@ llm = init_chat_model(
     model_provider="openai",
     api_key=app_config.llm.api_key,
     base_url=_normalize_openai_base_url(app_config.llm.base_url),
+    # Some OpenAI-compatible gateways reject the OpenAI Python SDK identifier.
+    default_headers={"User-Agent": app_config.llm.user_agent},
     temperature=0,
 )
 
