@@ -32,7 +32,16 @@ class QueryService:
         query: str,
         history: list[ConversationTurnState] | None = None,
     ):
-        context = DataAgentContext(
+        context = self._create_context()
+        state = DataAgentState(query=query, history=history or [])
+        try:
+            async for chunk in graph.astream(input=state, context=context, stream_mode="custom"):
+                yield f"data: {json.dumps(chunk, ensure_ascii=False, default=str)}\n\n"  # SSE 格式发送数据
+        except Exception as e:
+            yield f"data: {json.dumps({'type': 'error', 'message': str(e)}, ensure_ascii=False, default=str)}\n\n"
+
+    def _create_context(self) -> DataAgentContext:
+        return DataAgentContext(
             embedding_client=self.embedding_client,
             column_qdrant_repository=self.column_qdrant_repository,
             value_es_repository=self.value_es_repository,
@@ -40,9 +49,24 @@ class QueryService:
             meta_mysql_repository=self.meta_mysql_repository,
             dw_mysql_repository=self.dw_mysql_repository
         )
-        state = DataAgentState(query=query, history=history or [])
-        try:
-            async for chunk in graph.astream(input=state, context=context, stream_mode="custom"):
-                yield f"data: {json.dumps(chunk, ensure_ascii=False, default=str)}\n\n"  # SSE 格式发送数据
-        except Exception as e:
-            yield f"data: {json.dumps({'type': 'error', 'message': str(e)}, ensure_ascii=False, default=str)}\n\n"
+
+    async def run_for_evaluation(self, query: str) -> dict:
+        """Run the production graph and retain the artifacts needed by an evaluator."""
+        final_state = await graph.ainvoke(
+            input=DataAgentState(query=query, history=[]),
+            context=self._create_context(),
+        )
+        result = final_state.get("result")
+        if not isinstance(result, list) or not all(isinstance(row, dict) for row in result):
+            raise RuntimeError("NL2SQL 执行后未产生表格结果")
+
+        return {
+            "query": query,
+            "resolved_query": final_state.get("query", query),
+            "sql": final_state.get("sql"),
+            "table_infos": final_state.get("table_infos", []),
+            "metric_infos": final_state.get("metric_infos", []),
+            "date_info": final_state.get("date_info"),
+            "db_info": final_state.get("db_info"),
+            "actual_rows": result,
+        }

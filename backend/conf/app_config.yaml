@@ -1,3 +1,4 @@
+# 应用运行配置：基础设施地址可按本地、测试和生产环境分别覆盖。
 logging:
   file:
     enable: true
@@ -9,6 +10,7 @@ logging:
     enable: true
     level: INFO
 
+# 元数据表存储业务表、字段和指标定义；db_dw 存储实际订单数据。
 db_meta:
   host: localhost
   port: 3307
@@ -23,6 +25,7 @@ db_dw:
   password: 178121
   database: dw
 
+# 向量维度必须与 embedding 模型的输出维度一致。
 qdrant:
   host: localhost
   port: 6333
@@ -46,3 +49,11 @@ llm:
   api_key: ${oc.env:LLM_API_KEY}
   base_url: ${oc.env:LLM_BASE_URL}
   user_agent: ${oc.env:LLM_USER_AGENT}
+
+# LLM-as-Judge 使用独立模型，避免生成模型与裁判模型相同造成自我偏置。
+# 未单独配置凭据时沿用主模型网关；评测运行前可用 JUDGE_LLM_* 覆盖。
+judge_llm:
+  model_name: ${oc.env:JUDGE_LLM_MODEL_NAME,deepseek-chat}
+  api_key: ${oc.env:JUDGE_LLM_API_KEY,${oc.env:LLM_API_KEY}}
+  base_url: ${oc.env:JUDGE_LLM_BASE_URL,${oc.env:LLM_BASE_URL}}
+  user_agent: ${oc.env:JUDGE_LLM_USER_AGENT,${oc.env:LLM_USER_AGENT}}

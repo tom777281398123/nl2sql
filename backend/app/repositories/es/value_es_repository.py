@@ -1,6 +1,6 @@
 from dataclasses import asdict
 
-from elasticsearch import AsyncElasticsearch
+from elasticsearch import AsyncElasticsearch, NotFoundError
 
 from backend.app.entities.value_info import ValueInfo
 
@@ -33,12 +33,17 @@ class ValueESRepository:
             await self.client.bulk(operations=operations)
 
     async def search(self, keyword: str, score_threshold: float = 0.6, limit: int = 5) -> list[ValueInfo]:
-        result = await self.client.search(index=self.index_name,
-                                          query={
-                                              "match": {
-                                                  "value": keyword
-                                              }
-                                          },
-                                          min_score=score_threshold,
-                                          size=limit)
+        try:
+            result = await self.client.search(index=self.index_name,
+                                              query={
+                                                  "match": {
+                                                      "value": keyword
+                                                  }
+                                              },
+                                              min_score=score_threshold,
+                                              size=limit)
+        except NotFoundError as exc:
+            raise RuntimeError(
+                f"字段取值索引 {self.index_name!r} 不存在，请先启动中间件并执行 ./run.sh build-kb"
+            ) from exc
         return [ValueInfo(**hit['_source']) for hit in result['hits']['hits']]

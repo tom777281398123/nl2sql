@@ -89,6 +89,7 @@ class AppConfig:
     embedding: EmbeddingConfig
     es: ESConfig
     llm: LLMConfig
+    judge_llm: LLMConfig
 
 
 config_file = Path(__file__).parents[2] / 'conf' / 'app_config.yaml'
