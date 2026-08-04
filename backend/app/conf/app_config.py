@@ -71,6 +71,16 @@ class ESConfig:
 
 
 @dataclass
+class RedisConfig:
+    """会话记忆 Redis 的连接与生命周期配置。"""
+    host: str
+    port: int
+    db: int
+    key_prefix: str
+    session_ttl_seconds: int
+
+
+@dataclass
 class LLMConfig:
     """OpenAI 兼容聊天模型配置。"""
     model_name: str
@@ -88,6 +98,7 @@ class AppConfig:
     qdrant: QdrantConfig
     embedding: EmbeddingConfig
     es: ESConfig
+    redis: RedisConfig
     llm: LLMConfig
     judge_llm: LLMConfig
 

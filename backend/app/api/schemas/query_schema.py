@@ -10,4 +10,9 @@ class ConversationTurnSchema(BaseModel):
 
 class QuerySchema(BaseModel):
     query: str = Field(min_length=1, max_length=2000)
+    session_id: str | None = Field(default=None, min_length=1, max_length=128)
     history: list[ConversationTurnSchema] = Field(default_factory=list, max_length=12)
+
+
+class SessionCreateSchema(BaseModel):
+    title: str = Field(default="新对话", min_length=1, max_length=40)

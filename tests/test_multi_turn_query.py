@@ -27,6 +27,11 @@ class QuerySchemaTestCase(unittest.TestCase):
 
         self.assertEqual(len(schema.history), 2)
 
+    def test_session_id_is_optional(self):
+        schema = QuerySchema(query="查询各地区销售额", session_id="session-123")
+
+        self.assertEqual(schema.session_id, "session-123")
+
     def test_history_rejects_more_than_twelve_items(self):
         history = [
             {"role": "user", "content": f"问题 {index}"}
@@ -103,6 +108,53 @@ class QueryServiceTestCase(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(fake_graph.input_state["history"], history)
         self.assertEqual(fake_graph.input_state["query"], "那华东呢？")
         self.assertIn('"type": "result"', chunks[0])
+
+    async def test_server_memory_is_used_and_persisted_for_session(self):
+        class FakeGraph:
+            async def astream(self, input, context, stream_mode):
+                self.input_state = input
+                yield {"type": "query_resolved", "query": "查询华东地区销售额"}
+                yield {"type": "result", "data": [{"销售额": 100}]}
+                yield {
+                    "type": "memory_record",
+                    "sql": "SELECT 100",
+                    "result": [{"销售额": 100}],
+                }
+
+        class FakeMemoryService:
+            def __init__(self):
+                self.recorded = None
+
+            async def prepare_context(self, session_id, query):
+                return SimpleNamespace(
+                    history=[{"role": "user", "content": "查询各地区销售额"}],
+                    estimated_tokens=20,
+                    recalled_count=0,
+                )
+
+            async def record_success(self, *args, **kwargs):
+                self.recorded = (args, kwargs)
+
+        memory_service = FakeMemoryService()
+        fake_graph = FakeGraph()
+        service = QueryService(
+            embedding_client=None,
+            column_qdrant_repository=None,
+            value_es_repository=None,
+            metric_qdrant_repository=None,
+            meta_mysql_repository=None,
+            dw_mysql_repository=None,
+            session_memory_service=memory_service,
+        )
+
+        with patch("backend.app.services.query_service.graph", fake_graph):
+            chunks = [chunk async for chunk in service.query("那华东呢？", session_id="session-1")]
+
+        self.assertEqual(fake_graph.input_state["history"][0]["content"], "查询各地区销售额")
+        self.assertIn('"type": "session"', chunks[0])
+        self.assertIn('"type": "context_resolved"', "".join(chunks))
+        self.assertNotIn("memory_record", "".join(chunks))
+        self.assertEqual(memory_service.recorded[0][:3], ("session-1", "那华东呢？", "查询华东地区销售额"))
 
 
 if __name__ == "__main__":

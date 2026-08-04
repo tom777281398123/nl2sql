@@ -1,5 +1,46 @@
 <template>
   <div class="chat-page">
+    <aside class="session-sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-mark">数</div>
+        <div>
+          <strong>掌柜问数</strong>
+          <span>会话记录</span>
+        </div>
+      </div>
+
+      <button class="sidebar-new-button" type="button" :disabled="loading" @click="createNewConversation">
+        <span aria-hidden="true">+</span>
+        新建对话
+      </button>
+
+      <div class="session-list" aria-label="会话列表">
+        <div v-if="sessionsLoading" class="session-placeholder">加载会话中...</div>
+        <div v-else-if="sessions.length === 0" class="session-placeholder">暂时没有对话</div>
+        <div
+            v-for="session in sessions"
+            :key="session.session_id"
+            :class="['session-item', {active: session.session_id === sessionId}]"
+            :aria-current="session.session_id === sessionId ? 'page' : undefined"
+            role="button"
+            tabindex="0"
+            @click="switchConversation(session.session_id)"
+            @keydown.enter="switchConversation(session.session_id)"
+        >
+          <span class="session-title">{{ session.title }}</span>
+          <span class="session-meta">{{ session.turn_count }} 次问数</span>
+          <button
+              type="button"
+              class="session-delete"
+              title="删除会话"
+              aria-label="删除会话"
+              :disabled="loading"
+              @click.stop="deleteConversation(session.session_id)"
+          >x</button>
+        </div>
+      </div>
+    </aside>
+
     <main class="chat-shell">
       <div class="chat-header">
         <div>
@@ -10,8 +51,8 @@
           <button
               type="button"
               class="new-chat-button"
-              :disabled="loading || messages.length === 0"
-              @click="startNewConversation"
+              :disabled="loading"
+              @click="createNewConversation"
           >
             新对话
           </button>
@@ -19,7 +60,9 @@
         </div>
       </div>
 
-      <div ref="messagesEl" class="messages">
+      <div class="conversation-panel" :class="{ 'is-switching': isSwitching }">
+        <Transition name="conversation" mode="out-in">
+          <div :key="conversationVersion" ref="messagesEl" class="messages">
         <div v-if="messages.length === 0" class="empty-state">
           <h2>开始一次查询</h2>
           <p>例如：查询一下订单的营业额</p>
@@ -42,6 +85,15 @@
                 <span class="dot" :class="step.status"></span>
                 <span>{{ step.text }}</span>
               </div>
+              <div v-if="msg.resolvedQuery" class="resolved-query">
+                <span>已理解为</span>
+                {{ msg.resolvedQuery }}
+              </div>
+            </div>
+
+            <div v-else-if="msg.type === 'context'" class="resolved-query restored-context">
+              <span>已理解为</span>
+              {{ msg.content }}
             </div>
 
             <div v-else-if="msg.type === 'table'" class="table-wrap">
@@ -70,6 +122,13 @@
 
           <div v-if="msg.role === 'user'" class="avatar user-avatar">我</div>
         </div>
+          </div>
+        </Transition>
+
+        <div v-if="isSwitching" class="conversation-switching" aria-live="polite">
+          <span class="switching-spinner" aria-hidden="true"></span>
+          正在打开会话
+        </div>
       </div>
 
       <div class="input-wrapper">
@@ -89,19 +148,20 @@
 </template>
 
 <script setup>
-import {nextTick, ref} from "vue";
+import {nextTick, onMounted, ref} from "vue";
 
 const API_URL = import.meta.env.VITE_API_URL || "/api/query";
+const SESSION_API_URL = API_URL.replace(/\/query$/, "/sessions");
 
 const question = ref("");
 const loading = ref(false);
 const messages = ref([]);
-const conversationHistory = ref([]);
 const messagesEl = ref(null);
-
-const MAX_HISTORY_ITEMS = 12;
-const MAX_RESULT_ROWS_IN_HISTORY = 30;
-const MAX_HISTORY_CONTENT_LENGTH = 7500;
+const sessionId = ref(null);
+const sessions = ref([]);
+const sessionsLoading = ref(true);
+const isSwitching = ref(false);
+const conversationVersion = ref(0);
 
 function scrollToBottom() {
   const el = messagesEl.value;
@@ -109,29 +169,66 @@ function scrollToBottom() {
   el.scrollTop = el.scrollHeight;
 }
 
-function startNewConversation() {
-  if (loading.value) return;
-  question.value = "";
-  messages.value = [];
-  conversationHistory.value = [];
+async function requestJson(url, options = {}) {
+  const response = await fetch(url, options);
+  if (!response.ok) throw new Error(`请求失败：${response.status}`);
+  return response.status === 204 ? null : response.json();
 }
 
-function summarizeResultForHistory(rows) {
-  if (!rows.length) return "查询结果为空。";
+async function loadSessions() {
+  const data = await requestJson(SESSION_API_URL);
+  sessions.value = data.sessions || [];
+}
 
-  const preview = rows.slice(0, MAX_RESULT_ROWS_IN_HISTORY);
-  const omitted = rows.length - preview.length;
-  const suffix = omitted > 0 ? `；其余 ${omitted} 行未写入对话上下文。` : "";
-  return `查询结果（共 ${rows.length} 行）：${JSON.stringify(preview)}${suffix}`
-      .slice(0, MAX_HISTORY_CONTENT_LENGTH);
+async function createNewConversation() {
+  if (loading.value) return;
+  const session = await requestJson(SESSION_API_URL, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({title: "新对话"}),
+  });
+  question.value = "";
+  messages.value = [];
+  sessionId.value = session.session_id;
+  conversationVersion.value += 1;
+  sessions.value = [{...session, turn_count: 0}, ...sessions.value];
+  await nextTick();
+  scrollToBottom();
+}
+
+async function switchConversation(nextSessionId) {
+  if (loading.value || isSwitching.value || nextSessionId === sessionId.value) return;
+  isSwitching.value = true;
+  try {
+    const data = await requestJson(`${SESSION_API_URL}/${nextSessionId}`);
+    sessionId.value = nextSessionId;
+    messages.value = data.messages || [];
+    conversationVersion.value += 1;
+    question.value = "";
+    await nextTick();
+    scrollToBottom();
+  } finally {
+    isSwitching.value = false;
+  }
+}
+
+async function deleteConversation(targetSessionId) {
+  if (loading.value) return;
+  await requestJson(`${SESSION_API_URL}/${targetSessionId}`, {method: "DELETE"});
+  sessions.value = sessions.value.filter((session) => session.session_id !== targetSessionId);
+  if (sessionId.value !== targetSessionId) return;
+  if (sessions.value.length > 0) {
+    await switchConversation(sessions.value[0].session_id);
+  } else {
+    await createNewConversation();
+  }
 }
 
 async function sendQuestion() {
   if (!question.value || loading.value) return;
+  if (!sessionId.value) await createNewConversation();
 
   const q = question.value;
-  const requestHistory = conversationHistory.value.slice(-MAX_HISTORY_ITEMS);
-  let assistantHistoryContent = "";
   question.value = "";
   loading.value = true;
 
@@ -143,6 +240,7 @@ async function sendQuestion() {
         role: "assistant",
         type: "steps",
         steps: [],
+        resolvedQuery: "",
       }) - 1;
 
   await nextTick();
@@ -157,7 +255,7 @@ async function sendQuestion() {
       },
       body: JSON.stringify({
         query: q,
-        history: requestHistory,
+        session_id: sessionId.value,
       }),
     });
 
@@ -192,8 +290,12 @@ async function sendQuestion() {
 
         const steps = messages.value[stepIndex].steps;
 
+        if (data.type === "session" && data.session_id) {
+          sessionId.value = data.session_id;
+        }
+
         // ✅ progress：完全按后端状态渲染
-        if (data.type === "progress") {
+        else if (data.type === "progress") {
           let step = steps.find((s) => s.text === data.step);
 
           if (!step) {
@@ -207,9 +309,12 @@ async function sendQuestion() {
           }
         }
 
+        else if (data.type === "context_resolved") {
+          messages.value[stepIndex].resolvedQuery = data.query || "";
+        }
+
         // ✅ 表格结果
         else if (data.type === "result" && Array.isArray(data.data)) {
-          assistantHistoryContent = summarizeResultForHistory(data.data);
           messages.value.push({
             role: "assistant",
             type: data.data.length ? "table" : "text",
@@ -221,7 +326,6 @@ async function sendQuestion() {
 
         // ✅ 错误
         else if (data.type === "error") {
-          assistantHistoryContent = `查询失败：${data.message || "发生错误"}`;
           messages.value.push({
             role: "assistant",
             type: "error",
@@ -240,7 +344,6 @@ async function sendQuestion() {
         try {
           const data = JSON.parse(payload);
           if (data.type === "error") {
-            assistantHistoryContent = `查询失败：${data.message || "发生错误"}`;
             messages.value.push({
               role: "assistant",
               type: "error",
@@ -253,30 +356,33 @@ async function sendQuestion() {
       }
     }
   } catch (e) {
-    assistantHistoryContent = `请求失败：${e?.message || "请求失败"}`;
     messages.value.push({
       role: "assistant",
       type: "error",
       content: e?.message || "请求失败",
     });
   } finally {
-    const completedTurn = [{role: "user", content: q}];
-    if (assistantHistoryContent) {
-      completedTurn.push({
-        role: "assistant",
-        content: assistantHistoryContent.slice(0, MAX_HISTORY_CONTENT_LENGTH),
-      });
-    }
-    conversationHistory.value = [
-      ...conversationHistory.value,
-      ...completedTurn,
-    ].slice(-MAX_HISTORY_ITEMS);
-
     loading.value = false;
+    await loadSessions();
     await nextTick();
     scrollToBottom();
   }
 }
+
+onMounted(async () => {
+  try {
+    await loadSessions();
+    if (sessions.value.length > 0) {
+      await switchConversation(sessions.value[0].session_id);
+    } else {
+      await createNewConversation();
+    }
+  } catch (error) {
+    messages.value = [{role: "assistant", type: "error", content: "会话服务暂不可用"}];
+  } finally {
+    sessionsLoading.value = false;
+  }
+});
 
 function parseSseData(eventText) {
   return eventText
@@ -311,18 +417,189 @@ function parseSseData(eventText) {
 .chat-page {
   height: 100%;
   overflow: hidden;
-  background:
-      linear-gradient(180deg, #f8fafc 0%, #ffffff 34%, #f5f7fb 100%);
+  display: grid;
+  grid-template-columns: 264px minmax(0, 1fr);
+  background: #f6f7f9;
+}
+
+.session-sidebar {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 12px 14px;
+  background: #ffffff;
+  border-right: 1px solid #e4e7ec;
+  box-sizing: border-box;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px 18px;
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  background: #1677ff;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 7px;
+}
+
+.sidebar-brand strong,
+.sidebar-brand span {
+  display: block;
+}
+
+.sidebar-brand strong {
+  color: #1d2939;
+  font-size: 15px;
+}
+
+.sidebar-brand span {
+  margin-top: 2px;
+  color: #98a2b3;
+  font-size: 12px;
+}
+
+.sidebar-new-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  height: 38px;
+  margin-bottom: 14px;
+  border: 1px solid #c8d7f1;
+  border-radius: 7px;
+  background: #eff6ff;
+  color: #175cd3;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.sidebar-new-button span {
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.sidebar-new-button:hover:not(:disabled) {
+  background: #dbeafe;
+}
+
+.sidebar-new-button:disabled,
+.session-delete:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.session-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 2px;
+  scrollbar-gutter: stable;
+}
+
+.session-placeholder {
+  padding: 28px 8px;
+  color: #98a2b3;
+  font-size: 13px;
+  text-align: center;
+}
+
+.session-item {
+  position: relative;
+  display: block;
+  min-width: 0;
+  margin-bottom: 4px;
+  padding: 10px 32px 10px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #475467;
+  cursor: pointer;
+  outline: none;
+}
+
+.session-item:hover,
+.session-item:focus-visible {
+  background: #f8fafc;
+  border-color: #eaecf0;
+}
+
+.session-item.active {
+  background: #eaf2ff;
+  border-color: #c7ddff;
+  color: #175cd3;
+}
+
+.session-title,
+.session-meta {
+  display: block;
+}
+
+.session-title {
+  overflow: hidden;
+  color: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.session-meta {
+  margin-top: 4px;
+  color: #98a2b3;
+  font-size: 11px;
+}
+
+.session-delete {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #98a2b3;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(-50%);
+}
+
+.session-item:hover .session-delete,
+.session-item:focus-within .session-delete,
+.session-item.active .session-delete {
+  opacity: 1;
+}
+
+.session-delete:hover:not(:disabled) {
+  background: #fee4e2;
+  color: #d92d20;
 }
 
 .chat-shell {
   width: min(100%, 1080px);
   height: 100%;
+  min-height: 0;
   margin: 0 auto;
   display: grid;
   grid-template-rows: auto 1fr auto;
   padding: 28px 24px 22px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .chat-header {
@@ -388,11 +665,89 @@ function parseSseData(eventText) {
   letter-spacing: 0;
 }
 
+.conversation-panel {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .messages {
+  height: 100%;
   overflow-y: auto;
   min-height: 0;
   padding: 18px 4px 28px;
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #b8c2d1 transparent;
+}
+
+.messages::-webkit-scrollbar,
+.session-list::-webkit-scrollbar {
+  width: 9px;
+}
+
+.messages::-webkit-scrollbar-thumb,
+.session-list::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+  background-color: #b8c2d1;
+}
+
+.messages::-webkit-scrollbar-track,
+.session-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.conversation-switching {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 8px 18px rgba(16, 24, 40, 0.12);
+  color: #475467;
+  font-size: 13px;
+  font-weight: 600;
+  transform: translateX(-50%);
+}
+
+.switching-spinner {
+  width: 13px;
+  height: 13px;
+  border: 2px solid #c7ddff;
+  border-top-color: #1677ff;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+.conversation-panel.is-switching .messages {
+  opacity: 0.42;
+  transform: translateY(4px);
+}
+
+.conversation-enter-active,
+.conversation-leave-active {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.conversation-enter-from,
+.conversation-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .empty-state {
@@ -476,6 +831,26 @@ function parseSseData(eventText) {
   flex-direction: column;
   gap: 10px;
   min-width: 180px;
+}
+
+.resolved-query {
+  margin-top: 4px;
+  padding: 8px 10px;
+  border-left: 3px solid #84adff;
+  background: #f2f7ff;
+  color: #344054;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.resolved-query span {
+  margin-right: 6px;
+  color: #175cd3;
+  font-weight: 700;
+}
+
+.restored-context {
+  margin: 0;
 }
 
 .step {
@@ -602,6 +977,49 @@ function parseSseData(eventText) {
 }
 
 @media (max-width: 720px) {
+  .chat-page {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .session-sidebar {
+    min-height: 0;
+    padding: 10px 12px;
+    border-right: none;
+    border-bottom: 1px solid #e4e7ec;
+  }
+
+  .sidebar-brand {
+    display: none;
+  }
+
+  .sidebar-new-button {
+    display: none;
+  }
+
+  .session-list {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0;
+  }
+
+  .session-item {
+    flex: 0 0 148px;
+    margin: 0;
+    padding-right: 26px;
+  }
+
+  .session-placeholder {
+    padding: 6px 8px;
+    text-align: left;
+  }
+
+  .session-delete {
+    opacity: 1;
+  }
+
   .chat-shell {
     padding: 18px 14px 14px;
   }
