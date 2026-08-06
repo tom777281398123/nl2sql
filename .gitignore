@@ -2,6 +2,7 @@
 resources/doc/
 output/
 logs/
+eval/reports/
 docker/data/
 docker/bak/
 # 本地 embedding 模型(~1.2G,不入库)

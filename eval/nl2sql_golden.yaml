@@ -1,0 +1,1356 @@
+version: 1
+description: 固定 dw 种子数据上的端到端 NL2SQL 结果黄金集。
+_column_aliases:
+  sales: &sales_aliases [total_sales_amount, total_sales, order_amount, gmv, GMV, 销售额, 总销售额, 订单总额, 成交总额]
+  count: &count_aliases [order_total_count, total_order_count, total_orders, 订单数, 订单数量]
+  quantity: &quantity_aliases [total_order_quantity, total_quantity, sales_quantity, 销量, 总销量]
+  average: &average_aliases [average_order_amount, avg_amount, aov, AOV, 平均订单金额, 平均销售额]
+  month: &month_aliases [月份]
+  region: &region_aliases [region, 地区, 区域, 大区]
+  province: &province_aliases [省份]
+  gender: &gender_aliases [性别]
+  member_level: &member_level_aliases [会员等级, 用户等级]
+  category: &category_aliases [商品类别, 品类, 分类]
+  brand: &brand_aliases [品牌, 品牌名称]
+  product: &product_aliases [商品名称, 产品名称]
+  customer: &customer_aliases [客户名称, 用户名称]
+  date: &date_aliases [日期, 下单日期]
+cases:
+  - id: g001_total_sales
+    category: aggregate
+    difficulty: easy
+    query: 查询订单总销售额
+    expected_rows:
+      - sales_amount: 279159.5
+    column_aliases:
+      sales_amount: [total_sales_amount]
+
+  - id: g002_sales_by_region
+    category: grouping
+    difficulty: medium
+    query: 统计2025年各地区的销售额，按销售额从高到低排序
+    ordered: true
+    column_aliases:
+      region_name: [地区]
+      sales_amount: [销售额]
+    expected_rows:
+      - region_name: 华东
+        sales_amount: 107373.0
+      - region_name: 华南
+        sales_amount: 70202.0
+      - region_name: 华北
+        sales_amount: 41099.5
+      - region_name: 西南
+        sales_amount: 31528.0
+      - region_name: 华中
+        sales_amount: 28957.0
+
+  - id: g003_east_china_sales
+    category: region_filter
+    difficulty: easy
+    query: 查询华东地区2025年的销售额
+    expected_rows:
+      - sales_amount: 107373.0
+
+  - id: g004_order_count
+    category: aggregate
+    difficulty: easy
+    query: 统计订单总数
+    expected_rows:
+      - order_count: 115
+    column_aliases:
+      order_count: [order_total_count]
+
+  - id: g005_total_quantity
+    category: aggregate
+    difficulty: easy
+    query: 统计订单总销量
+    expected_rows:
+      - order_quantity: 622
+    column_aliases:
+      order_quantity: [total_order_quantity]
+
+  - id: g006_sales_by_category
+    category: grouping
+    difficulty: medium
+    query: 统计2025年各商品类别的销售额，按销售额从高到低排序
+    ordered: true
+    expected_rows:
+      - category: 手机数码
+        sales_amount: 194771.0
+      - category: 家用电器
+        sales_amount: 60788.0
+      - category: 鞋靴
+        sales_amount: 13188.0
+      - category: 服饰
+        sales_amount: 6683.0
+      - category: 食品饮料
+        sales_amount: 2490.0
+      - category: 休闲零食
+        sales_amount: 1239.5
+
+  - id: g007_digital_category_sales
+    category: category_filter
+    difficulty: easy
+    query: 查询手机数码品类的销售额
+    expected_rows:
+      - sales_amount: 194771.0
+
+  - id: g008_zhejiang_sales
+    category: province_filter
+    difficulty: medium
+    query: 查询浙江省的销售额
+    expected_rows:
+      - sales_amount: 47163.0
+
+  - id: g009_female_customer_sales
+    category: customer_filter
+    difficulty: medium
+    query: 查询女性客户的销售额
+    expected_rows:
+      - sales_amount: 143789.0
+
+  - id: g010_gold_member_sales
+    category: customer_filter
+    difficulty: medium
+    query: 查询黄金会员的销售额
+    expected_rows:
+      - sales_amount: 100178.5
+
+  - id: g011_top_three_brands
+    category: ranking
+    difficulty: hard
+    query: 统计销售额最高的3个品牌
+    ordered: true
+    expected_rows:
+      - brand: 苹果
+        sales_amount: 71992.0
+      - brand: 三星
+        sales_amount: 56994.0
+      - brand: 华为
+        sales_amount: 55992.0
+
+  - id: g012_top_three_products
+    category: ranking
+    difficulty: hard
+    query: 统计销售额最高的3个商品
+    ordered: true
+    allow_extra_columns: true
+    expected_rows:
+      - product_name: iPhone 15 Pro
+        sales_amount: 71992.0
+      - product_name: Galaxy S24 Ultra
+        sales_amount: 56994.0
+      - product_name: Mate 60 Pro
+        sales_amount: 55992.0
+
+  - id: g013_order_count_by_gender
+    category: grouping
+    difficulty: medium
+    query: 按性别统计订单数量
+    expected_rows:
+      - gender: 男
+        order_count: 53
+      - gender: 女
+        order_count: 62
+
+  - id: g014_top_three_provinces
+    category: ranking
+    difficulty: hard
+    query: 统计销售额最高的3个省份
+    ordered: true
+    expected_rows:
+      - province: 广东省
+        sales_amount: 70202.0
+      - province: 上海市
+        sales_amount: 60210.0
+      - province: 浙江省
+        sales_amount: 47163.0
+
+  - id: g015_empty_brand_result
+    category: empty_result
+    difficulty: medium
+    query: 查询索尼品牌的订单数量
+    expected_rows:
+      - order_count: 0
+
+  - id: g016_monthly_sales
+    category: time_grouping
+    difficulty: medium
+    query: 按月份统计2025年第一季度销售额，按月份升序排列
+    ordered: true
+    column_aliases:
+      month: *month_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - month: 1
+        sales_amount: 109030.5
+      - month: 2
+        sales_amount: 80009.0
+      - month: 3
+        sales_amount: 90120.0
+
+  - id: g017_monthly_order_count
+    category: time_grouping
+    difficulty: medium
+    query: 按月份统计2025年第一季度订单数量，按月份升序排列
+    ordered: true
+    column_aliases:
+      month: *month_aliases
+      order_count: *count_aliases
+    expected_rows:
+      - month: 1
+        order_count: 40
+      - month: 2
+        order_count: 33
+      - month: 3
+        order_count: 42
+
+  - id: g018_monthly_quantity
+    category: time_grouping
+    difficulty: medium
+    query: 按月份统计2025年第一季度销量，按月份升序排列
+    ordered: true
+    column_aliases:
+      month: *month_aliases
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - month: 1
+        order_quantity: 149
+      - month: 2
+        order_quantity: 151
+      - month: 3
+        order_quantity: 322
+
+  - id: g019_january_sales
+    category: time_filter
+    difficulty: easy
+    query: 查询2025年1月的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 109030.5
+
+  - id: g020_february_sales
+    category: time_filter
+    difficulty: easy
+    query: 查询2025年2月的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 80009.0
+
+  - id: g021_march_sales
+    category: time_filter
+    difficulty: easy
+    query: 查询2025年3月的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 90120.0
+
+  - id: g022_january_order_count
+    category: time_filter
+    difficulty: easy
+    query: 查询2025年1月的订单数量
+    column_aliases:
+      order_count: *count_aliases
+    expected_rows:
+      - order_count: 40
+
+  - id: g023_february_order_count
+    category: time_filter
+    difficulty: easy
+    query: 查询2025年2月的订单数量
+    column_aliases:
+      order_count: *count_aliases
+    expected_rows:
+      - order_count: 33
+
+  - id: g024_march_order_count
+    category: time_filter
+    difficulty: easy
+    query: 查询2025年3月的订单数量
+    column_aliases:
+      order_count: *count_aliases
+    expected_rows:
+      - order_count: 42
+
+  - id: g025_january_quantity
+    category: time_filter
+    difficulty: easy
+    query: 查询2025年1月的总销量
+    column_aliases:
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - order_quantity: 149
+
+  - id: g026_february_quantity
+    category: time_filter
+    difficulty: easy
+    query: 查询2025年2月的总销量
+    column_aliases:
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - order_quantity: 151
+
+  - id: g027_march_quantity
+    category: time_filter
+    difficulty: easy
+    query: 查询2025年3月的总销量
+    column_aliases:
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - order_quantity: 322
+
+  - id: g028_south_china_sales
+    category: region_filter
+    difficulty: easy
+    query: 查询华南地区2025年的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 70202.0
+
+  - id: g029_north_china_sales
+    category: region_filter
+    difficulty: easy
+    query: 查询华北地区2025年的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 41099.5
+
+  - id: g030_southwest_sales
+    category: region_filter
+    difficulty: easy
+    query: 查询西南地区2025年的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 31528.0
+
+  - id: g031_central_china_sales
+    category: region_filter
+    difficulty: easy
+    query: 查询华中地区2025年的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 28957.0
+
+  - id: g032_order_count_by_region
+    category: grouping
+    difficulty: medium
+    query: 按大区统计订单数量，按订单数量从高到低排序
+    ordered: true
+    column_aliases:
+      region_name: *region_aliases
+      order_count: *count_aliases
+    expected_rows:
+      - region_name: 华东
+        order_count: 44
+      - region_name: 华南
+        order_count: 26
+      - region_name: 华北
+        order_count: 19
+      - region_name: 西南
+        order_count: 14
+      - region_name: 华中
+        order_count: 12
+
+  - id: g033_quantity_by_region
+    category: grouping
+    difficulty: medium
+    query: 按大区统计销量，按销量从高到低排序
+    ordered: true
+    column_aliases:
+      region_name: *region_aliases
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - region_name: 华东
+        order_quantity: 235
+      - region_name: 华南
+        order_quantity: 132
+      - region_name: 西南
+        order_quantity: 90
+      - region_name: 华中
+        order_quantity: 83
+      - region_name: 华北
+        order_quantity: 82
+
+  - id: g034_average_order_amount_by_region
+    category: grouping
+    difficulty: hard
+    query: 按大区统计平均订单金额，按平均订单金额从高到低排序
+    ordered: true
+    column_aliases:
+      region_name: *region_aliases
+      avg_order_amount: *average_aliases
+    expected_rows:
+      - region_name: 华南
+        avg_order_amount: 2700.08
+      - region_name: 华东
+        avg_order_amount: 2440.3
+      - region_name: 华中
+        avg_order_amount: 2413.08
+      - region_name: 西南
+        avg_order_amount: 2252.0
+      - region_name: 华北
+        avg_order_amount: 2163.13
+
+  - id: g035_sales_by_province
+    category: grouping
+    difficulty: medium
+    query: 按省份统计销售额，按销售额从高到低排序
+    ordered: true
+    column_aliases:
+      province: *province_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - province: 广东省
+        sales_amount: 70202.0
+      - province: 上海市
+        sales_amount: 60210.0
+      - province: 浙江省
+        sales_amount: 47163.0
+      - province: 北京市
+        sales_amount: 41099.5
+      - province: 四川省
+        sales_amount: 31528.0
+      - province: 湖北省
+        sales_amount: 28957.0
+
+  - id: g036_guangdong_sales
+    category: province_filter
+    difficulty: easy
+    query: 查询广东省的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 70202.0
+
+  - id: g037_shanghai_sales
+    category: province_filter
+    difficulty: easy
+    query: 查询上海市的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 60210.0
+
+  - id: g038_beijing_sales
+    category: province_filter
+    difficulty: easy
+    query: 查询北京市的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 41099.5
+
+  - id: g039_sichuan_sales
+    category: province_filter
+    difficulty: easy
+    query: 查询四川省的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 31528.0
+
+  - id: g040_hubei_sales
+    category: province_filter
+    difficulty: easy
+    query: 查询湖北省的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 28957.0
+
+  - id: g041_order_count_by_province
+    category: grouping
+    difficulty: medium
+    query: 按省份统计订单数量
+    column_aliases:
+      province: *province_aliases
+      order_count: *count_aliases
+    expected_rows:
+      - province: 广东省
+        order_count: 26
+      - province: 上海市
+        order_count: 25
+      - province: 浙江省
+        order_count: 19
+      - province: 北京市
+        order_count: 19
+      - province: 四川省
+        order_count: 14
+      - province: 湖北省
+        order_count: 12
+
+  - id: g042_quantity_by_province
+    category: grouping
+    difficulty: medium
+    query: 按省份统计总销量
+    column_aliases:
+      province: *province_aliases
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - province: 广东省
+        order_quantity: 132
+      - province: 上海市
+        order_quantity: 155
+      - province: 浙江省
+        order_quantity: 80
+      - province: 北京市
+        order_quantity: 82
+      - province: 四川省
+        order_quantity: 90
+      - province: 湖北省
+        order_quantity: 83
+
+  - id: g043_sales_by_gender
+    category: grouping
+    difficulty: medium
+    query: 按客户性别统计销售额
+    column_aliases:
+      gender: *gender_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - gender: 女
+        sales_amount: 143789.0
+      - gender: 男
+        sales_amount: 135370.5
+
+  - id: g044_male_customer_sales
+    category: customer_filter
+    difficulty: medium
+    query: 查询男性客户的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 135370.5
+
+  - id: g045_quantity_by_gender
+    category: grouping
+    difficulty: medium
+    query: 按客户性别统计销量
+    column_aliases:
+      gender: *gender_aliases
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - gender: 女
+        order_quantity: 339
+      - gender: 男
+        order_quantity: 283
+
+  - id: g046_average_order_amount_by_gender
+    category: grouping
+    difficulty: hard
+    query: 按客户性别统计平均订单金额
+    column_aliases:
+      gender: *gender_aliases
+      avg_order_amount: *average_aliases
+    expected_rows:
+      - gender: 女
+        avg_order_amount: 2319.18
+      - gender: 男
+        avg_order_amount: 2554.16
+
+  - id: g047_sales_by_member_level
+    category: grouping
+    difficulty: medium
+    query: 按会员等级统计销售额，按销售额从高到低排序
+    ordered: true
+    column_aliases:
+      member_level: *member_level_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - member_level: 黄金
+        sales_amount: 100178.5
+      - member_level: 白银
+        sales_amount: 71094.0
+      - member_level: 铂金
+        sales_amount: 57679.0
+      - member_level: 青铜
+        sales_amount: 50208.0
+
+  - id: g048_silver_member_sales
+    category: customer_filter
+    difficulty: medium
+    query: 查询白银会员的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 71094.0
+
+  - id: g049_platinum_member_sales
+    category: customer_filter
+    difficulty: medium
+    query: 查询铂金会员的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 57679.0
+
+  - id: g050_bronze_member_sales
+    category: customer_filter
+    difficulty: medium
+    query: 查询青铜会员的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 50208.0
+
+  - id: g051_order_count_by_member_level
+    category: grouping
+    difficulty: medium
+    query: 按会员等级统计订单数量
+    column_aliases:
+      member_level: *member_level_aliases
+      order_count: *count_aliases
+    expected_rows:
+      - member_level: 黄金
+        order_count: 34
+      - member_level: 白银
+        order_count: 30
+      - member_level: 铂金
+        order_count: 25
+      - member_level: 青铜
+        order_count: 26
+
+  - id: g052_quantity_by_member_level
+    category: grouping
+    difficulty: medium
+    query: 按会员等级统计销量
+    column_aliases:
+      member_level: *member_level_aliases
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - member_level: 黄金
+        order_quantity: 138
+      - member_level: 白银
+        order_quantity: 183
+      - member_level: 铂金
+        order_quantity: 129
+      - member_level: 青铜
+        order_quantity: 172
+
+  - id: g053_average_order_amount_by_member_level
+    category: grouping
+    difficulty: hard
+    query: 按会员等级统计平均订单金额
+    column_aliases:
+      member_level: *member_level_aliases
+      avg_order_amount: *average_aliases
+    expected_rows:
+      - member_level: 黄金
+        avg_order_amount: 2946.43
+      - member_level: 白银
+        avg_order_amount: 2369.8
+      - member_level: 铂金
+        avg_order_amount: 2307.16
+      - member_level: 青铜
+        avg_order_amount: 1931.08
+
+  - id: g054_order_count_by_category
+    category: grouping
+    difficulty: medium
+    query: 按商品品类统计订单数量
+    column_aliases:
+      category: *category_aliases
+      order_count: *count_aliases
+    expected_rows:
+      - category: 手机数码
+        order_count: 29
+      - category: 家用电器
+        order_count: 19
+      - category: 鞋靴
+        order_count: 12
+      - category: 服饰
+        order_count: 12
+      - category: 食品饮料
+        order_count: 22
+      - category: 休闲零食
+        order_count: 21
+
+  - id: g055_quantity_by_category
+    category: grouping
+    difficulty: medium
+    query: 按商品品类统计销量
+    column_aliases:
+      category: *category_aliases
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - category: 手机数码
+        order_quantity: 29
+      - category: 家用电器
+        order_quantity: 19
+      - category: 鞋靴
+        order_quantity: 12
+      - category: 服饰
+        order_quantity: 18
+      - category: 食品饮料
+        order_quantity: 246
+      - category: 休闲零食
+        order_quantity: 298
+
+  - id: g056_average_order_amount_by_category
+    category: grouping
+    difficulty: hard
+    query: 按商品品类统计平均订单金额
+    column_aliases:
+      category: *category_aliases
+      avg_order_amount: *average_aliases
+    expected_rows:
+      - category: 手机数码
+        avg_order_amount: 6716.24
+      - category: 家用电器
+        avg_order_amount: 3199.37
+      - category: 鞋靴
+        avg_order_amount: 1099.0
+      - category: 服饰
+        avg_order_amount: 556.92
+      - category: 食品饮料
+        avg_order_amount: 113.18
+      - category: 休闲零食
+        avg_order_amount: 59.02
+
+  - id: g057_home_appliance_sales
+    category: category_filter
+    difficulty: easy
+    query: 查询家用电器品类的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 60788.0
+
+  - id: g058_footwear_sales
+    category: category_filter
+    difficulty: easy
+    query: 查询鞋靴品类的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 13188.0
+
+  - id: g059_clothing_sales
+    category: category_filter
+    difficulty: easy
+    query: 查询服饰品类的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 6683.0
+
+  - id: g060_food_beverage_sales
+    category: category_filter
+    difficulty: easy
+    query: 查询食品饮料品类的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 2490.0
+
+  - id: g061_snack_sales
+    category: category_filter
+    difficulty: easy
+    query: 查询休闲零食品类的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 1239.5
+
+  - id: g062_first_quarter_gmv
+    category: metric
+    difficulty: medium
+    query: 查询2025年第一季度的GMV
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 279159.5
+
+  - id: g063_first_quarter_aov
+    category: metric
+    difficulty: medium
+    query: 查询2025年第一季度的平均订单金额AOV
+    column_aliases:
+      avg_order_amount: *average_aliases
+    expected_rows:
+      - avg_order_amount: 2427.47
+
+  - id: g064_high_value_order_count
+    category: range_filter
+    difficulty: medium
+    query: 统计订单金额大于等于5000元的订单数量
+    column_aliases:
+      order_count: *count_aliases
+    expected_rows:
+      - order_count: 28
+
+  - id: g065_high_value_order_sales
+    category: range_filter
+    difficulty: medium
+    query: 统计订单金额大于等于5000元的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 217972.0
+
+  - id: g066_bulk_order_count
+    category: range_filter
+    difficulty: medium
+    query: 统计购买数量大于等于10件的订单数量
+    column_aliases:
+      order_count: *count_aliases
+    expected_rows:
+      - order_count: 27
+
+  - id: g067_bulk_order_quantity
+    category: range_filter
+    difficulty: medium
+    query: 统计购买数量大于等于10件的订单总销量
+    column_aliases:
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - order_quantity: 444
+
+  - id: g068_low_value_order_count
+    category: range_filter
+    difficulty: medium
+    query: 统计订单金额低于100元的订单数量
+    column_aliases:
+      order_count: *count_aliases
+    expected_rows:
+      - order_count: 27
+
+  - id: g069_low_value_order_sales
+    category: range_filter
+    difficulty: medium
+    query: 统计订单金额低于100元的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 1554.5
+
+  - id: g070_max_order_amount
+    category: extrema
+    difficulty: easy
+    query: 查询最高的单笔订单金额
+    column_aliases:
+      order_amount: [max_order_amount, 最高订单金额]
+    expected_rows:
+      - order_amount: 9499.0
+
+  - id: g071_min_order_amount
+    category: extrema
+    difficulty: easy
+    query: 查询最低的单笔订单金额
+    column_aliases:
+      order_amount: [min_order_amount, 最低订单金额]
+    expected_rows:
+      - order_amount: 30.0
+
+  - id: g072_max_order_quantity
+    category: extrema
+    difficulty: easy
+    query: 查询单笔订单中的最大购买数量
+    column_aliases:
+      order_quantity: [max_order_quantity, 最大购买数量]
+    expected_rows:
+      - order_quantity: 30
+
+  - id: g073_sales_by_brand
+    category: grouping
+    difficulty: hard
+    query: 按品牌统计销售额
+    column_aliases:
+      brand: *brand_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - brand: 苹果
+        sales_amount: 71992.0
+      - brand: 三星
+        sales_amount: 56994.0
+      - brand: 华为
+        sales_amount: 55992.0
+      - brand: 戴森
+        sales_amount: 32994.0
+      - brand: 美的
+        sales_amount: 22400.0
+      - brand: 亚马逊
+        sales_amount: 9793.0
+      - brand: 阿迪达斯
+        sales_amount: 7794.0
+      - brand: 耐克
+        sales_amount: 5394.0
+      - brand: Instant Pot
+        sales_amount: 5394.0
+      - brand: 李维斯
+        sales_amount: 4792.0
+      - brand: 优衣库
+        sales_amount: 1891.0
+      - brand: 雀巢
+        sales_amount: 1575.0
+      - brand: 蒙牛
+        sales_amount: 915.0
+      - brand: 乐事
+        sales_amount: 655.0
+      - brand: 奥利奥
+        sales_amount: 584.5
+
+  - id: g074_dyson_sales
+    category: brand_filter
+    difficulty: easy
+    query: 查询戴森品牌的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 32994.0
+
+  - id: g075_midea_order_count
+    category: brand_filter
+    difficulty: easy
+    query: 查询美的品牌的订单数量
+    column_aliases:
+      order_count: *count_aliases
+    expected_rows:
+      - order_count: 7
+
+  - id: g076_top_three_brands_by_quantity
+    category: ranking
+    difficulty: hard
+    query: 统计销量最高的3个品牌
+    ordered: true
+    column_aliases:
+      brand: *brand_aliases
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - brand: 蒙牛
+        order_quantity: 183
+      - brand: 奥利奥
+        order_quantity: 167
+      - brand: 乐事
+        order_quantity: 131
+
+  - id: g077_order_count_by_brand
+    category: grouping
+    difficulty: hard
+    query: 按品牌统计订单数量
+    column_aliases:
+      brand: *brand_aliases
+      order_count: *count_aliases
+    expected_rows:
+      - brand: 苹果
+        order_count: 8
+      - brand: 三星
+        order_count: 6
+      - brand: 华为
+        order_count: 8
+      - brand: 戴森
+        order_count: 6
+      - brand: 美的
+        order_count: 7
+      - brand: 亚马逊
+        order_count: 7
+      - brand: 阿迪达斯
+        order_count: 6
+      - brand: 耐克
+        order_count: 6
+      - brand: Instant Pot
+        order_count: 6
+      - brand: 李维斯
+        order_count: 6
+      - brand: 优衣库
+        order_count: 6
+      - brand: 雀巢
+        order_count: 11
+      - brand: 蒙牛
+        order_count: 11
+      - brand: 乐事
+        order_count: 11
+      - brand: 奥利奥
+        order_count: 10
+
+  - id: g078_quantity_by_brand
+    category: grouping
+    difficulty: hard
+    query: 按品牌统计销量
+    column_aliases:
+      brand: *brand_aliases
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - brand: 苹果
+        order_quantity: 8
+      - brand: 三星
+        order_quantity: 6
+      - brand: 华为
+        order_quantity: 8
+      - brand: 戴森
+        order_quantity: 6
+      - brand: 美的
+        order_quantity: 7
+      - brand: 亚马逊
+        order_quantity: 7
+      - brand: 阿迪达斯
+        order_quantity: 6
+      - brand: 耐克
+        order_quantity: 6
+      - brand: Instant Pot
+        order_quantity: 6
+      - brand: 李维斯
+        order_quantity: 8
+      - brand: 优衣库
+        order_quantity: 10
+      - brand: 雀巢
+        order_quantity: 63
+      - brand: 蒙牛
+        order_quantity: 183
+      - brand: 乐事
+        order_quantity: 131
+      - brand: 奥利奥
+        order_quantity: 167
+
+  - id: g079_top_five_products_by_quantity
+    category: ranking
+    difficulty: hard
+    query: 统计销量最高的5个商品
+    ordered: true
+    column_aliases:
+      product_name: *product_aliases
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - product_name: 蒙牛纯牛奶 250ml*12
+        order_quantity: 183
+      - product_name: 奥利奥巧克力夹心饼干
+        order_quantity: 167
+      - product_name: 乐事原味薯片 150g
+        order_quantity: 131
+      - product_name: 雀巢金牌速溶咖啡
+        order_quantity: 63
+      - product_name: 优衣库 Heattech 保暖夹克
+        order_quantity: 10
+
+  - id: g080_order_count_by_product
+    category: grouping
+    difficulty: hard
+    query: 按商品统计订单数量
+    column_aliases:
+      product_name: *product_aliases
+      order_count: *count_aliases
+    expected_rows:
+      - product_name: iPhone 15 Pro
+        order_count: 8
+      - product_name: Galaxy S24 Ultra
+        order_count: 6
+      - product_name: Mate 60 Pro
+        order_count: 8
+      - product_name: 戴森 V15 吸尘器
+        order_count: 6
+      - product_name: 美的空调 KFR-35GW
+        order_count: 7
+      - product_name: 耐克 Air Max 270 运动鞋
+        order_count: 6
+      - product_name: 阿迪达斯 Ultraboost 跑鞋
+        order_count: 6
+      - product_name: 优衣库 Heattech 保暖夹克
+        order_count: 6
+      - product_name: 李维斯 501 牛仔裤
+        order_count: 6
+      - product_name: 雀巢金牌速溶咖啡
+        order_count: 11
+      - product_name: 蒙牛纯牛奶 250ml*12
+        order_count: 11
+      - product_name: 乐事原味薯片 150g
+        order_count: 11
+      - product_name: 奥利奥巧克力夹心饼干
+        order_count: 10
+      - product_name: Kindle Paperwhite 电子书
+        order_count: 7
+      - product_name: Instant Pot 多功能电压力锅
+        order_count: 6
+
+  - id: g081_iphone_order_count
+    category: product_filter
+    difficulty: medium
+    query: 查询iPhone 15 Pro的订单数量
+    column_aliases:
+      order_count: *count_aliases
+    expected_rows:
+      - order_count: 8
+
+  - id: g082_galaxy_sales
+    category: product_filter
+    difficulty: medium
+    query: 查询Galaxy S24 Ultra的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 56994.0
+
+  - id: g083_mate_quantity
+    category: product_filter
+    difficulty: medium
+    query: 查询Mate 60 Pro的总销量
+    column_aliases:
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - order_quantity: 8
+
+  - id: g084_kindle_sales
+    category: product_filter
+    difficulty: medium
+    query: 查询Kindle Paperwhite电子书的销售额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 9793.0
+
+  - id: g085_top_five_customers
+    category: ranking
+    difficulty: hard
+    query: 统计消费金额最高的5位客户
+    ordered: true
+    column_aliases:
+      customer_name: *customer_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - customer_name: 李伟
+        sales_amount: 20764.5
+      - customer_name: 徐浩
+        sales_amount: 19694.0
+      - customer_name: 何娜
+        sales_amount: 19644.0
+      - customer_name: 高梅
+        sales_amount: 19500.0
+      - customer_name: 胡杰
+        sales_amount: 18982.5
+
+  - id: g086_li_wei_sales
+    category: customer_filter
+    difficulty: medium
+    query: 查询客户李伟的消费金额
+    column_aliases:
+      sales_amount: *sales_aliases
+    expected_rows:
+      - sales_amount: 20764.5
+
+  - id: g087_zhang_min_order_count
+    category: customer_filter
+    difficulty: medium
+    query: 查询客户张敏的订单数量
+    column_aliases:
+      order_count: *count_aliases
+    expected_rows:
+      - order_count: 7
+
+  - id: g088_chen_jing_quantity
+    category: customer_filter
+    difficulty: medium
+    query: 查询客户陈静购买的商品总件数
+    column_aliases:
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - order_quantity: 27
+
+  - id: g089_customers_above_19000
+    category: having_filter
+    difficulty: hard
+    query: 查询消费金额超过19000元的客户，按消费金额从高到低排序
+    ordered: true
+    column_aliases:
+      customer_name: *customer_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - customer_name: 李伟
+        sales_amount: 20764.5
+      - customer_name: 徐浩
+        sales_amount: 19694.0
+      - customer_name: 何娜
+        sales_amount: 19644.0
+      - customer_name: 高梅
+        sales_amount: 19500.0
+
+  - id: g090_january_sales_by_region
+    category: combined_grouping
+    difficulty: hard
+    query: 统计2025年1月各大区的销售额，按销售额从高到低排序
+    ordered: true
+    column_aliases:
+      region_name: *region_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - region_name: 华东
+        sales_amount: 54924.0
+      - region_name: 华南
+        sales_amount: 28096.5
+      - region_name: 华中
+        sales_amount: 11397.0
+      - region_name: 西南
+        sales_amount: 10592.0
+      - region_name: 华北
+        sales_amount: 4021.0
+
+  - id: g091_february_sales_by_category
+    category: combined_grouping
+    difficulty: hard
+    query: 统计2025年2月各商品品类的销售额，按销售额从高到低排序
+    ordered: true
+    column_aliases:
+      category: *category_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - category: 手机数码
+        sales_amount: 53792.0
+      - category: 家用电器
+        sales_amount: 19196.0
+      - category: 鞋靴
+        sales_amount: 4396.0
+      - category: 服饰
+        sales_amount: 1795.0
+      - category: 食品饮料
+        sales_amount: 490.0
+      - category: 休闲零食
+        sales_amount: 340.0
+
+  - id: g092_march_sales_by_category
+    category: combined_grouping
+    difficulty: hard
+    query: 统计2025年3月各商品品类的销售额，按销售额从高到低排序
+    ordered: true
+    column_aliases:
+      category: *category_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - category: 手机数码
+        sales_amount: 62190.0
+      - category: 家用电器
+        sales_amount: 19196.0
+      - category: 鞋靴
+        sales_amount: 4396.0
+      - category: 服饰
+        sales_amount: 2593.0
+      - category: 食品饮料
+        sales_amount: 1115.0
+      - category: 休闲零食
+        sales_amount: 630.0
+
+  - id: g093_female_sales_by_region
+    category: combined_grouping
+    difficulty: hard
+    query: 统计女性客户在各大区的销售额，按销售额从高到低排序
+    ordered: true
+    column_aliases:
+      region_name: *region_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - region_name: 华东
+        sales_amount: 63928.0
+      - region_name: 华中
+        sales_amount: 28957.0
+      - region_name: 华北
+        sales_amount: 28337.0
+      - region_name: 西南
+        sales_amount: 11877.0
+      - region_name: 华南
+        sales_amount: 10690.0
+
+  - id: g094_gold_member_sales_by_category
+    category: combined_grouping
+    difficulty: hard
+    query: 统计黄金会员在各商品品类的销售额，按销售额从高到低排序
+    ordered: true
+    column_aliases:
+      category: *category_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - category: 手机数码
+        sales_amount: 89687.0
+      - category: 鞋靴
+        sales_amount: 5295.0
+      - category: 家用电器
+        sales_amount: 2697.0
+      - category: 服饰
+        sales_amount: 1797.0
+      - category: 食品饮料
+        sales_amount: 380.0
+      - category: 休闲零食
+        sales_amount: 322.5
+
+  - id: g095_march_quantity_by_region
+    category: combined_grouping
+    difficulty: hard
+    query: 统计2025年3月各大区的销量，按销量从高到低排序
+    ordered: true
+    column_aliases:
+      region_name: *region_aliases
+      order_quantity: *quantity_aliases
+    expected_rows:
+      - region_name: 华东
+        order_quantity: 134
+      - region_name: 华中
+        order_quantity: 71
+      - region_name: 西南
+        order_quantity: 42
+      - region_name: 华南
+        order_quantity: 39
+      - region_name: 华北
+        order_quantity: 36
+
+  - id: g096_top_sales_date
+    category: ranking
+    difficulty: hard
+    query: 查询销售额最高的日期及当天销售额
+    column_aliases:
+      date_id: *date_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - date_id: 20250101
+        sales_amount: 15998.0
+
+  - id: g097_january_sales_by_gender
+    category: combined_grouping
+    difficulty: hard
+    query: 按客户性别统计2025年1月销售额
+    column_aliases:
+      gender: *gender_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - gender: 女
+        sales_amount: 39231.0
+      - gender: 男
+        sales_amount: 69799.5
+
+  - id: g098_february_sales_by_gender
+    category: combined_grouping
+    difficulty: hard
+    query: 按客户性别统计2025年2月销售额
+    column_aliases:
+      gender: *gender_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - gender: 女
+        sales_amount: 48427.0
+      - gender: 男
+        sales_amount: 31582.0
+
+  - id: g099_march_sales_by_gender
+    category: combined_grouping
+    difficulty: hard
+    query: 按客户性别统计2025年3月销售额
+    column_aliases:
+      gender: *gender_aliases
+      sales_amount: *sales_aliases
+    expected_rows:
+      - gender: 女
+        sales_amount: 56131.0
+      - gender: 男
+        sales_amount: 33989.0
+
+  - id: g100_empty_year_result
+    category: empty_result
+    difficulty: medium
+    query: 查询2024年的订单数量
+    column_aliases:
+      order_count: *count_aliases
+    expected_rows:
+      - order_count: 0

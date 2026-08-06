@@ -1,0 +1,167 @@
+version: 1
+description: 固定元数据知识库上的三路原始召回黄金集，评测字段、指标和字段取值是否进入 Top K。
+cases:
+  - id: r001_sales_amount_column
+    kind: column
+    query: 销售额
+    expected_ids: [fact_order.order_amount]
+
+  - id: r002_order_quantity_column
+    kind: column
+    query: 订单销量
+    expected_ids: [fact_order.order_quantity]
+
+  - id: r003_region_column
+    kind: column
+    query: 大区
+    expected_ids: [dim_region.region_name]
+
+  - id: r004_province_column
+    kind: column
+    query: 所在省份
+    expected_ids: [dim_region.province]
+
+  - id: r005_member_level_column
+    kind: column
+    query: 用户等级
+    expected_ids: [dim_customer.member_level]
+
+  - id: r006_gender_column
+    kind: column
+    query: 客户性别
+    expected_ids: [dim_customer.gender]
+
+  - id: r007_product_name_column
+    kind: column
+    query: 商品名称
+    expected_ids: [dim_product.product_name]
+
+  - id: r008_category_column
+    kind: column
+    query: 商品品类
+    expected_ids: [dim_product.category]
+
+  - id: r009_brand_column
+    kind: column
+    query: 品牌名称
+    expected_ids: [dim_product.brand]
+
+  - id: r010_order_date_column
+    kind: column
+    query: 下单日期
+    expected_ids: [fact_order.date_id]
+
+  - id: r011_quarter_column
+    kind: column
+    query: 季度
+    expected_ids: [dim_date.quarter]
+
+  - id: r012_customer_name_column
+    kind: column
+    query: 用户名称
+    expected_ids: [dim_customer.customer_name]
+
+  - id: r013_gmv_metric
+    kind: metric
+    query: GMV
+    expected_ids: [GMV]
+
+  - id: r014_gross_merchandise_metric
+    kind: metric
+    query: 成交总额
+    expected_ids: [GMV]
+
+  - id: r015_order_total_metric
+    kind: metric
+    query: 订单总额
+    expected_ids: [GMV]
+
+  - id: r016_aov_metric
+    kind: metric
+    query: AOV
+    expected_ids: [AOV]
+
+  - id: r017_average_order_amount_metric
+    kind: metric
+    query: 平均订单金额
+    expected_ids: [AOV]
+
+  - id: r018_average_unit_price_metric
+    kind: metric
+    query: 平均单价
+    expected_ids: [AOV]
+
+  - id: r019_east_china_value
+    kind: value
+    query: 华东
+    expected_ids: [dim_region.region_name.华东]
+
+  - id: r020_south_china_value
+    kind: value
+    query: 华南
+    expected_ids: [dim_region.region_name.华南]
+
+  - id: r021_guangdong_value
+    kind: value
+    query: 广东省
+    expected_ids: [dim_region.province.广东省]
+
+  - id: r022_zhejiang_value
+    kind: value
+    query: 浙江省
+    expected_ids: [dim_region.province.浙江省]
+
+  - id: r023_gold_member_value
+    kind: value
+    query: 黄金
+    expected_ids: [dim_customer.member_level.黄金]
+
+  - id: r024_platinum_member_value
+    kind: value
+    query: 铂金
+    expected_ids: [dim_customer.member_level.铂金]
+
+  - id: r025_female_value
+    kind: value
+    query: 女
+    expected_ids: [dim_customer.gender.女]
+
+  - id: r026_apple_value
+    kind: value
+    query: 苹果
+    expected_ids: [dim_product.brand.苹果]
+
+  - id: r027_huawei_value
+    kind: value
+    query: 华为
+    expected_ids: [dim_product.brand.华为]
+
+  - id: r028_digital_category_value
+    kind: value
+    query: 手机数码
+    expected_ids: [dim_product.category.手机数码]
+
+  - id: r029_food_category_value
+    kind: value
+    query: 食品饮料
+    expected_ids: [dim_product.category.食品饮料]
+
+  - id: r030_quarter_value
+    kind: value
+    query: Q1
+    expected_ids: [dim_date.quarter.Q1]
+
+  - id: r031_country_value
+    kind: value
+    query: 中国
+    expected_ids: [dim_region.country.中国]
+
+  - id: r032_iphone_product_value
+    kind: value
+    query: iPhone 15 Pro
+    expected_ids: [dim_product.product_name.iPhone 15 Pro]
+
+  - id: r033_nike_brand_value
+    kind: value
+    query: 耐克
+    expected_ids: [dim_product.brand.耐克]

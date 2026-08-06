@@ -15,6 +15,7 @@ from backend.app.agent.nodes.merge_retrieved_info import merge_retrieved_info
 from backend.app.agent.nodes.recall_column import recall_column
 from backend.app.agent.nodes.recall_metric import recall_metric
 from backend.app.agent.nodes.recall_value import recall_value
+from backend.app.agent.nodes.resolve_query import resolve_query
 from backend.app.agent.nodes.validate_sql import validate_sql
 from backend.app.agent.state import DataAgentState
 from backend.app.clients.embedding_client_manager import embedding_client_manager
@@ -30,6 +31,7 @@ from backend.app.repositories.qdrant.metric_qdrant_repository import MetricQdran
 graph_builder = StateGraph(state_schema=DataAgentState, context_schema=DataAgentContext)
 
 # 添加节点
+graph_builder.add_node("resolve_query", resolve_query)
 graph_builder.add_node("extract_keywords", extract_keywords)
 graph_builder.add_node("recall_column", recall_column)
 graph_builder.add_node("recall_value", recall_value)
@@ -44,7 +46,8 @@ graph_builder.add_node("correct_sql", correct_sql)
 graph_builder.add_node("execute_sql", execute_sql)
 
 # 添加关系
-graph_builder.add_edge(START, "extract_keywords")
+graph_builder.add_edge(START, "resolve_query")
+graph_builder.add_edge("resolve_query", "extract_keywords")
 graph_builder.add_edge("extract_keywords", "recall_column")
 graph_builder.add_edge("extract_keywords", "recall_value")
 graph_builder.add_edge("extract_keywords", "recall_metric")

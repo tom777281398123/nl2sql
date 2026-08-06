@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import Literal, TypedDict
 
 from backend.app.entities.column_info import ColumnInfo
 from backend.app.entities.metric_info import MetricInfo
@@ -39,8 +39,14 @@ class DBInfoState(TypedDict):
     version: str
 
 
+class ConversationTurnState(TypedDict):
+    role: Literal["user", "assistant"]
+    content: str
+
+
 class DataAgentState(TypedDict):
     query: str  # 用户查询
+    history: list[ConversationTurnState]  # 当前问题之前的对话历史
     keywords: list[str]  # 用户查询的关键字
 
     retrieved_columns: list[ColumnInfo]  # 召回的字段信息
@@ -54,5 +60,7 @@ class DataAgentState(TypedDict):
     db_info: DBInfoState  # 数据库信息
 
     sql: str  # 生成的SQL
+
+    result: list[dict]  # SQL 执行结果
 
     error: str | None  # 验证SQL时的错误信息；None 表示校验通过
